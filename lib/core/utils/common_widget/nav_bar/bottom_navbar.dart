@@ -47,43 +47,36 @@ class BottomBarWidget extends ConsumerWidget {
                     BottomNavigationBarItem(
                       icon: SvgPicture.asset(
                         navigationShell.currentIndex == 0
-                            ? AppIcons.weatherFill
-                            : AppIcons.weatherOutline,
+                            ? AppIcons.listviewIcon
+                            : AppIcons.listviewIconBlu,
                       ),
                       label: "",
                     ),
                     BottomNavigationBarItem(
                       icon: SvgPicture.asset(
                         navigationShell.currentIndex == 1
-                            ? AppIcons.pilotLogBookFill
-                            : AppIcons.pilotLogBookOutline ,
+                            ? AppIcons.addIcon
+                            : AppIcons.addIconBlu ,
                       ),
                       label: "",
                     ),
                     BottomNavigationBarItem(
                       icon: SvgPicture.asset(
                         navigationShell.currentIndex == 2
-                            ? AppIcons.voiceAiSvg
-                            : AppIcons.voiceAiSvg,
+                            ? AppIcons.histogramIcon
+                            : AppIcons.histogramIconBlu,
                       ),
                       label: "",
                     ),
                     BottomNavigationBarItem(
                       icon: SvgPicture.asset(
                         navigationShell.currentIndex == 3
-                            ? AppIcons.podcastFill
-                            : AppIcons.podcastOutline ,
+                            ? AppIcons.mobileDataIcon
+                            : AppIcons.mobileDataIconBlu ,
                       ),
                       label: "",
                     ),
-                    BottomNavigationBarItem(
-                      icon: SvgPicture.asset(
-                        navigationShell.currentIndex == 4
-                            ? AppIcons.eBookFill
-                            : AppIcons.eBookOutline ,
-                      ),
-                      label: "",
-                    ),
+                   
                   ],
                 ),
               ),

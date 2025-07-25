@@ -12,7 +12,7 @@ class AppTheme {
   AppTheme._();
   static ThemeData lightTheme = ThemeData(
     inputDecorationTheme: AppInputDecorationTheme.inputDecorationTheme,
-    scaffoldBackgroundColor: AppColors.onPrimary,
+    scaffoldBackgroundColor: AppColors.primary,
     appBarTheme: AppAppBarTheme.lightAppBarTheme,
     elevatedButtonTheme: AppEvaluatedButtonThemes.evaluatedButtonTheme,
     textTheme: AppTextTheme.darkTextTheme,
@@ -22,7 +22,8 @@ class AppTheme {
   );
   static ThemeData darkTheme = ThemeData(
     inputDecorationTheme: AppInputDecorationTheme.inputDecorationTheme,
-    scaffoldBackgroundColor: AppColors.onPrimary,
+
+    scaffoldBackgroundColor: AppColors.primary,
     appBarTheme: AppAppBarTheme.lightAppBarTheme,
     elevatedButtonTheme: AppEvaluatedButtonThemes.evaluatedButtonTheme,
     textTheme: AppTextTheme.darkTextTheme,
