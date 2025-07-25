@@ -26,4 +26,5 @@ class AppColors {
   static const Color primaryContainer = Color(0xff191C31);
   static const Color secondaryContainer  = Color(0xff1C203A);
   static const Color ternaryContainer = Color(0xff191C32);
+  static const Color buttonAvtiveColor = Color(0xff4847F1);
 }

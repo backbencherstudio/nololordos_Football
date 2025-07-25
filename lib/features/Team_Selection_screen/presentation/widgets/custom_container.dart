@@ -16,9 +16,9 @@ class CustomContainer extends StatelessWidget {
         alignment: Alignment.center,
         children: [
           Positioned(
-            left: 14,
-            right: 14,
-            bottom: 3,
+            left: 16,
+            right: 16,
+            bottom: 0,
             child: Container(
               width: 279.w,
               height: 513.h,
@@ -29,7 +29,7 @@ class CustomContainer extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 40,
+            top: 38,
 
             left: 6,
             right: 6,

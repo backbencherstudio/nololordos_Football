@@ -3,14 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'core/routes/part_of_import.dart';
-import 'core/services/local_storage_services/hive_services.dart';
 import 'core/theme/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // await StripeServices.instance.initialize();
-  await HiveSecureStorageService.init();
+
 
   ///set device orientation to portraitUp during app running for better user experience of the UI
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
