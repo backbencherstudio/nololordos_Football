@@ -5,55 +5,55 @@ import 'package:flutter/material.dart';
 
 class AppTextTheme {
   static TextTheme darkTextTheme = TextTheme(
-    headlineLarge: GoogleFonts.poppins(
+    headlineLarge: GoogleFonts.roboto(
       fontSize: 28.sp,
       fontWeight: FontWeight.w700,
     ),
-    headlineMedium: GoogleFonts.poppins(
+    headlineMedium: GoogleFonts.roboto(
       fontSize: 26.sp,
       fontWeight: FontWeight.w400,
     ),
-    headlineSmall: GoogleFonts.poppins(
+    headlineSmall: GoogleFonts.roboto(
       fontSize: 24.sp,
 
       fontWeight: FontWeight.w400,
 
     ),
-    titleLarge: GoogleFonts.poppins(
+    titleLarge: GoogleFonts.roboto(
       fontSize: 22.sp,
       fontWeight: FontWeight.w600,
     ),
-    titleMedium: GoogleFonts.poppins(
+    titleMedium: GoogleFonts.roboto(
       fontSize: 20.sp,
       fontWeight: FontWeight.w500,
     ),
-    titleSmall: GoogleFonts.poppins(
+    titleSmall: GoogleFonts.roboto(
       fontSize: 18.sp,
       fontWeight: FontWeight.w500,
     ),
 
-    bodyLarge: GoogleFonts.poppins(
+    bodyLarge: GoogleFonts.roboto(
       fontSize: 18.sp,
       fontWeight: FontWeight.w500,
     ),
-    bodyMedium: GoogleFonts.poppins(
+    bodyMedium: GoogleFonts.roboto(
       fontSize: 16.sp,
       fontWeight: FontWeight.w400,
     ),
-    bodySmall: GoogleFonts.poppins(
+    bodySmall: GoogleFonts.roboto(
       fontSize: 14.sp,
       fontWeight: FontWeight.w400,
     ),
 
-    labelLarge: GoogleFonts.poppins(
+    labelLarge: GoogleFonts.roboto(
       fontSize: 14.sp,
       fontWeight: FontWeight.w500,
     ),
-    labelMedium: GoogleFonts.poppins(
+    labelMedium: GoogleFonts.roboto(
       fontSize: 12.sp,
       fontWeight: FontWeight.w500,
     ),
-    labelSmall: GoogleFonts.poppins(
+    labelSmall: GoogleFonts.roboto(
       fontSize: 11.sp,
       fontWeight: FontWeight.w400,
     ),

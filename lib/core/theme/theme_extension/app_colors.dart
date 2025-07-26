@@ -19,7 +19,7 @@ class AppColors {
   static const Color error = Color.fromRGBO(235, 61, 77, 0.09);
   static const Color onError = Color(0xffEB3D4D);
   static const Color surface = Color(0xff161721);
-  static const Color onSurface = Color(0xffF9FAFB);
+  static const Color onSurface = Color(0xffFFF6E4);
   static const Color bottomNavBarBackground = Color(0xff212432);
   static const Color secondaryTextColor = Color(0xff777980);
   static const Color deActiveTextColor = Color(0xff777980);
@@ -27,4 +27,6 @@ class AppColors {
   static const Color secondaryContainer  = Color(0xff1C203A);
   static const Color ternaryContainer = Color(0xff191C32);
   static const Color buttonAvtiveColor = Color(0xff4847F1);
+  static const Color fillcolor = Color(0xff1D1F2C);
+  static const Color subTextColor = Color(0xff1A9882);
 }
