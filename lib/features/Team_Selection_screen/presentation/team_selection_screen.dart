@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nololordos/core/constant/images.dart';
 import 'package:nololordos/core/constant/padding.dart';
+import 'package:nololordos/core/routes/route_name.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
 import 'package:nololordos/features/Team_Selection_screen/Riverpod/selection_provider.dart';
 import 'package:nololordos/features/Team_Selection_screen/presentation/widgets/custom_Button.dart';
@@ -61,7 +63,9 @@ class TeamSelectionScreen extends StatelessWidget {
                           isSelected: isSelected == "Panathinaikos",
                         ),
                         Spacer(),
-                        CustomButton(title: 'Next', onTap: () {}),
+                        CustomButton(title: 'Next', onTap: () {
+                          context.go(RouteName.roosterViewScreen);
+                        }),
                         SizedBox(height: 25.h),
                       ],
                     );

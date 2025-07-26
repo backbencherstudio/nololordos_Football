@@ -8,61 +8,53 @@ class RouteConfig {
     initialLocation: RouteName.teamSelectionScreen,
 
     routes: [
-      /// Bottom NavBar
-      // StatefulShellRoute.indexedStack(
-      //   builder: (context, state, navigationShell) =>
-      //       BottomBarWidget(navigationShell: navigationShell),
-      //   branches: [
-      //     StatefulShellBranch(
-      //       routes: [
-      //         GoRoute(
-      //           path: RouteName.weatherScreen,
-      //           pageBuilder: (context, state) {
-      //             return buildPageWithTransition(
-      //               context: context,
-      //               state: state,
-      //               transitionType: PageTransitionType.slideRightToLeft,
-      //               child: WeatherScreen(),
-      //             );
-      //           },
-      //           //builder: (context, state) => const WeatherScreen(),
-      //         ),
-      //       ],
-      //     ),
-      //     StatefulShellBranch(
-      //       routes: [
-      //         GoRoute(
-      //           path: RouteName.pilotLogBookScreen,
-      //           builder: (context, state) => const PilotLogBookScreen(),
-      //         ),
-      //       ],
-      //     ),
-      //     StatefulShellBranch(
-      //       routes: [
-      //         GoRoute(
-      //           path: RouteName.voiceAIScreen,
-      //           builder: (context, state) => const VoiceAiScreen(),
-      //         ),
-      //       ],
-      //     ),
-      //     StatefulShellBranch(
-      //       routes: [
-      //         GoRoute(
-      //           path: RouteName.podcastScreen,
-      //           builder: (context, state) => const PodcastScreen(),
-      //         ),
-      //       ],
-      //     ),
-      //     StatefulShellBranch(
-      //       routes: [
-      //         GoRoute(
-      //           path: RouteName.ebookScreen,
-      //           builder: (context, state) => const EbookScreen(),
-      //         ),
-      //       ],
-      //     ),
-      //   ],
-      // ),
+      //Bottom NavBar
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) =>
+            BottomBarWidget(navigationShell: navigationShell),
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: RouteName.roosterViewScreen,
+                pageBuilder: (context, state) {
+                  return buildPageWithTransition(
+                    context: context,
+                    state: state,
+                    transitionType: PageTransitionType.slideRightToLeft,
+                    child: RoosterViewScreen(),
+                  );
+                },
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: RouteName.matchdayScreen,
+                builder: (context, state) => const MatchdayScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: RouteName.srTopTenScreen,
+                builder: (context, state) => const SrTopTenScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: RouteName.importExportScreen,
+                builder: (context, state) => const ImportExportScreen(),
+              ),
+            ],
+          ),
+         
+        ],
+      ),
 
       // GoRoute(
       //   name: RouteName.splashScreen,

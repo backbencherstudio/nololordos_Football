@@ -35,6 +35,7 @@ class BottomBarWidget extends ConsumerWidget {
               borderRadius: BorderRadius.circular(50.r),
               child: SizedBox(
                 height: 68.h,
+                width: 327.w,
                 child: BottomNavigationBar(
                   currentIndex: navigationShell.currentIndex,
                   onTap: (index) => navigationShell.goBranch(index),
@@ -47,32 +48,32 @@ class BottomBarWidget extends ConsumerWidget {
                     BottomNavigationBarItem(
                       icon: SvgPicture.asset(
                         navigationShell.currentIndex == 0
-                            ? AppIcons.listviewIcon
-                            : AppIcons.listviewIconBlu,
+                            ? AppIcons.listviewIconBlu
+                            : AppIcons.listviewIcon,
                       ),
                       label: "",
                     ),
                     BottomNavigationBarItem(
                       icon: SvgPicture.asset(
                         navigationShell.currentIndex == 1
-                            ? AppIcons.addIcon
-                            : AppIcons.addIconBlu ,
+                            ? AppIcons.addIconBlu
+                            : AppIcons.addIcon,
                       ),
                       label: "",
                     ),
                     BottomNavigationBarItem(
                       icon: SvgPicture.asset(
                         navigationShell.currentIndex == 2
-                            ? AppIcons.histogramIcon
-                            : AppIcons.histogramIconBlu,
+                            ? AppIcons.histogramIconBlu
+                            : AppIcons.histogramIcon,
                       ),
                       label: "",
                     ),
                     BottomNavigationBarItem(
                       icon: SvgPicture.asset(
                         navigationShell.currentIndex == 3
-                            ? AppIcons.mobileDataIcon
-                            : AppIcons.mobileDataIconBlu ,
+                            ? AppIcons.mobileDataIconBlu
+                            : AppIcons.mobileDataIcon ,
                       ),
                       label: "",
                     ),
