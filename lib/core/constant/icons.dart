@@ -27,6 +27,7 @@ class AppIcons {
   static const String histogramIconBlu = '$iconPath/hart-histogram_blu.svg';
   static const String listviewIconBlu = '$iconPath/list_view-rectangle_blu.svg';
   static const String mobileDataIconBlu = '$iconPath/mobile_data_blu.svg';
-
+  static const String iso = '$iconPath/iso.svg';
+  static const String back = '$iconPath/Arrow - Left.svg';
 
 }

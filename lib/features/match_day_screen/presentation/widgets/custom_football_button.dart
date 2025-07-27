@@ -7,10 +7,12 @@ import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
 class CustomFootballButton extends StatelessWidget {
   final void Function()? onTap;
   final bool isSelected;
+  final String count;
   const CustomFootballButton({
     super.key,
     required this.onTap,
     required this.isSelected,
+    required this.count,
   });
 
   @override
@@ -41,7 +43,7 @@ class CustomFootballButton extends StatelessWidget {
                               SizedBox(width: 8.w),
 
                 Text(
-                  "2",
+                count  ,
                   style: style.bodyMedium!.copyWith(
                     color: AppColors.subTextColor,
                   ),

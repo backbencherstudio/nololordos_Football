@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:nololordos/core/constant/icons.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
 
 class CustomButtons extends StatelessWidget {
   final String title;
   final String icon;
+  final double? hieght;
+  final Color? color;
   final void Function()? onTap;
   const CustomButtons({super.key,
   required this.title,
   required this.icon,
   required this.onTap,
-  
+  this.hieght,
+  this.color,
   });
 
   @override
@@ -22,10 +24,10 @@ class CustomButtons extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 75.h,
+        height:hieght?? 75.h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(90.r),
-          color: AppColors.secondary,
+          color: color?? AppColors.secondary,
         ),
       
         child: Row(

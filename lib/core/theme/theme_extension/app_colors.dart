@@ -29,4 +29,5 @@ class AppColors {
   static const Color buttonAvtiveColor = Color(0xff4847F1);
   static const Color fillcolor = Color(0xff1D1F2C);
   static const Color subTextColor = Color(0xff1A9882);
+  static const Color containerTextColor = Color(0xffD2D2D5);
 }

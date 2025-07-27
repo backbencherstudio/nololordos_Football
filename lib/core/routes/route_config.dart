@@ -73,13 +73,13 @@ class RouteConfig {
 
 
 
-//        GoRoute(
-//         name: RouteName.signUpOtpScreen,
-//         path: RouteName.signUpOtpScreen,
-//         pageBuilder: (context, state) {
-//           return const MaterialPage(child: SignUpOtpScreen());
-//         },
-//       ),
+       GoRoute(
+        name: RouteName.historyScreen,
+        path: RouteName.historyScreen,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: HistoryScreen());
+        },
+      ),
 //       GoRoute(
 //         name: RouteName.paymentSelection,
 //         path: RouteName.paymentSelection,

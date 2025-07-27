@@ -5,13 +5,14 @@ import 'package:nololordos/core/constant/icons.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
 
 class CustomGoaltakenButton extends StatelessWidget {
-
   final void Function()? onTap;
   final bool isSelected;
+  final String count;
   const CustomGoaltakenButton({
     super.key,
     required this.onTap,
     required this.isSelected,
+    required this.count,
   });
 
   @override
@@ -38,11 +39,11 @@ class CustomGoaltakenButton extends StatelessWidget {
                 AppIcons.goalpostIcon,
                 color: isSelected ? AppColors.primary : AppColors.onPrimary,
               ),
-             if (isSelected == true) ...[
-                            SizedBox(width: 8.w),
+              if (isSelected == true) ...[
+                SizedBox(width: 8.w),
 
                 Text(
-                  "2",
+                  count,
                   style: style.bodyMedium!.copyWith(
                     color: AppColors.subTextColor,
                   ),
