@@ -11,6 +11,7 @@ import 'package:nololordos/core/routes/route_name.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
 import 'package:nololordos/features/Team_Selection_screen/presentation/widgets/custom_container.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/catagoryProvider.dart';
+import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/playerProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/dropdown.dart';
 import 'package:nololordos/features/import_export_screen/presentation/widgets/custom_buttons.dart';
 
@@ -27,11 +28,13 @@ class _AddPlayerScreenState extends ConsumerState<AddPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     final style = Theme.of(context).textTheme;
+    
 
     final selectedPosition = ref.watch(catagoryProvider);
       final TextEditingController positionController = TextEditingController(
       text: selectedPosition.isEmpty ? 'Select Position' : selectedPosition,
     );
+    final TextEditingController name = TextEditingController();
 
     return Scaffold(
       body: Padding(
@@ -72,6 +75,7 @@ class _AddPlayerScreenState extends ConsumerState<AddPlayerScreen> {
                       ),
                       SizedBox(height: 8.h),
                       TextFormField(
+                        controller: name,
                         decoration: InputDecoration(
                           fillColor: AppColors.fillcolorTwo,
                         ),
@@ -122,7 +126,11 @@ class _AddPlayerScreenState extends ConsumerState<AddPlayerScreen> {
                         title: "Add Player",
                       
                         icon: AppIcons.addIcon ,
-                        onTap: () {},
+                        onTap: () {
+                          debugPrint("tappp");
+                              ref.read(playersProvider.notifier).addPlayer(name.text.trim());
+                              Navigator.pop(context);
+                        },
                         hieght: 60.h,
                       ),
                     ],

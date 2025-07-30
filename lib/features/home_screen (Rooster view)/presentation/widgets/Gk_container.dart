@@ -52,7 +52,8 @@ class GkContainer extends StatelessWidget {
                           height: 40.h,
                           width: 144.w,
                           child: TextFormField(
-                            decoration: customInputDecoration(),
+ initialValue: ref.watch(playersProvider)[index]['name'],
+                             decoration: customInputDecoration(),
                           ),
                         );
                     })
