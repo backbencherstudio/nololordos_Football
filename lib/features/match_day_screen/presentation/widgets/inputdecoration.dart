@@ -14,7 +14,7 @@ InputDecoration customInputDecoration({
     labelText: labelText,
     prefixIcon: prefixIcon,
     suffixIcon: suffixIcon,
-    contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 9.h),
+    contentPadding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 9.h),
     filled: true,
     fillColor: AppColors.primaryContainer,
     hintStyle: GoogleFonts.roboto(

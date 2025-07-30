@@ -5,13 +5,13 @@ import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
 
 class CustomButtons extends StatelessWidget {
   final String title;
-  final String icon;
+  final String? icon;
   final double? hieght;
   final Color? color;
   final void Function()? onTap;
   const CustomButtons({super.key,
   required this.title,
-  required this.icon,
+  this.icon,
   required this.onTap,
   this.hieght,
   this.color,
@@ -33,7 +33,8 @@ class CustomButtons extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset(icon),
+            if (icon != null && icon!.isNotEmpty) 
+              SvgPicture.asset(icon!),
             SizedBox(width: 10.w),
             Text(
               title,

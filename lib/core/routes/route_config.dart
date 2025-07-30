@@ -56,13 +56,13 @@ class RouteConfig {
         ],
       ),
 
-      // GoRoute(
-      //   name: RouteName.splashScreen,
-      //   path: RouteName.splashScreen,
-      //   pageBuilder: (context, state) {
-      //     return const MaterialPage(child: SplashScreen());
-      //   },
-      // ),
+      GoRoute(
+        name: RouteName.addPlayerScreen,
+        path: RouteName.addPlayerScreen,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: AddPlayerScreen());
+        },
+      ),
     GoRoute(
         name: RouteName.teamSelectionScreen,
         path: RouteName.teamSelectionScreen,

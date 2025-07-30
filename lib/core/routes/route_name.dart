@@ -6,4 +6,5 @@ class RouteName {
   static const String roosterViewScreen = "/RoosterViewScreen";
   static const String srTopTenScreen = "/SrTopTenScreen";
   static const String importExportScreen = "/ImportExportScreen";
+  static const String addPlayerScreen = "/AddPlayerScreen";
 }
