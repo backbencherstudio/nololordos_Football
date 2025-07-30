@@ -9,6 +9,7 @@ import 'package:nololordos/core/routes/route_name.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
 import 'package:nololordos/features/Team_Selection_screen/Riverpod/selection_provider.dart';
 import 'package:nololordos/features/history_screen/presentation/widgets/custom_row_info.dart';
+import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/playerProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/Gk_container.dart';
 import 'package:nololordos/features/import_export_screen/presentation/widgets/custom_buttons.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/custom_icon_buttons.dart';
@@ -25,14 +26,19 @@ class RoosterViewScreen extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           child: Padding(
             padding: AppPadding.screenHorizontal,
-            child: CustomButtons(
-              hieght: 60.h,
-              color: AppColors.buttonAvtiveColor,
-              title: '+ Add Player',
-              icon: "",
-              onTap: () {
+            child: Consumer(
+              builder: (context, ref, _) {
+                return CustomButtons(
+                  hieght: 60.h,
+                  color: AppColors.buttonAvtiveColor,
+                  title: '+ Add Player',
+                  icon: "",
+                  onTap: () {
+                    ref.read(playersProvider.notifier).addPlayer("safrid");
 
-                context.push(RouteName.addPlayerScreen);
+                    // context.push(RouteName.addPlayerScreen);
+                  },
+                );
               },
             ),
           ),
@@ -83,19 +89,30 @@ class RoosterViewScreen extends StatelessWidget {
               );
             },
           ),
+          Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              physics: BouncingScrollPhysics(),
+              child: Column(
+                children: [
+                  //gk container
+                  SizedBox(height: 24.h),
+                  GkContainer(),
+            
+                  //def container
+                  SizedBox(height: 24.h),
+            
+                  //mid container
+                  SizedBox(height: 24.h),
+            
+                  //fwd container
+                  SizedBox(height: 24.h),
+                ],
+              ),
+            ),
+          ),
 
-          //gk container
-          SizedBox(height: 24.h),
-          GkContainer(),
-
-          //def container
-          SizedBox(height: 24.h),
-
-          //mid container
-          SizedBox(height: 24.h),
-
-          //fwd container
-          SizedBox(height: 24.h),
+          SizedBox(height: 200.h,)
         ],
       ),
     );

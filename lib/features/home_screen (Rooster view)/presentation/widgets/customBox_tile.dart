@@ -3,7 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/inputdecoration.dart';
 
 class CustomboxTile extends StatelessWidget {
-  const CustomboxTile({super.key});
+  final String value;
+  final Function(String) onChanged;
+
+  const CustomboxTile({super.key,
+    required this.value,
+    required this.onChanged,});
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +18,7 @@ class CustomboxTile extends StatelessWidget {
      width: 42.w,
      
       child: TextFormField(
+        initialValue: value,
         decoration: customInputDecoration(),
       ),
     );
