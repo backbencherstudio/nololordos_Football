@@ -29,7 +29,7 @@ class GkContainer extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 24),
                 child: Column(
                   children: [
-                    SizedBox(height: 12.h),
+                    SizedBox(height: 10.h),
                     Text("GK"),
                     SizedBox(height: 15.h),
                     Container(
@@ -59,12 +59,11 @@ class GkContainer extends StatelessWidget {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: DataTable(
-                    //dividerThickness: 0.h,
                     horizontalMargin: 8.w,
                     columnSpacing: 8.w,
                     dataRowMinHeight: 50.h,
                     dataRowMaxHeight: 50.h,
-                     dividerThickness: 2.3.h,
+                    dividerThickness: 2.4 .h,
                     columns: [
                       DataColumn(label: Text("SR")),
                       DataColumn(label: Text("GM")),
