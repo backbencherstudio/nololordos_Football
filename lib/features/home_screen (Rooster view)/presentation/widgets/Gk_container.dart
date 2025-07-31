@@ -77,65 +77,103 @@ class GkContainer extends StatelessWidget {
                       (index) {
                         final player = players[index];
                         return DataRow(
+                          color: MaterialStateProperty.resolveWith<Color?>(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.selected)) {
+        return Colors.blue; // Change to the color you want for selected rows
+      }
+      return Colors.transparent; // Default color (transparent)
+    },
+  ),
                           cells: [
                             DataCell(
-                              CustomboxTile(
-                                value: player['SR'] ?? '',
-                                onChanged: (String value) {
-                                  ref
-                                      .read(playersProvider.notifier)
-                                      .updatePlayer(index, 'SR', value);
-                                },
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.transparent)
+                                ),
+                                child: CustomboxTile(
+                                  value: player['SR'] ?? '',
+                                  onChanged: (String value) {
+                                    ref
+                                        .read(playersProvider.notifier)
+                                        .updatePlayer(index, 'SR', value);
+                                  },
+                                ),
                               ),
                             ),
                             DataCell(
-                              CustomboxTile(
-                                value: player['GM'] ?? '',
-                                onChanged: (String value) {
-                                  ref
-                                      .read(playersProvider.notifier)
-                                      .updatePlayer(index, 'GM', value);
-                                },
+                              Container(
+                                 decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.transparent)
+                                ),
+                                child: CustomboxTile(
+                                  value: player['GM'] ?? '',
+                                  onChanged: (String value) {
+                                    ref
+                                        .read(playersProvider.notifier)
+                                        .updatePlayer(index, 'GM', value);
+                                  },
+                                ),
                               ),
                             ),
                             DataCell(
-                              CustomboxTile(
-                                value: player['GL'] ?? '',
-                                onChanged: (String value) {
-                                  ref
-                                      .read(playersProvider.notifier)
-                                      .updatePlayer(index, 'GL', value);
-                                },
+                              Container(
+                                 decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.transparent)
+                                ),
+                                child: CustomboxTile(
+                                  value: player['GL'] ?? '',
+                                  onChanged: (String value) {
+                                    ref
+                                        .read(playersProvider.notifier)
+                                        .updatePlayer(index, 'GL', value);
+                                  },
+                                ),
                               ),
                             ),
                             DataCell(
-                              CustomboxTile(
-                                value: player['AGL'] ?? '',
-                                onChanged: (String value) {
-                                  ref
-                                      .read(playersProvider.notifier)
-                                      .updatePlayer(index, 'AGL', value);
-                                },
+                              Container(
+                                 decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.transparent)
+                                ),
+                                child: CustomboxTile(
+                                  value: player['AGL'] ?? '',
+                                  onChanged: (String value) {
+                                    ref
+                                        .read(playersProvider.notifier)
+                                        .updatePlayer(index, 'AGL', value);
+                                  },
+                                ),
                               ),
                             ),
                             DataCell(
-                              CustomboxTile(
-                                value: player['-GL'] ?? '',
-                                onChanged: (String value) {
-                                  ref
-                                      .read(playersProvider.notifier)
-                                      .updatePlayer(index, '-GL', value);
-                                },
+                              Container(
+                                 decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.transparent)
+                                ),
+                                child: CustomboxTile(
+                                  value: player['-GL'] ?? '',
+                                  onChanged: (String value) {
+                                    ref
+                                        .read(playersProvider.notifier)
+                                        .updatePlayer(index, '-GL', value);
+                                  },
+                                ),
                               ),
                             ),
                             DataCell(
-                              CustomboxTile(
-                                value: player['-AGL'] ?? '',
-                                onChanged: (String value) {
-                                  ref
-                                      .read(playersProvider.notifier)
-                                      .updatePlayer(index, '-AGL', value);
-                                },
+                              Container(
+                                 decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.transparent)
+                                ),
+                                child: CustomboxTile(
+                                  value: player['-AGL'] ?? '',
+                                  onChanged: (String value) {
+                                    ref
+                                        .read(playersProvider.notifier)
+                                        .updatePlayer(index, '-AGL', value);
+                                  },
+                                ),
                               ),
                             ),
                           ],
