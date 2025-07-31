@@ -13,7 +13,7 @@ class CustomboxTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-    margin: EdgeInsets.only(top: 10.h),
+    //margin: EdgeInsets.only(top: 10.h),
      height:50.h,
      width: 42.w,
      

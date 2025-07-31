@@ -34,9 +34,10 @@ class RoosterViewScreen extends StatelessWidget {
                   title: '+ Add Player',
                   icon: "",
                   onTap: () {
-                
+                    ref.read(playersProvider.notifier).addPlayer('NAmw');
 
-                    context.push(RouteName.addPlayerScreen);
+
+                    //context.push(RouteName.addPlayerScreen);
                   },
                 );
               },

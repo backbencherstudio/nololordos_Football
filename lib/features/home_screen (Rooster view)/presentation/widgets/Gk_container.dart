@@ -29,34 +29,29 @@ class GkContainer extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 24),
                 child: Column(
                   children: [
-                    SizedBox(height: 11.5.h),
+                    SizedBox(height: 12.h),
                     Text("GK"),
-                    SizedBox(height: 7.h),
-                    SizedBox(
+                    SizedBox(height: 15.h),
+                    Container(
                       width: 144.w,
-                      child: Divider(
-                        color: AppColors.containerTextColor,
-                        thickness: 1.5,
-                        indent: 0,
-                        endIndent: 0,
-                      ),
+                      height: 2.h,
+                      color: Colors.white,
                     ),
                     SizedBox(height: 2.h),
-               
 
-                
-
-                    ...List.generate(players.length, (index){
-                        return Container(
-                          margin: EdgeInsets.symmetric(vertical: 5.5.h),
-                          height: 40.h,
-                          width: 144.w,
-                          child: TextFormField(
- initialValue: ref.watch(playersProvider)[index]['name'],
-                             decoration: customInputDecoration(),
-                          ),
-                        );
-                    })
+                    ...List.generate(players.length, (index) {
+                      return SizedBox(
+                       // margin: EdgeInsets.only(bottom: 2.h),
+                        height: 50.h,
+                        width: 144.w,
+                        child: TextFormField(
+                          initialValue: ref.watch(
+                            playersProvider,
+                          )[index]['name'],
+                          decoration: customInputDecoration(),
+                        ),
+                      );
+                    }),
                   ],
                 ),
               ),
@@ -68,6 +63,7 @@ class GkContainer extends StatelessWidget {
                     columnSpacing: 8.w,
                     dataRowMinHeight: 50.h,
                     dataRowMaxHeight: 50.h,
+                    dividerThickness: 2.h,
                     columns: [
                       DataColumn(label: Text("SR")),
                       DataColumn(label: Text("GM")),
