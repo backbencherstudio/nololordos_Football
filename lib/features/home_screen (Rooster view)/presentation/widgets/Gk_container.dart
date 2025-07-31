@@ -34,7 +34,7 @@ class GkContainer extends StatelessWidget {
                     SizedBox(height: 15.h),
                     Container(
                       width: 144.w,
-                      height: 2.h,
+                      height: 1.h,
                       color: Colors.white,
                     ),
                     SizedBox(height: 2.h),
@@ -59,6 +59,7 @@ class GkContainer extends StatelessWidget {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: DataTable(
+                   
                     horizontalMargin: 8.w,
                     columnSpacing: 8.w,
                     dataRowMinHeight: 50.h,
@@ -77,19 +78,16 @@ class GkContainer extends StatelessWidget {
                       (index) {
                         final player = players[index];
                         return DataRow(
-                          color: MaterialStateProperty.resolveWith<Color?>(
-    (Set<MaterialState> states) {
-      if (states.contains(MaterialState.selected)) {
-        return Colors.blue; // Change to the color you want for selected rows
-      }
-      return Colors.transparent; // Default color (transparent)
-    },
-  ),
                           cells: [
                             DataCell(
                               Container(
                                 decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.transparent)
+                                  border: Border(
+                                  bottom: BorderSide(color:AppColors.primaryContainer),
+                                  left: BorderSide(color:AppColors.primaryContainer),
+                                  right:    BorderSide(color:AppColors.primaryContainer),
+                                  top: BorderSide(color:AppColors.primaryContainer)
+                                  )
                                 ),
                                 child: CustomboxTile(
                                   value: player['SR'] ?? '',
@@ -103,8 +101,15 @@ class GkContainer extends StatelessWidget {
                             ),
                             DataCell(
                               Container(
-                                 decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.transparent)
+                                 decoration: 
+                                 
+                              BoxDecoration(
+                                  border: Border(
+                                  bottom: BorderSide(color:AppColors.primaryContainer),
+                                  left: BorderSide(color:AppColors.primaryContainer),
+                                  right:    BorderSide(color:AppColors.primaryContainer),
+                                  top: BorderSide(color:AppColors.primaryContainer)
+                                  )
                                 ),
                                 child: CustomboxTile(
                                   value: player['GM'] ?? '',
@@ -119,7 +124,12 @@ class GkContainer extends StatelessWidget {
                             DataCell(
                               Container(
                                  decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.transparent)
+                                  border: Border(
+                                  bottom: BorderSide(color:AppColors.primaryContainer),
+                                  left: BorderSide(color:AppColors.primaryContainer),
+                                  right:    BorderSide(color:AppColors.primaryContainer),
+                                  top: BorderSide(color:AppColors.primaryContainer)
+                                  )
                                 ),
                                 child: CustomboxTile(
                                   value: player['GL'] ?? '',
@@ -133,8 +143,13 @@ class GkContainer extends StatelessWidget {
                             ),
                             DataCell(
                               Container(
-                                 decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.transparent)
+                                  decoration: BoxDecoration(
+                                  border: Border(
+                                  bottom: BorderSide(color:AppColors.primaryContainer),
+                                  left: BorderSide(color:AppColors.primaryContainer),
+                                  right:    BorderSide(color:AppColors.primaryContainer),
+                                  top: BorderSide(color:AppColors.primaryContainer)
+                                  )
                                 ),
                                 child: CustomboxTile(
                                   value: player['AGL'] ?? '',
@@ -149,7 +164,12 @@ class GkContainer extends StatelessWidget {
                             DataCell(
                               Container(
                                  decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.transparent)
+                                  border: Border(
+                                  bottom: BorderSide(color:AppColors.primaryContainer),
+                                  left: BorderSide(color:AppColors.primaryContainer),
+                                  right:    BorderSide(color:AppColors.primaryContainer),
+                                  top: BorderSide(color:AppColors.primaryContainer)
+                                  )
                                 ),
                                 child: CustomboxTile(
                                   value: player['-GL'] ?? '',
@@ -163,8 +183,13 @@ class GkContainer extends StatelessWidget {
                             ),
                             DataCell(
                               Container(
-                                 decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.transparent)
+                                  decoration: BoxDecoration(
+                                  border: Border(
+                                  bottom: BorderSide(color:AppColors.primaryContainer),
+                                  left: BorderSide(color:AppColors.primaryContainer),
+                                  right:    BorderSide(color:AppColors.primaryContainer),
+                                  top: BorderSide(color:AppColors.primaryContainer)
+                                  )
                                 ),
                                 child: CustomboxTile(
                                   value: player['-AGL'] ?? '',

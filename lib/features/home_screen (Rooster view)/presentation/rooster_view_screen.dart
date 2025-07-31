@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nololordos/core/constant/icons.dart';
 import 'package:nololordos/core/constant/images.dart';
 import 'package:nololordos/core/constant/padding.dart';
+import 'package:nololordos/core/routes/route_name.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
 import 'package:nololordos/features/Team_Selection_screen/Riverpod/selection_provider.dart';
 import 'package:nololordos/features/history_screen/presentation/widgets/custom_row_info.dart';
-import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/playerProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/Gk_container.dart';
 import 'package:nololordos/features/import_export_screen/presentation/widgets/custom_buttons.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/custom_icon_buttons.dart';
@@ -33,11 +34,11 @@ class RoosterViewScreen extends StatelessWidget {
                   icon: "",
                   onTap: () {
                 
-                    ref.read(playersProvider.notifier).addPlayer('NAmw');
+                    //ref.read(playersProvider.notifier).addPlayer('NAmw');
 
 
-                  //  context.push(RouteName.addPlayerScreen);
-                    //context.push(RouteName.addPlayerScreen);
+                   context.push(RouteName.addPlayerScreen);
+                   
                   },
                 );
               },
