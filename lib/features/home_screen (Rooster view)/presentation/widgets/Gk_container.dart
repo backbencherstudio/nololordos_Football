@@ -36,23 +36,23 @@ class GkContainer extends StatelessWidget {
                       width: 144.w,
                       child: Divider(
                         color: AppColors.containerTextColor,
-                        thickness: 1.5,
+                        thickness: 0.5.h,
                         indent: 0,
                         endIndent: 0,
                       ),
                     ),
-                    SizedBox(height: 2.h),
+                   // SizedBox(height: 2.h),
                
 
                 
 
                     ...List.generate(players.length, (index){
                         return Container(
-                          margin: EdgeInsets.symmetric(vertical: 5.5.h),
-                          height: 40.h,
+                          margin: EdgeInsets.only(bottom: 1.2.h),
+                          height: 50.h,
                           width: 144.w,
                           child: TextFormField(
- initialValue: ref.watch(playersProvider)[index]['name'],
+                         initialValue: ref.watch(playersProvider)[index]['name'],
                              decoration: customInputDecoration(),
                           ),
                         );
@@ -64,6 +64,7 @@ class GkContainer extends StatelessWidget {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: DataTable(
+                    dividerThickness: 0.h,
                     horizontalMargin: 8.w,
                     columnSpacing: 8.w,
                     dataRowMinHeight: 50.h,
@@ -77,7 +78,7 @@ class GkContainer extends StatelessWidget {
                       DataColumn(label: Text("-AGL")),
                     ],
                     rows: List.generate(
-                      players.length, // Generate rows based on players
+                      players.length, 
                       (index) {
                         final player = players[index];
                         return DataRow(
