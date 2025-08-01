@@ -1,10 +1,10 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nololordos/core/constant/icons.dart';
 import 'package:nololordos/core/constant/padding.dart';
 import 'package:nololordos/core/routes/route_name.dart';
@@ -128,7 +128,7 @@ class _AddPlayerScreenState extends ConsumerState<AddPlayerScreen> {
                         icon: AppIcons.addIcon ,
                         onTap: () {
                           debugPrint("tappp");
-                              ref.read(playersProvider.notifier).addPlayer(name.text.trim());
+                              ref.read(playersProvider.notifier).addPlayer(name.text.trim(), selectedPosition);
                               Navigator.pop(context);
                         },
                         hieght: 60.h,

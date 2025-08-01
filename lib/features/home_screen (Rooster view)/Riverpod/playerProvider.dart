@@ -1,4 +1,5 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final playersProvider = StateNotifierProvider<PlayersNotifier, List<Map<String, dynamic>>>(
   (ref) => PlayersNotifier(),
@@ -7,11 +8,12 @@ final playersProvider = StateNotifierProvider<PlayersNotifier, List<Map<String, 
 class PlayersNotifier extends StateNotifier<List<Map<String, dynamic>>> {
   PlayersNotifier() : super([]);
 
-  void addPlayer(String name) {
+  void addPlayer(String name,String position) {
     state = [
       ...state,
       {
         'name': name,
+        'position': position,
         'SR': '',
         'GM': '',
         'GL': '',

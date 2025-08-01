@@ -9,7 +9,10 @@ import 'package:nololordos/core/routes/route_name.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
 import 'package:nololordos/features/Team_Selection_screen/Riverpod/selection_provider.dart';
 import 'package:nololordos/features/history_screen/presentation/widgets/custom_row_info.dart';
-import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/Gk_container.dart';
+import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/def_goalScoreSheet.dart';
+import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/fwd_goalScoreSheet.dart';
+import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/goalScoreSheet.dart';
+import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/mid_goalScoreSheet.dart';
 import 'package:nololordos/features/import_export_screen/presentation/widgets/custom_buttons.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/custom_icon_buttons.dart';
 
@@ -33,12 +36,9 @@ class RoosterViewScreen extends StatelessWidget {
                   title: '+ Add Player',
                   icon: "",
                   onTap: () {
-                
                     //ref.read(playersProvider.notifier).addPlayer('NAmw');
 
-
-                   context.push(RouteName.addPlayerScreen);
-                   
+                    context.push(RouteName.addPlayerScreen);
                   },
                 );
               },
@@ -99,22 +99,23 @@ class RoosterViewScreen extends StatelessWidget {
                 children: [
                   //gk container
                   SizedBox(height: 24.h),
-                  GkContainer(),
-            
+                  Goalscoresheet(),
+
                   //def container
                   SizedBox(height: 24.h),
-            
+                  DefGoalscoresheet(),
                   //mid container
                   SizedBox(height: 24.h),
-            
+                  MidGoalscoresheet(),
                   //fwd container
+                  FwdGoalscoresheet(),
                   SizedBox(height: 24.h),
                 ],
               ),
             ),
           ),
 
-          SizedBox(height: 200.h,)
+          SizedBox(height: 200.h),
         ],
       ),
     );
