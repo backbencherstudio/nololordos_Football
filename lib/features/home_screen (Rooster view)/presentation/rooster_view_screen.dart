@@ -36,8 +36,6 @@ class RoosterViewScreen extends StatelessWidget {
                   title: '+ Add Player',
                   icon: "",
                   onTap: () {
-                    //ref.read(playersProvider.notifier).addPlayer('NAmw');
-
                     context.push(RouteName.addPlayerScreen);
                   },
                 );
@@ -100,13 +98,13 @@ class RoosterViewScreen extends StatelessWidget {
                   //gk container
                   SizedBox(height: 24.h),
                   Goalscoresheet(),
-
                   //def container
                   SizedBox(height: 24.h),
                   DefGoalscoresheet(),
                   //mid container
                   SizedBox(height: 24.h),
                   MidGoalscoresheet(),
+                  SizedBox(height: 24.h),
                   //fwd container
                   FwdGoalscoresheet(),
                   SizedBox(height: 24.h),

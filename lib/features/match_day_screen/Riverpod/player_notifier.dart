@@ -40,5 +40,31 @@ class PlayerListNotifier extends StateNotifier<List<PlayerData>> {
     updated[index].selectedScore = score;
     state = updated;
   }
+ void updateMatchName(int index, String matchName) {
+    final updated = [...state];
+    updated[index].matchName = matchName;
+    state = updated;
+  }
+
+  void updateTeams(int index, String teamOne, String teamTwo) {
+    final updated = [...state];
+    updated[index].teamOne = teamOne;
+    updated[index].teamTwo = teamTwo;
+    state = updated;
+  }
+
+  void updateTeamScores(int index, String teamOneScore, String teamTwoScore) {
+    final updated = [...state];
+    updated[index].teamOneScore = teamOneScore;
+    updated[index].teamTwoScore = teamTwoScore;
+    state = updated;
+  }
+
+  void updateDate(int index, String date) {
+    final updated = [...state];
+    updated[index].date = date;
+    state = updated;
+  }
+  
 }
 

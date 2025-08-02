@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
+import 'package:nololordos/features/Team_Selection_screen/Riverpod/selection_provider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/playerProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/customBox_tile.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/title.dart';
@@ -23,8 +24,20 @@ class Goalscoresheet extends StatelessWidget {
         children: [
           Consumer(
             builder: (context, ref, _) {
-             final allPlayers = ref.watch(playersProvider);
-    final players = allPlayers.where((p) => p['position'] == "Goalkeeper (GK)").toList();
+              final allPlayers = ref.watch(playersProvider);
+              final selectedTeam = ref.watch(selectionProvider);
+
+              //  Filter by team + position
+              final players = allPlayers
+                  .where(
+                    (p) =>
+                        p['position'] == "GK" ||
+                        p['position'] == "Goalkeeper (GK)",
+                  )
+                  .where(
+                    (p) => selectedTeam != null && p['team'] == selectedTeam,
+                  )
+                  .toList();
               return Column(
                 children: [
                   SizedBox(height: 11.h),
@@ -36,14 +49,11 @@ class Goalscoresheet extends StatelessWidget {
                   ...List.generate(players.length, (index) {
                     return Column(
                       children: [
-                        if(index==0)
-                        SizedBox(height: 2.h,),
+                        if (index == 0) SizedBox(height: 2.h),
                         SizedBox(
                           height: 50.h,
                           width: 144.w,
                           child: TextFormField(
-
-                            
                             readOnly: true, //etare false kora lagbo
 
                             initialValue: players[index]['name'],
@@ -72,60 +82,75 @@ class Goalscoresheet extends StatelessWidget {
                       Titles(title: "-AGL"),
                     ],
                   ),
-                 Consumer(
-  builder: (context, ref, _) {
-    final allPlayers = ref.watch(playersProvider);
-    final players = allPlayers.where((p) => p['position'] == "Goalkeeper (GK)").toList();
+                  Consumer(
+                    builder: (context, ref, _) {
+                      final allPlayers = ref.watch(playersProvider);
+                      final selectedTeam = ref.watch(selectionProvider);
 
-    return Column(
-      children: List.generate(players.length, (index) {
-        final player = players[index];
-        final globalIndex = allPlayers.indexOf(player); 
-        return Row(
-          children: [
-            CustomboxTile(
-              value: player['SR'] ?? '',
-              onChanged: (String value) {
-                ref.read(playersProvider.notifier).updatePlayer(globalIndex, 'SR', value);
-              },
-            ),
-            CustomboxTile(
-              value: player['GM'] ?? '',
-              onChanged: (String value) {
-                ref.read(playersProvider.notifier).updatePlayer(globalIndex, 'GM', value);
-              },
-            ),
-            CustomboxTile(
-              value: player['GL'] ?? '',
-              onChanged: (String value) {
-                ref.read(playersProvider.notifier).updatePlayer(globalIndex, 'GL', value);
-              },
-            ),
-            CustomboxTile(
-              value: player['AGL'] ?? '',
-              onChanged: (String value) {
-                ref.read(playersProvider.notifier).updatePlayer(globalIndex, 'AGL', value);
-              },
-            ),
-            CustomboxTile(
-              value: player['-GL'] ?? '',
-              onChanged: (String value) {
-                ref.read(playersProvider.notifier).updatePlayer(globalIndex, '-GL', value);
-              },
-            ),
-            CustomboxTile(
-              value: player['-AGL'] ?? '',
-              onChanged: (String value) {
-                ref.read(playersProvider.notifier).updatePlayer(globalIndex, '-AGL', value);
-              },
-            ),
-          ],
-        );
-      }),
-    );
-  },
-),
-
+                   final players = allPlayers
+    .where((p) => p['position'] == "GK" || p['position'] == "Goalkeeper (GK)")
+    .where((p) => selectedTeam != null && p['team'] == selectedTeam)
+    .toList();
+                      return Column(
+                        children: List.generate(players.length, (index) {
+                          final player = players[index];
+                          final globalIndex = allPlayers.indexOf(player);
+                          return Row(
+                            children: [
+                              CustomboxTile(
+                                value: player['SR'] ?? '',
+                                onChanged: (String value) {
+                                  ref
+                                      .read(playersProvider.notifier)
+                                      .updatePlayer(globalIndex, 'SR', value);
+                                },
+                              ),
+                              CustomboxTile(
+                                value: player['GM'] ?? '',
+                                onChanged: (String value) {
+                                  ref
+                                      .read(playersProvider.notifier)
+                                      .updatePlayer(globalIndex, 'GM', value);
+                                },
+                              ),
+                              CustomboxTile(
+                                value: player['GL'] ?? '',
+                                onChanged: (String value) {
+                                  ref
+                                      .read(playersProvider.notifier)
+                                      .updatePlayer(globalIndex, 'GL', value);
+                                },
+                              ),
+                              CustomboxTile(
+                                value: player['AGL'] ?? '',
+                                onChanged: (String value) {
+                                  ref
+                                      .read(playersProvider.notifier)
+                                      .updatePlayer(globalIndex, 'AGL', value);
+                                },
+                              ),
+                              CustomboxTile(
+                                value: player['-GL'] ?? '',
+                                onChanged: (String value) {
+                                  ref
+                                      .read(playersProvider.notifier)
+                                      .updatePlayer(globalIndex, '-GL', value);
+                                },
+                              ),
+                              CustomboxTile(
+                                value: player['-AGL'] ?? '',
+                                onChanged: (String value) {
+                                  ref
+                                      .read(playersProvider.notifier)
+                                      .updatePlayer(globalIndex, '-AGL', value);
+                                },
+                              ),
+                            ],
+                          );
+                        }),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

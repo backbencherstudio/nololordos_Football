@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
+import 'package:nololordos/features/Team_Selection_screen/Riverpod/selection_provider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/playerProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/customBox_tile.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/title.dart';
@@ -23,8 +24,14 @@ class FwdGoalscoresheet extends StatelessWidget {
         children: [
           Consumer(
             builder: (context, ref, _) {
-             final allPlayers = ref.watch(playersProvider);
-    final players = allPlayers.where((p) => p['position'] == "Forward (FWD)").toList();
+              final allPlayers = ref.watch(playersProvider);
+              final selectedTeam = ref.watch(selectionProvider);
+
+              //  Filter forwards by team
+              final players = allPlayers
+                  .where((p) => p['position'] == "FWD" || p['position'] == "Forward (FWD)")
+                  .where((p) => selectedTeam != null && p['team'] == selectedTeam)
+                  .toList();
               return Column(
                 children: [
                   SizedBox(height: 11.h),
@@ -74,9 +81,14 @@ class FwdGoalscoresheet extends StatelessWidget {
                   ),
                  Consumer(
   builder: (context, ref, _) {
-    final allPlayers = ref.watch(playersProvider);
-    final players = allPlayers.where((p) => p['position'] == "Forward (FWD)").toList();
+   final allPlayers = ref.watch(playersProvider);
+                      final selectedTeam = ref.watch(selectionProvider);
 
+                      // Filter forwards by team
+                      final players = allPlayers
+                          .where((p) => p['position'] == "FWD" || p['position'] == "Forward (FWD)")
+                          .where((p) => selectedTeam != null && p['team'] == selectedTeam)
+                          .toList();
     return Column(
       children: List.generate(players.length, (index) {
         final player = players[index];
