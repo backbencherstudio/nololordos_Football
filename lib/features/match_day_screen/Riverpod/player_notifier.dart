@@ -1,17 +1,23 @@
+// ignore_for_file: use_super_parameters
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nololordos/features/match_day_screen/Riverpod/player_state_model.dart';
-
-
+import 'package:nololordos/features/home_screen (Rooster view)/Riverpod/playerProvider.dart';
 
 final playerListProvider =
     StateNotifierProvider<PlayerListNotifier, List<PlayerData>>(
-        (ref) => PlayerListNotifier());
-        
-
-
+  (ref) {
+    final players = ref.read(playersProvider); 
+    final initialList = players
+        .map((p) => PlayerData(name: p['name'])) 
+        .toList();
+    return PlayerListNotifier(initialList);
+  },
+);
 
 class PlayerListNotifier extends StateNotifier<List<PlayerData>> {
-  PlayerListNotifier() : super([]);
+  PlayerListNotifier(List<PlayerData> initialPlayers)
+      : super(initialPlayers); 
 
   void addPlayer() {
     state = [...state, PlayerData()];
@@ -40,7 +46,8 @@ class PlayerListNotifier extends StateNotifier<List<PlayerData>> {
     updated[index].selectedScore = score;
     state = updated;
   }
- void updateMatchName(int index, String matchName) {
+
+  void updateMatchName(int index, String matchName) {
     final updated = [...state];
     updated[index].matchName = matchName;
     state = updated;
@@ -65,6 +72,4 @@ class PlayerListNotifier extends StateNotifier<List<PlayerData>> {
     updated[index].date = date;
     state = updated;
   }
-  
 }
-

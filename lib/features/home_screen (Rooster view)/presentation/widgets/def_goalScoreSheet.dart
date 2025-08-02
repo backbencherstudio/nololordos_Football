@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,7 +29,7 @@ class DefGoalscoresheet extends StatelessWidget {
             final allPlayers = ref.watch(playersProvider);
               final selectedTeam = ref.watch(selectionProvider);
 
-              // ✅ Filter Defenders by team
+              // Filter Defenders by team
               final players = allPlayers
                   .where((p) => p['position'] == "DEF" || p['position'] == "Defender (DEF)")
                   .where((p) => selectedTeam != null && p['team'] == selectedTeam)
@@ -84,7 +86,7 @@ class DefGoalscoresheet extends StatelessWidget {
    final allPlayers = ref.watch(playersProvider);
                       final selectedTeam = ref.watch(selectionProvider);
 
-                      // ✅ Filter Defenders by team
+                      // Filter Defenders by team
                       final players = allPlayers
                           .where((p) => p['position'] == "DEF" || p['position'] == "Defender (DEF)")
                           .where((p) => selectedTeam != null && p['team'] == selectedTeam)

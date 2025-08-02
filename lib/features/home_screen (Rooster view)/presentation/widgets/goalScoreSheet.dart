@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,7 +43,12 @@ class Goalscoresheet extends StatelessWidget {
               return Column(
                 children: [
                   SizedBox(height: 11.h),
-                  Text("GK", style: style.bodyLarge!.copyWith()),
+                  Row(
+                    children: [
+                      //Checkbox(value: true, onChanged: (v){}),
+                      Text("GK", style: style.bodyLarge!.copyWith()),
+                    ],
+                  ),
                   SizedBox(height: 15.h),
                   Container(width: 144.w, height: 1.h, color: Colors.white),
                   SizedBox(height: 2.h),
@@ -87,10 +94,18 @@ class Goalscoresheet extends StatelessWidget {
                       final allPlayers = ref.watch(playersProvider);
                       final selectedTeam = ref.watch(selectionProvider);
 
-                   final players = allPlayers
-    .where((p) => p['position'] == "GK" || p['position'] == "Goalkeeper (GK)")
-    .where((p) => selectedTeam != null && p['team'] == selectedTeam)
-    .toList();
+                      final players = allPlayers
+                          .where(
+                            (p) =>
+                                p['position'] == "GK" ||
+                                p['position'] == "Goalkeeper (GK)",
+                          )
+                          .where(
+                            (p) =>
+                                selectedTeam != null &&
+                                p['team'] == selectedTeam,
+                          )
+                          .toList();
                       return Column(
                         children: List.generate(players.length, (index) {
                           final player = players[index];
