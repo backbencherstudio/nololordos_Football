@@ -62,7 +62,7 @@ class RoosterViewScreen extends StatelessWidget {
 
                       onTap: () {
                         // Handle delete logic
-                        print("Deleted");
+                        debugPrint("Deleted");
                       },
                     ),
                   ],

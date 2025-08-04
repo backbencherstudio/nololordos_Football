@@ -42,8 +42,16 @@ class DefGoalscoresheet extends StatelessWidget {
                        Row(
                     children: [
                       if(isDeleteOn==true)...[
-                      Checkbox(value: true, onChanged: (v){}),// gol kora lagbo
-                      ],
+Transform.scale(
+                        scale: 1.1,
+                        child: Checkbox(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100), // Circle shape
+                          ),
+                        checkColor: Colors.white, // Color of the check icon
+                          fillColor: MaterialStateProperty.all(AppColors.redColor), // Red when checked
+                          value: true, onChanged: (v){}),
+                      ),                      ],
                   Text("DEF", style: style.bodyLarge!.copyWith()),
                     ],
                   ),
@@ -60,8 +68,16 @@ class DefGoalscoresheet extends StatelessWidget {
                            if (index == 0) SizedBox(height: 2.h),
 
                        if(isDeleteOn==true)...[
-                      Checkbox(value: true, onChanged: (v){}),// gol kora lagbo
-                      ],
+Transform.scale(
+                        scale: 1.1,
+                        child: Checkbox(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100), // Circle shape
+                          ),
+                        checkColor: Colors.white, // Color of the check icon
+                          fillColor: MaterialStateProperty.all(AppColors.redColor), // Red when checked
+                          value: true, onChanged: (v){}),
+                      ),                      ],
                         SizedBox(
                           height: 50.h,
                           width: 144.w,

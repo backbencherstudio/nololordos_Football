@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison, deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -47,7 +47,16 @@ class Goalscoresheet extends StatelessWidget {
                   Row(
                     children: [
                       if(isDeleteOn==true)...[
-                      Checkbox(value: true, onChanged: (v){}),// gol kora lagbo
+                      Transform.scale(
+                        scale: 1.1,
+                        child: Checkbox(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100), // Circle shape
+                          ),
+                        checkColor: Colors.white, // Color of the check icon
+                          fillColor: MaterialStateProperty.all(AppColors.redColor), // Red when checked
+                          value: true, onChanged: (v){}),
+                      ),
                       ],
                       Text("GK", style: style.bodyLarge!.copyWith()),
                     ],
@@ -64,7 +73,16 @@ class Goalscoresheet extends StatelessWidget {
                            if (index == 0) SizedBox(height: 2.h),
 
                        if(isDeleteOn==true)...[
-                      Checkbox(value: true, onChanged: (v){}),// gol kora lagbo
+                     Transform.scale(
+                        scale: 1.1,
+                        child: Checkbox(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100), // Circle shape
+                          ),
+                        checkColor: Colors.white, // Color of the check icon
+                          fillColor: MaterialStateProperty.all(AppColors.redColor), // Red when checked
+                          value: true, onChanged: (v){}),
+                      ),
                       ],
 
 
