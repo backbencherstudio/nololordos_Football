@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
 import 'package:nololordos/features/Team_Selection_screen/Riverpod/selection_provider.dart';
+import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/checkboxProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/isDeleteProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/playerProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/customBox_tile.dart';
@@ -25,77 +26,110 @@ class MidGoalscoresheet extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Consumer(
-            builder: (context, ref, _) {
-              final allPlayers = ref.watch(playersProvider);
-              final selectedTeam = ref.watch(selectionProvider);
-              final isDeleteOn = ref.watch(isDeleteProvider);
+         Consumer(
+  builder: (context, ref, _) {
+    final allPlayers = ref.watch(playersProvider);
+    final selectedTeam = ref.watch(selectionProvider);
+    final isDeleteOn = ref.watch(isDeleteProvider);
+    final selectAllMID = ref.watch(selectAllMIDProvider); // Track "select all" state for MID
+    final selectedPlayers = ref.watch(selectedPlayersProvider); // Track individual selected players
 
-              //  Filter by position + selected team
-              final players = allPlayers
-                  .where((p) => p['position'] == "MID" || p['position'] == "Midfielder (MID)")
-                  .where((p) => selectedTeam != null && p['team'] == selectedTeam)
-                  .toList();
-              return Column(
-                children: [
-                  SizedBox(height: 11.h),
-                    Row(
-                    children: [
-                      if(isDeleteOn==true)...[
-Transform.scale(
-                        scale: 1.1,
-                        child: Checkbox(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(100), // Circle shape
-                          ),
-                        checkColor: Colors.white, // Color of the check icon
-                          fillColor: MaterialStateProperty.all(AppColors.redColor), // Red when checked
-                          value: true, onChanged: (v){}),
-                      ),                      ],
-                  Text("MID", style: style.bodyLarge!.copyWith()),
-                    ],
+    // Filter midfielders by team
+    final players = allPlayers
+        .where((p) => p['position'] == "MID" || p['position'] == "Midfielder (MID)")
+        .where((p) => selectedTeam != null && p['team'] == selectedTeam)
+        .toList();
+
+    return Column(
+      children: [
+        SizedBox(height: 11.h),
+        Row(
+          children: [
+            if (isDeleteOn) ...[
+              Transform.scale(
+                scale: 1.1,
+                child: Checkbox(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(100), // Circle shape
                   ),
-                  SizedBox(height:isDeleteOn == true? 2.5.h : 15.h),//15
-                  Container(width:isDeleteOn?180.w :144.w, height: 1.h, color: Colors.white),
-                  SizedBox(height:isDeleteOn?2.h: 4.h),
+                  checkColor: Colors.white, // Color of the check icon
+                  fillColor: MaterialStateProperty.all(selectAllMID ? AppColors.redColor : Colors.transparent), // Red when checked
+                  value: selectAllMID, // "Select all" checkbox state for MID
+                  onChanged: (bool? value) {
+                    ref.read(selectAllMIDProvider.notifier).state = value ?? false;
+                    // Select/deselect all players based on "select all" checkbox
+                    if (value ?? false) {
+                      ref.read(selectedPlayersProvider.notifier).state =
+                          List.generate(players.length, (index) => index); // Select all MID players
+                    } else {
+                      ref.read(selectedPlayersProvider.notifier).state = []; // Deselect all MID players
+                    }
+                  },
+                ),
+              ),
+            ],
+            Text("MID", style: style.bodyLarge!.copyWith()),
+          ],
+        ),
+        SizedBox(height: isDeleteOn ? 2.5.h : 15.h),
+        Container(width: isDeleteOn ? 180.w : 144.w, height: 1.h, color: Colors.white),
+        SizedBox(height: isDeleteOn ? 2.h : 4.h),
 
-                  ...List.generate(players.length, (index) {
-                    return Column(
-                      children: [
-                           Row(
-                        children: [
-                           if (index == 0) SizedBox(height: 2.h),
-
-                       if(isDeleteOn==true)...[
-Transform.scale(
-                        scale: 1.1,
-                        child: Checkbox(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(100), // Circle shape
-                          ),
-                        checkColor: Colors.white, // Color of the check icon
-                          fillColor: MaterialStateProperty.all(AppColors.redColor), // Red when checked
-                          value: true, onChanged: (v){}),
-                      ),                      ],
-                        SizedBox(
-                          height: 50.h,
-                          width: 144.w,
-                          child: TextFormField(
-                            readOnly: true, //etare false kora lagbo
-
-                            initialValue: players[index]['name'],
-                            decoration: customInputDecoration(),
-                          ),
+        // Render midfielders with checkboxes
+        ...List.generate(players.length, (index) {
+          final player = players[index];
+          return Column(
+            children: [
+              Row(
+                children: [
+                  if (isDeleteOn) ...[
+                    Transform.scale(
+                      scale: 1.1,
+                      child: Checkbox(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100),
                         ),
-                        ],
-                       )
-                      ],
-                    );
-                  }),
+                        checkColor: Colors.white,
+                        fillColor: MaterialStateProperty.all(selectedPlayers.contains(index) ? AppColors.redColor : Colors.transparent),
+                        value: selectedPlayers.contains(index), // Individual checkbox state for midfielders
+                        onChanged: (bool? value) {
+                          final selected = [...selectedPlayers];
+                          if (value ?? false) {
+                            selected.add(index); // Select midfielder
+                          } else {
+                            selected.remove(index); // Deselect midfielder
+                          }
+                          ref.read(selectedPlayersProvider.notifier).state = selected;
+
+                          // If all midfielders are selected, update "select all" checkbox state
+                          if (selected.length == players.length) {
+                            ref.read(selectAllMIDProvider.notifier).state = true;
+                          } else {
+                            ref.read(selectAllMIDProvider.notifier).state = false;
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                  SizedBox(
+                    height: 50.h,
+                    width: 144.w,
+                    child: TextFormField(
+                      readOnly: true, // Make the text field read-only
+                      initialValue: player['name'],
+                      decoration: customInputDecoration(),
+                    ),
+                  ),
                 ],
-              );
-            },
-          ),
+              ),
+            ],
+          );
+        }),
+      ],
+    );
+  },
+),
+
           Expanded(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -111,65 +145,65 @@ Transform.scale(
                       Titles(title: "-AGL"),
                     ],
                   ),
-                 Consumer(
-  builder: (context, ref, _) {
-   final allPlayers = ref.watch(playersProvider);
+                  Consumer(
+                    builder: (context, ref, _) {
+                      final allPlayers = ref.watch(playersProvider);
                       final selectedTeam = ref.watch(selectionProvider);
 
-                      // Filter by position + selected team
+                      // Filter midfielders by team
                       final players = allPlayers
                           .where((p) => p['position'] == "MID" || p['position'] == "Midfielder (MID)")
                           .where((p) => selectedTeam != null && p['team'] == selectedTeam)
                           .toList();
-    return Column(
-      children: List.generate(players.length, (index) {
-        final player = players[index];
-        final globalIndex = allPlayers.indexOf(player); 
-        return Row(
-          children: [
-            CustomboxTile(
-              value: player['SR'] ?? '',
-              onChanged: (String value) {
-                ref.read(playersProvider.notifier).updatePlayer(globalIndex, 'SR', value);
-              },
-            ),
-            CustomboxTile(
-              value: player['GM'] ?? '',
-              onChanged: (String value) {
-                ref.read(playersProvider.notifier).updatePlayer(globalIndex, 'GM', value);
-              },
-            ),
-            CustomboxTile(
-              value: player['GL'] ?? '',
-              onChanged: (String value) {
-                ref.read(playersProvider.notifier).updatePlayer(globalIndex, 'GL', value);
-              },
-            ),
-            CustomboxTile(
-              value: player['AGL'] ?? '',
-              onChanged: (String value) {
-                ref.read(playersProvider.notifier).updatePlayer(globalIndex, 'AGL', value);
-              },
-            ),
-            CustomboxTile(
-              value: player['-GL'] ?? '',
-              onChanged: (String value) {
-                ref.read(playersProvider.notifier).updatePlayer(globalIndex, '-GL', value);
-              },
-            ),
-            CustomboxTile(
-              value: player['-AGL'] ?? '',
-              onChanged: (String value) {
-                ref.read(playersProvider.notifier).updatePlayer(globalIndex, '-AGL', value);
-              },
-            ),
-          ],
-        );
-      }),
-    );
-  },
-),
 
+                      return Column(
+                        children: List.generate(players.length, (index) {
+                          final player = players[index];
+                          final globalIndex = allPlayers.indexOf(player);
+                          return Row(
+                            children: [
+                              CustomboxTile(
+                                value: player['SR'] ?? '',
+                                onChanged: (String value) {
+                                  ref.read(playersProvider.notifier).updatePlayer(globalIndex, 'SR', value);
+                                },
+                              ),
+                              CustomboxTile(
+                                value: player['GM'] ?? '',
+                                onChanged: (String value) {
+                                  ref.read(playersProvider.notifier).updatePlayer(globalIndex, 'GM', value);
+                                },
+                              ),
+                              CustomboxTile(
+                                value: player['GL'] ?? '',
+                                onChanged: (String value) {
+                                  ref.read(playersProvider.notifier).updatePlayer(globalIndex, 'GL', value);
+                                },
+                              ),
+                              CustomboxTile(
+                                value: player['AGL'] ?? '',
+                                onChanged: (String value) {
+                                  ref.read(playersProvider.notifier).updatePlayer(globalIndex, 'AGL', value);
+                                },
+                              ),
+                              CustomboxTile(
+                                value: player['-GL'] ?? '',
+                                onChanged: (String value) {
+                                  ref.read(playersProvider.notifier).updatePlayer(globalIndex, '-GL', value);
+                                },
+                              ),
+                              CustomboxTile(
+                                value: player['-AGL'] ?? '',
+                                onChanged: (String value) {
+                                  ref.read(playersProvider.notifier).updatePlayer(globalIndex, '-AGL', value);
+                                },
+                              ),
+                            ],
+                          );
+                        }),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
