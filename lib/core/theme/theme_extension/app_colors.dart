@@ -32,4 +32,6 @@ class AppColors {
   static const Color subTextColor = Color(0xff1A9882);
   static const Color containerTextColor = Color(0xffD2D2D5);
   static const Color columnHeadre = Color(0xff1E2943);
+  static const Color resetbuttonColor = Color(0xff222539);
+  static const Color redColor = Color(0xffFF4C4F);
 }

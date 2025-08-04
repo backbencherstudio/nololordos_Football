@@ -8,6 +8,8 @@ class CustomButtons extends StatelessWidget {
   final String? icon;
   final double? hieght;
   final Color? color;
+  final Color? borderColor;
+  final Color? textColor;
   final void Function()? onTap;
   const CustomButtons({super.key,
   required this.title,
@@ -15,6 +17,8 @@ class CustomButtons extends StatelessWidget {
   required this.onTap,
   this.hieght,
   this.color,
+  this.borderColor,
+  this.textColor,
   });
 
   @override
@@ -26,6 +30,7 @@ class CustomButtons extends StatelessWidget {
       child: Container(
         height:hieght?? 75.h,
         decoration: BoxDecoration(
+          border: Border.all(color: borderColor??AppColors.secondary),
           borderRadius: BorderRadius.circular(90.r),
           color: color?? AppColors.secondary,
         ),
@@ -38,7 +43,7 @@ class CustomButtons extends StatelessWidget {
             SizedBox(width: 10.w),
             Text(
               title,
-              style: style.titleSmall!.copyWith(fontWeight: FontWeight.w500),
+              style: style.titleSmall!.copyWith(fontWeight: FontWeight.w500, color:textColor?? AppColors.onPrimary),
             ),
           ],
         ),

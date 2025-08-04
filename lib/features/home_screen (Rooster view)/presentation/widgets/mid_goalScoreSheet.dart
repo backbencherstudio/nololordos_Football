@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
 import 'package:nololordos/features/Team_Selection_screen/Riverpod/selection_provider.dart';
+import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/isDeleteProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/playerProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/customBox_tile.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/title.dart';
@@ -26,8 +27,9 @@ class MidGoalscoresheet extends StatelessWidget {
         children: [
           Consumer(
             builder: (context, ref, _) {
-             final allPlayers = ref.watch(playersProvider);
+              final allPlayers = ref.watch(playersProvider);
               final selectedTeam = ref.watch(selectionProvider);
+              final isDeleteOn = ref.watch(isDeleteProvider);
 
               //  Filter by position + selected team
               final players = allPlayers
@@ -37,28 +39,40 @@ class MidGoalscoresheet extends StatelessWidget {
               return Column(
                 children: [
                   SizedBox(height: 11.h),
+                    Row(
+                    children: [
+                      if(isDeleteOn==true)...[
+                      Checkbox(value: true, onChanged: (v){}),// gol kora lagbo
+                      ],
                   Text("MID", style: style.bodyLarge!.copyWith()),
-                  SizedBox(height: 15.h),
-                  Container(width: 144.w, height: 1.h, color: Colors.white),
-                  SizedBox(height: 2.h),
+                    ],
+                  ),
+                  SizedBox(height:isDeleteOn == true? 2.5.h : 15.h),//15
+                  Container(width:isDeleteOn?180.w :144.w, height: 1.h, color: Colors.white),
+                  SizedBox(height:isDeleteOn?2.h: 4.h),
 
                   ...List.generate(players.length, (index) {
                     return Column(
                       children: [
-                        if(index==0)
-                        SizedBox(height: 2.h,),
+                           Row(
+                        children: [
+                           if (index == 0) SizedBox(height: 2.h),
+
+                       if(isDeleteOn==true)...[
+                      Checkbox(value: true, onChanged: (v){}),// gol kora lagbo
+                      ],
                         SizedBox(
                           height: 50.h,
                           width: 144.w,
                           child: TextFormField(
-
-                            
                             readOnly: true, //etare false kora lagbo
 
                             initialValue: players[index]['name'],
                             decoration: customInputDecoration(),
                           ),
                         ),
+                        ],
+                       )
                       ],
                     );
                   }),

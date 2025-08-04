@@ -8,7 +8,9 @@ class PlayerData {
   String? teamTwo;
   String? teamOneScore;
   String? teamTwoScore;
-  String? date ;
+  String? date;
+  String ?team;
+  String ?position;
   PlayerData({
     this.name = "",
     this.goals = 0,
@@ -19,6 +21,6 @@ class PlayerData {
     this.teamTwo,
     this.teamOneScore,
     this.teamTwoScore,
-    this.date
+    this.date, this.team, this. position,
   });
 }
