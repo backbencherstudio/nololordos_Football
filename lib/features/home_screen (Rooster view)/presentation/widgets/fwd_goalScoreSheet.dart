@@ -27,6 +27,22 @@ class FwdGoalscoresheet extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
        Consumer(
   builder: (context, ref, _) {
     final allPlayers = ref.watch(playersProvider);
@@ -130,6 +146,20 @@ class FwdGoalscoresheet extends StatelessWidget {
     );
   },
 ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
           Expanded(
             child: SingleChildScrollView(

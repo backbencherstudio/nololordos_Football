@@ -26,6 +26,17 @@ class MidGoalscoresheet extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
+
+
+
+
+
+
+
+
+
+
          Consumer(
   builder: (context, ref, _) {
     final allPlayers = ref.watch(playersProvider);
