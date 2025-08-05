@@ -68,6 +68,9 @@ class Goalscoresheet extends StatelessWidget {
                     if (value ?? false) {
                       ref.read(selectedGKPlayersProvider.notifier).state =
                           List.generate(players.length, (index) => index); // Select all GK players
+                      ref.read(deletePlayerIdListProvider.notifier).state = List.generate(players.length, (index) => players[index]['id']);
+                      debugPrint("\n\n Delete player ${ref.read(deletePlayerIdListProvider)}");
+
                     } else {
                       ref.read(selectedGKPlayersProvider.notifier).state = []; // Deselect all GK players
                     }
@@ -104,8 +107,15 @@ class Goalscoresheet extends StatelessWidget {
                           final selected = [...selectedGKPlayers];
                           if (value ?? false) {
                             selected.add(index); // Select goalkeeper
+                            debugPrint("\n \n GK players $selected");
+                            ref.read(deletePlayerIdListProvider.notifier).state =
+                                selected.map((i) => players[i]['id'] as String).toList();
+                            debugPrint("\n\n Delete player ${ref.read(deletePlayerIdListProvider)}");
                           } else {
                             selected.remove(index); // Deselect goalkeeper
+                            ref.read(deletePlayerIdListProvider.notifier).state = List.generate(players.length, (index) => players[index]['id']);
+
+                            debugPrint("\n\n Delete player ${ref.read(deletePlayerIdListProvider)}");
                           }
                           ref.read(selectedGKPlayersProvider.notifier).state = selected;
 

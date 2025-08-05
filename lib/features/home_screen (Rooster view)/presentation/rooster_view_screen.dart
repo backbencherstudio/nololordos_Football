@@ -10,6 +10,7 @@ import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
 import 'package:nololordos/features/Team_Selection_screen/Riverpod/selection_provider.dart';
 import 'package:nololordos/features/history_screen/presentation/widgets/custom_row_info.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/isDeleteProvider.dart';
+import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/playerProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/def_goalScoreSheet.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/fwd_goalScoreSheet.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/goalScoreSheet.dart';
@@ -17,67 +18,68 @@ import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/
 import 'package:nololordos/features/import_export_screen/presentation/widgets/custom_buttons.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/custom_icon_buttons.dart';
 
+import '../Riverpod/checkboxProvider.dart';
+
 class RoosterViewScreen extends StatelessWidget {
   const RoosterViewScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 100.h),
-        child: 
-        
-        Align(
+        child: Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
             padding: AppPadding.screenHorizontal,
             child: Consumer(
               builder: (context, ref, _) {
-
                 final isDeletOn = ref.watch(isDeleteProvider);
-                return isDeletOn? Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CustomButtons(
-                      hieght: 60.h,
-                      title: 'Reset Stats',
-                      color: AppColors.resetbuttonColor,
-                      icon: "",
-                      onTap: () {
+                return isDeletOn
+                    ? Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CustomButtons(
+                            hieght: 60.h,
+                            title: 'Reset Stats',
+                            color: AppColors.resetbuttonColor,
+                            icon: "",
+                            onTap: () {
+                              // reset button logic goes here
+                            },
+                          ),
+                          SizedBox(height: 16.h),
+                          CustomButtons(
+                            hieght: 60.h,
+                            title: 'Delete Player',
+                            color: AppColors.redColor.withValues(alpha: 0.1),
+                            borderColor: AppColors.redColor,
+                            textColor: AppColors.onError,
+                            icon: "",
 
-                      // reset button logic goes here
+                            onTap: () {
+                              // Handle delete logic
+                              final deleteIds = ref.read(deletePlayerIdListProvider);
+                              ref.read(playersProvider.notifier).deletePlayersByIds(deleteIds);
 
+                              ref.read(isDeleteProvider.notifier).state = false;
+                              ref.read(deletePlayerIdListProvider.notifier).state = [];
+                              ref.read(selectedGKPlayersProvider.notifier).state = [];
 
-                      },
-                    ),
-                    SizedBox(height: 16.h),
-                    CustomButtons(
-                      hieght: 60.h,
-                      title: 'Delete Player',
-                      color: AppColors.redColor.withValues(alpha: 0.1),
-                      borderColor: AppColors.redColor,
-                      textColor: AppColors.onError,
-                      icon: "",
-
-                      onTap: () {
-                        // Handle delete logic
-                        debugPrint("Deleted");
-                      },
-                    ),
-                  ],
-                )
-                
-                
-:                 CustomButtons(
-                  hieght: 60.h,
-                  color: AppColors.buttonAvtiveColor,
-                  title: '+ Add Player',
-                  icon: "",
-                  onTap: () {
-                    context.push(RouteName.addPlayerScreen);
-                  },
-                );
+                              debugPrint("Deleted");
+                            },
+                          ),
+                        ],
+                      )
+                    : CustomButtons(
+                        hieght: 60.h,
+                        color: AppColors.buttonAvtiveColor,
+                        title: '+ Add Player',
+                        icon: "",
+                        onTap: () {
+                          context.push(RouteName.addPlayerScreen);
+                        },
+                      );
               },
             ),
           ),
@@ -86,8 +88,7 @@ class RoosterViewScreen extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
       body: Consumer(
-        builder: (context, ref,_) {
-
+        builder: (context, ref, _) {
           return Column(
             children: [
               SizedBox(height: 55.h),
@@ -101,12 +102,16 @@ class RoosterViewScreen extends StatelessWidget {
                       width: 200.w,
                       height: 38.h,
                     ),
-          
-                    CustomIconButtons(onTap: () {}, icon: AppIcons.pencilIcon),
-                    CustomIconButtons(onTap: () {
-                      ref.read(isDeleteProvider.notifier).update((state)=>!state);//toggle koraitse
 
-                    }, icon: AppIcons.trashIcon),
+                    CustomIconButtons(onTap: () {}, icon: AppIcons.pencilIcon),
+                    CustomIconButtons(
+                      onTap: () {
+                        ref
+                            .read(isDeleteProvider.notifier)
+                            .update((state) => !state); //toggle koraitse
+                      },
+                      icon: AppIcons.trashIcon,
+                    ),
                   ],
                 ),
               ),
@@ -115,7 +120,9 @@ class RoosterViewScreen extends StatelessWidget {
                 builder: (context, ref, _) {
                   final teamName = ref.watch(selectionProvider);
                   return Container(
-                    decoration: BoxDecoration(color: AppColors.primaryContainer),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryContainer,
+                    ),
                     child: Padding(
                       padding: EdgeInsets.symmetric(
                         horizontal: 24.w,
@@ -157,11 +164,11 @@ class RoosterViewScreen extends StatelessWidget {
                   ),
                 ),
               ),
-          
+
               SizedBox(height: 200.h),
             ],
           );
-        }
+        },
       ),
     );
   }

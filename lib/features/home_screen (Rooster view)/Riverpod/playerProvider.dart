@@ -100,7 +100,7 @@ class PlayersNotifier extends StateNotifier<List<Map<String, dynamic>>> {
       'team': team,
       'position': position,
       'name': name,
-      'id': id, // Custom ID passed for each player
+      'id': id, 
       'SR': '',
       'GM': '',
       'GL': '',
@@ -125,8 +125,10 @@ class PlayersNotifier extends StateNotifier<List<Map<String, dynamic>>> {
   }
 
   // Delete players based on position and id
-  void deletePlayerByPositionAndId(String id) {
-    state = [...state.where((player) => player['id'] != id)];
+  void deletePlayersByIds(List<String> ids) {
+    state = state.where((player) {
+      return !ids.contains(player['id']);
+    }).toList();
   }
 }
 
