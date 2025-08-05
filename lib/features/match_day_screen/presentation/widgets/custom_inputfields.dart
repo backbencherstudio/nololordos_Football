@@ -6,17 +6,51 @@ import 'package:go_router/go_router.dart';
 import 'package:nololordos/core/constant/icons.dart';
 import 'package:nololordos/core/routes/route_name.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
-import 'package:nololordos/features/Team_Selection_screen/Riverpod/selection_provider.dart';
+//import 'package:nololordos/features/Team_Selection_screen/Riverpod/selection_provider.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/custom_icon_buttons.dart';
 
 class CustomInputfields extends StatefulWidget {
-  const CustomInputfields({super.key});
+  final TextEditingController matchName;
+  final TextEditingController teamOne;
+  final TextEditingController teamTwo;
+  final TextEditingController scoreOne;
+  final TextEditingController scoreTwo;
+  final TextEditingController? date;
+
+  const CustomInputfields({super.key,
+  required this.matchName,
+  required this.teamOne,
+  required this.teamTwo,
+  required this.scoreOne,
+  required this.scoreTwo,
+  this.date
+  
+  });
+
 
   @override
   State<CustomInputfields> createState() => _CustomInputfieldsState();
 }
 
 class _CustomInputfieldsState extends State<CustomInputfields> {
+  late TextEditingController matchName;
+  late TextEditingController teamOne;
+  late TextEditingController teamTwo;
+  late TextEditingController scoreOne;
+  late TextEditingController scoreTwo;
+  TextEditingController? date;
+
+  @override
+  void initState() {
+    super.initState();
+
+    matchName = widget.matchName;
+    teamOne = widget.teamOne;
+    teamTwo = widget.teamTwo;
+    scoreOne = widget.scoreOne;
+    scoreTwo = widget.scoreTwo;
+    date = widget.date;
+  }
   @override
   Widget build(BuildContext context) {
     final style = Theme.of(context).textTheme;
@@ -50,7 +84,8 @@ class _CustomInputfieldsState extends State<CustomInputfields> {
        
         SizedBox(height: 8.h),
 
-        TextFormField(),
+        TextFormField(controller: matchName,),
+
 
         SizedBox(height: 19.h),
 
@@ -60,7 +95,7 @@ class _CustomInputfieldsState extends State<CustomInputfields> {
             Expanded(
               child: Consumer(
                 builder: (context, ref, _) {
-                  final teamName = ref.watch(selectionProvider);
+                  //final teamName = ref.watch(selectionProvider);
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -75,8 +110,7 @@ class _CustomInputfieldsState extends State<CustomInputfields> {
                       ),
                       SizedBox(height: 8.h),
                       TextFormField(
-                        enabled: false,
-                        initialValue: teamName,
+controller: teamOne,
                       ),
                     ],
                   );
@@ -108,7 +142,7 @@ class _CustomInputfieldsState extends State<CustomInputfields> {
                     ),
                   ),
                   SizedBox(height: 8.h),
-                  TextFormField(),
+                  TextFormField(controller: teamTwo,),
                 ],
               ),
             ),
@@ -134,7 +168,7 @@ class _CustomInputfieldsState extends State<CustomInputfields> {
                     ),
                   ),
                   SizedBox(height: 8.h),
-                  TextFormField(),
+                  TextFormField(controller: scoreOne,),
                 ],
               ),
             ),
@@ -163,7 +197,7 @@ class _CustomInputfieldsState extends State<CustomInputfields> {
                     ),
                   ),
                   SizedBox(height: 8.h),
-                  TextFormField(),
+                  TextFormField(controller: scoreTwo,),
                 ],
               ),
             ),
@@ -178,6 +212,7 @@ class _CustomInputfieldsState extends State<CustomInputfields> {
         SizedBox(height: 8.h),
 
         TextFormField(
+          controller: date,
         decoration: InputDecoration(
           suffixIcon:Padding(
             padding: const EdgeInsets.all(14.0),

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import '../../utils/utils.dart';
+// import '../../utils/utils.dart';
 import 'api_endpoints.dart';
 
 class ApiServices {
@@ -20,31 +20,31 @@ class ApiServices {
   }
 
   /// http Post request service
-  Future<dynamic> postData({
-    required String endPoint,
-    required Map<String, dynamic> body,
-    required Map<String, String> headers,
-  }) async {
-    try {
-      final isOnline = await Utils.isOnline();
-      if (isOnline) {
-        final response = await http.post(
-          Uri.parse('${ApiEndPoints.baseUrl}/$endPoint'),
-          headers: headers,
-          body: jsonEncode(body),
-        );
-        return _handleResponse(response);
-      } else {
-        Utils.showErrorToast(
-          message: "Device is Offline, Please connect to internet.",
-        );
-        throw Exception('Device is Offline, Please connect to internet.');
-      }
-    } catch (e) {
-      Utils.showErrorToast(message: "Failed to send data.");
-      throw Exception("Failed to send data: $e");
-    }
-  }
+  // Future<dynamic> postData({
+  //   required String endPoint,
+  //   required Map<String, dynamic> body,
+  //   required Map<String, String> headers,
+  // }) async {
+  //   try {
+  //     final isOnline = await Utils.isOnline();
+  //     if (isOnline) {
+  //       final response = await http.post(
+  //         Uri.parse('${ApiEndPoints.baseUrl}/$endPoint'),
+  //         headers: headers,
+  //         body: jsonEncode(body),
+  //       );
+  //       return _handleResponse(response);
+  //     } else {
+  //       Utils.showErrorToast(
+  //         message: "Device is Offline, Please connect to internet.",
+  //       );
+  //       throw Exception('Device is Offline, Please connect to internet.');
+  //     }
+  //   } catch (e) {
+  //     Utils.showErrorToast(message: "Failed to send data.");
+  //     throw Exception("Failed to send data: $e");
+  //   }
+  // }
 
   /// http get request service
   Future<dynamic> getData({

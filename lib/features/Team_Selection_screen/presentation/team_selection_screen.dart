@@ -48,6 +48,9 @@ class TeamSelectionScreen extends StatelessWidget {
                           onTap: () {
                             ref.read(selectionProvider.notifier).state =
                                 'AEK Athens';
+
+                                  debugPrint("Team set to: AEK Athens");
+
                           },
                           isSelected: isSelected == "AEK Athens",
                         ),
@@ -57,13 +60,23 @@ class TeamSelectionScreen extends StatelessWidget {
                           title: 'Panathinaikos',
                           logo: AppImages.teamoenetik,
                           onTap: () {
+
                             ref.read(selectionProvider.notifier).state =
                                 "Panathinaikos";
+
+
+                                                                         debugPrint("Team set to: AEK Athens");
+
                           },
+
                           isSelected: isSelected == "Panathinaikos",
                         ),
                         Spacer(),
                         CustomButton(title: 'Next', onTap: () {
+                              final team = ref.read(selectionProvider);
+
+                                                            debugPrint("$team");
+
                           context.go(RouteName.roosterViewScreen);
                         }),
                         SizedBox(height: 25.h),

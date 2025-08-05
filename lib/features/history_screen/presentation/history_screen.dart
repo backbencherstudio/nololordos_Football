@@ -7,6 +7,7 @@ import 'package:nololordos/core/constant/padding.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
 import 'package:nololordos/features/history_screen/Riverpod/date_time_provider.dart';
 import 'package:nololordos/features/history_screen/presentation/widgets/custom_box_info.dart';
+import 'package:nololordos/features/match_day_screen/Riverpod/matchProvider.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/custom_icon_buttons.dart';
 
 class HistoryScreen extends ConsumerWidget {
@@ -71,7 +72,9 @@ class HistoryScreen extends ConsumerWidget {
                                       .copyWith(
                                         secondary: AppColors.buttonAvtiveColor,
                                       )
-                                      .copyWith(background: AppColors.primaryContainer),
+                                      .copyWith(
+                                        background: AppColors.primaryContainer,
+                                      ),
                             ),
                             child: child!,
                           );
@@ -88,16 +91,30 @@ class HistoryScreen extends ConsumerWidget {
                 ],
               ),
 
-              ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 20.h),
-                    child: CustomBoxInfo(),
+              
+              Consumer(
+                builder: (context, ref , _) {
+final data = ref.watch(matchHistoryProvider);
+
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: data.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: 20.h),
+                        child: CustomBoxInfo(
+                          matchName: data[index].matchName,
+                          scoreOne: data[index].teamOneScore,
+                          scoreTwo: data[index].teamTwoScore,
+                          teamOne:data[index].teamOne,
+                          teamTwo: data[index].teamTwo,
+                          date: data[index].date,
+                        ),
+                      );
+                    },
                   );
-                },
+                }
               ),
             ],
           ),
