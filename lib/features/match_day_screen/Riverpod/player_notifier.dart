@@ -1,3 +1,5 @@
+// ignore_for_file: use_super_parameters
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nololordos/features/match_day_screen/Riverpod/player_state_model.dart';
 import 'package:nololordos/features/home_screen (Rooster view)/Riverpod/playerProvider.dart';
@@ -35,13 +37,20 @@ class PlayerListNotifier extends StateNotifier<List<PlayerData>> {
 
   void incrementGoals(int index) {
     final updated = [...state];
+    if(updated[index].goals ==15){
+      updated[index].goals =-1;
+    }
     updated[index].goals++;
     state = updated;
   }
 
   void incrementOwnGoals(int index) {
     final updated = [...state];
+    if(updated[index].ownGoals == 15){
+      updated[index].ownGoals = -1;
+    }
     updated[index].ownGoals++;
+
     state = updated;
   }
 

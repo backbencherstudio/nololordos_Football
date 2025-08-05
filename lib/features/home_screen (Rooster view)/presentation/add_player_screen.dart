@@ -15,6 +15,7 @@ import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/cata
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/playerProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/dropdown.dart';
 import 'package:nololordos/features/import_export_screen/presentation/widgets/custom_buttons.dart';
+import 'package:uuid/uuid.dart';
 
 class AddPlayerScreen extends ConsumerStatefulWidget {
   const AddPlayerScreen({super.key});
@@ -29,11 +30,10 @@ class _AddPlayerScreenState extends ConsumerState<AddPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     final style = Theme.of(context).textTheme;
-    
 
     final selectedPosition = ref.watch(catagoryProvider);
     final selectedTeams = ref.watch(selectionProvider);
-      final TextEditingController positionController = TextEditingController(
+    final TextEditingController positionController = TextEditingController(
       text: selectedPosition.isEmpty ? 'Select Position' : selectedPosition,
     );
     final TextEditingController name = TextEditingController();
@@ -59,10 +59,10 @@ class _AddPlayerScreenState extends ConsumerState<AddPlayerScreen> {
                           alignment: Alignment.centerRight,
                           child: GestureDetector(
                             onTap: () {
-                              
                               context.go(RouteName.roosterViewScreen);
                             },
-                            child: SvgPicture.asset(AppIcons.xIcon)),
+                            child: SvgPicture.asset(AppIcons.xIcon),
+                          ),
                         ),
                         Text(
                           "Add Player",
@@ -71,7 +71,7 @@ class _AddPlayerScreenState extends ConsumerState<AddPlayerScreen> {
                           ),
                         ),
                         SizedBox(height: 32.h),
-          
+
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text("Player Name"),
@@ -84,7 +84,7 @@ class _AddPlayerScreenState extends ConsumerState<AddPlayerScreen> {
                           ),
                         ),
                         SizedBox(height: 18.h),
-          
+
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text("Position"),
@@ -92,9 +92,9 @@ class _AddPlayerScreenState extends ConsumerState<AddPlayerScreen> {
                         SizedBox(height: 8.h),
                         TextFormField(
                           readOnly: true,
-                        
-                          controller:positionController,
-          
+
+                          controller: positionController,
+
                           decoration: InputDecoration(
                             fillColor: AppColors.fillcolorTwo,
                             suffixIcon: Padding(
@@ -106,7 +106,7 @@ class _AddPlayerScreenState extends ConsumerState<AddPlayerScreen> {
                               ),
                               child: GestureDetector(
                                 key: _positionKey,
-          
+
                                 onTap: () {
                                   showNumberMenu(
                                     context,
@@ -118,7 +118,9 @@ class _AddPlayerScreenState extends ConsumerState<AddPlayerScreen> {
                                 child: SizedBox(
                                   height: 20.h,
                                   width: 20.w,
-                                  child: SvgPicture.asset(AppIcons.dropDownIcon),
+                                  child: SvgPicture.asset(
+                                    AppIcons.dropDownIcon,
+                                  ),
                                 ),
                               ),
                             ),
@@ -127,16 +129,23 @@ class _AddPlayerScreenState extends ConsumerState<AddPlayerScreen> {
                         Spacer(),
                         CustomButtons(
                           title: "Add Player",
-                        
-                          icon: AppIcons.addIcon ,
+
+                          icon: AppIcons.addIcon,
                           onTap: () {
                             debugPrint("\n\n\ teams== >$selectedTeams\n\n\n");
- ref.read(playersProvider.notifier).addPlayer(
-    selectedTeams ,           
-    selectedPosition,              
-    name.text.trim(), 
+                            ref
+                                .read(playersProvider.notifier)
+                                .addPlayer(
+                                  selectedTeams,
+                                  selectedPosition,
+                                  name.text.trim(),
+                                );
+                            Navigator.pop(context);
 
-  );                                Navigator.pop(context);
+                            final lastPlayer = ref.read(playersProvider).last;
+                            debugPrint(
+                              "\n\n Last player ID => ${lastPlayer['id']}\n\n\n",
+                            );
                           },
                           hieght: 60.h,
                         ),

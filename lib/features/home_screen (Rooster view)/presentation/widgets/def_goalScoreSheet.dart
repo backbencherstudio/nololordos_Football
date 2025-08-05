@@ -26,6 +26,13 @@ class DefGoalscoresheet extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
+
+
+
+//================================================================================================================================================
+
+//eikhane select er logic gula seeeeee eikhane delete er logic gula deya lagbe
    Consumer(
   builder: (context, ref, _) {
     final allPlayers = ref.watch(playersProvider);
@@ -130,6 +137,8 @@ class DefGoalscoresheet extends StatelessWidget {
   },
 ),
 
+
+//================================================================================================================================================
           Expanded(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
