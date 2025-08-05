@@ -26,6 +26,11 @@ class Goalscoresheet extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
+
+
+
+
   Consumer(
   builder: (context, ref, _) {
     final allPlayers = ref.watch(playersProvider);
@@ -94,6 +99,7 @@ class Goalscoresheet extends StatelessWidget {
                         checkColor: Colors.white,
                         fillColor: MaterialStateProperty.all(selectedGKPlayers.contains(index) ? AppColors.redColor : Colors.transparent),
                         value: selectedGKPlayers.contains(index), // Individual checkbox state for GK
+                    
                         onChanged: (bool? value) {
                           final selected = [...selectedGKPlayers];
                           if (value ?? false) {
