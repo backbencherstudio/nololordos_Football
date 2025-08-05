@@ -64,6 +64,9 @@ class GkContainer extends StatelessWidget {
                     dataRowMinHeight: 50.h,
                     dataRowMaxHeight: 50.h,
                     dividerThickness: 2.h,
+                    headingRowColor: MaterialStateColor.resolveWith(
+                      (states) => Colors.transparent,
+                    ),
                     columns: [
                       DataColumn(label: Text("SR")),
                       DataColumn(label: Text("GM")),
