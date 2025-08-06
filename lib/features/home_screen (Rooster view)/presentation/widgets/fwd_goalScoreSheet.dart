@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
 import 'package:nololordos/features/Team_Selection_screen/Riverpod/selection_provider.dart';
-import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/checkboxProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/isDeleteProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/playerProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/customBox_tile.dart';
@@ -48,8 +47,8 @@ class FwdGoalscoresheet extends StatelessWidget {
     final allPlayers = ref.watch(playersProvider);
     final selectedTeam = ref.watch(selectionProvider);
     final isDeleteOn = ref.watch(isDeleteProvider);
-    final selectAllFwd = ref.watch(selectAllFwdProvider); // Track "select all" state for FWD
-    final selectedFwdPlayers = ref.watch(selectedFwdPlayersProvider); // Track individual selected forwards
+    final selectAllFwd = false; // Track "select all" state for FWD
+    final selectedFwdPlayers = []; // Track individual selected forwards
 
     // Filter forwards by team
     final players = allPlayers
@@ -73,13 +72,10 @@ class FwdGoalscoresheet extends StatelessWidget {
                   fillColor: MaterialStateProperty.all(selectAllFwd ? AppColors.redColor : Colors.transparent), // Red when checked
                   value: selectAllFwd, // "Select all" checkbox state for FWD
                   onChanged: (bool? value) {
-                    ref.read(selectAllFwdProvider.notifier).state = value ?? false;
                     // Select/deselect all players based on "select all" checkbox
                     if (value ?? false) {
-                      ref.read(selectedFwdPlayersProvider.notifier).state =
                           List.generate(players.length, (index) => index); // Select all forwards
                     } else {
-                      ref.read(selectedFwdPlayersProvider.notifier).state = []; // Deselect all
                     }
                   },
                 ),
@@ -116,13 +112,10 @@ class FwdGoalscoresheet extends StatelessWidget {
                           } else {
                             selected.remove(index); // Deselect forward
                           }
-                          ref.read(selectedFwdPlayersProvider.notifier).state = selected;
 
                           // If all forwards are selected, update "select all" checkbox state
                           if (selected.length == players.length) {
-                            ref.read(selectAllFwdProvider.notifier).state = true;
                           } else {
-                            ref.read(selectAllFwdProvider.notifier).state = false;
                           }
                         },
                       ),
