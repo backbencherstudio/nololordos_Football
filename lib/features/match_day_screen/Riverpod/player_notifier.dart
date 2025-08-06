@@ -35,7 +35,7 @@ class PlayerListNotifier extends StateNotifier<List<PlayerData>> {
     state = updated;
   }
 
-  void incrementGoals(int index) {
+  void incrementGoals( index) {
     final updated = [...state];
     if(updated[index].goals ==15){
       updated[index].goals =-1;

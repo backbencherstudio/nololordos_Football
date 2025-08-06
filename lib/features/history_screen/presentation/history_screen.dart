@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -43,7 +45,7 @@ class HistoryScreen extends ConsumerWidget {
                     ),
                   ),
                   SizedBox(width: 15.w),
-                  SvgPicture.asset(AppIcons.iso),
+                  Image.asset("assets/icons/Icon.png", height: 58.h,width: 58.w,),//client uregnt chaise
                   Spacer(),
 
                   CustomIconButtons(
