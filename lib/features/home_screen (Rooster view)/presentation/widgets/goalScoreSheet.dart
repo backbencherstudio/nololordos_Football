@@ -189,7 +189,9 @@ class _GoalscoresheetState extends State<Goalscoresheet> {
                         builder: (context, ref, _) {
                           final allPlayers = ref.watch(playersProvider);
                           final selectedTeam = ref.watch(selectionProvider);
-                          final data = ref.watch(playerListProvider);
+
+
+                          final data = ref.read(playerListProvider);
 
                           // Filter goalkeepers by team
                           final players = allPlayers
@@ -216,7 +218,7 @@ class _GoalscoresheetState extends State<Goalscoresheet> {
                                     },
                                   ),
                                   CustomboxTile(
-                                    value: player['GL'] ?? '',
+                                    value: data[index].goals.toString(),
                                     onChanged: (String value) {
                                       ref.read(playersProvider.notifier).updatePlayer(globalIndex, 'GL', value);
                                     },

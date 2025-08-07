@@ -81,7 +81,7 @@ class _MatchdayScreenState extends ConsumerState<MatchdayScreen> {
                       selectedScore: p.selectedScore,
                       onNameChanged: (value) =>
                           notifier.updateName(index, value),
-                      onIncrementGoals: () => notifier.incrementGoals(index as double),
+                      onIncrementGoals: () => notifier.incrementGoals(index),
                       onIncrementOwnGoals: () =>
                           notifier.incrementOwnGoals(index),
                       onScoreSelected: (score) =>

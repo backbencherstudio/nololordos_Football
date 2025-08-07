@@ -15,7 +15,6 @@ import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/cata
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/playerProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/dropdown.dart';
 import 'package:nololordos/features/import_export_screen/presentation/widgets/custom_buttons.dart';
-import 'package:uuid/uuid.dart';
 
 class AddPlayerScreen extends ConsumerStatefulWidget {
   const AddPlayerScreen({super.key});
