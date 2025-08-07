@@ -143,7 +143,7 @@ class _AddPlayerScreenState extends ConsumerState<AddPlayerScreen> {
 
                             final lastPlayer = ref.read(playersProvider).last;
                             debugPrint(
-                              "\n\n Last player ID => ${lastPlayer['id']}\n\n\n",
+                              "\n\n Last player ID => ${lastPlayer.id}\n\n\n",
                             );
                           },
                           hieght: 60.h,
