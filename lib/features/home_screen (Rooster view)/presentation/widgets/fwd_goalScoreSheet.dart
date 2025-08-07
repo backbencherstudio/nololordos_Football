@@ -177,7 +177,7 @@ class FwdGoalscoresheet extends ConsumerWidget {
                             onChanged: (value) {
                               ref
                                   .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex, value);
+                                  .updatePlayer(globalIndex,"SR" ,value);
                             },
                           ),
                           CustomboxTile(
@@ -185,7 +185,7 @@ class FwdGoalscoresheet extends ConsumerWidget {
                             onChanged: (value) {
                               ref
                                   .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex,  value);
+                                  .updatePlayer(globalIndex,"GM" ,value);
                             },
                           ),
                           CustomboxTile(
@@ -193,7 +193,7 @@ class FwdGoalscoresheet extends ConsumerWidget {
                             onChanged: (value) {
                               ref
                                   .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex,  value);
+                                  .updatePlayer(globalIndex, "GL", value);
                             },
                           ),
                           CustomboxTile(
@@ -201,7 +201,7 @@ class FwdGoalscoresheet extends ConsumerWidget {
                             onChanged: (value) {
                               ref
                                   .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex,  value);
+                                  .updatePlayer(globalIndex,"AGL",  value);
                             },
                           ),
                           CustomboxTile(
@@ -209,7 +209,7 @@ class FwdGoalscoresheet extends ConsumerWidget {
                             onChanged: (value) {
                               ref
                                   .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex,  value);
+                                  .updatePlayer(globalIndex,"-GL" , value);
                             },
                           ),
                           CustomboxTile(
@@ -217,7 +217,7 @@ class FwdGoalscoresheet extends ConsumerWidget {
                             onChanged: (value) {
                               ref
                                   .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex,  value);
+                                  .updatePlayer(globalIndex,"-AGL",  value);
                             },
                           ),
                         ],

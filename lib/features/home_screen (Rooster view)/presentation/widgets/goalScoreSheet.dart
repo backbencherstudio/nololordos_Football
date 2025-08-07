@@ -147,7 +147,7 @@ class GoalScoreSheet extends ConsumerWidget {
           ),
 
           // ---------------- Stats Columns ------------------
-          Expanded(
+        Expanded(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Column(
@@ -169,11 +169,11 @@ class GoalScoreSheet extends ConsumerWidget {
                       return Row(
                         children: [
                           CustomboxTile(
-                            value: player.sr ,
+                            value: player.ownGoals.toString() ,
                             onChanged: (value) {
                               ref
                                   .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex, value);
+                                  .updatePlayer(globalIndex,"SR" ,value);
                             },
                           ),
                           CustomboxTile(
@@ -181,7 +181,7 @@ class GoalScoreSheet extends ConsumerWidget {
                             onChanged: (value) {
                               ref
                                   .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex,  value);
+                                  .updatePlayer(globalIndex,"GM" ,value);
                             },
                           ),
                           CustomboxTile(
@@ -189,7 +189,7 @@ class GoalScoreSheet extends ConsumerWidget {
                             onChanged: (value) {
                               ref
                                   .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex,  value);
+                                  .updatePlayer(globalIndex, "GL", value);
                             },
                           ),
                           CustomboxTile(
@@ -197,7 +197,7 @@ class GoalScoreSheet extends ConsumerWidget {
                             onChanged: (value) {
                               ref
                                   .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex,  value);
+                                  .updatePlayer(globalIndex,"AGL",  value);
                             },
                           ),
                           CustomboxTile(
@@ -205,7 +205,7 @@ class GoalScoreSheet extends ConsumerWidget {
                             onChanged: (value) {
                               ref
                                   .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex,  value);
+                                  .updatePlayer(globalIndex,"-GL" , value);
                             },
                           ),
                           CustomboxTile(
@@ -213,7 +213,7 @@ class GoalScoreSheet extends ConsumerWidget {
                             onChanged: (value) {
                               ref
                                   .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex,  value);
+                                  .updatePlayer(globalIndex,"-AGL",  value);
                             },
                           ),
                         ],

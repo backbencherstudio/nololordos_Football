@@ -8,8 +8,8 @@ import 'package:nololordos/features/match_day_screen/presentation/widgets/inputd
 
 class CustomScoreInputbox extends StatelessWidget {
   final String name;
-  final int goals;
-  final int ownGoals;
+  final double goals;
+  final double ownGoals;
   final int? selectedScore;
 
   final ValueChanged<String> onNameChanged;

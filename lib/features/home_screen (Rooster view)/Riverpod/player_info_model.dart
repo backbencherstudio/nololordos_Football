@@ -10,6 +10,17 @@ class PlayerInfoModel {
   String minusGl;
   String minusAgl;
 
+  // New parameters
+  double goals;
+  double ownGoals;
+  int selectedScore;
+  String matchName;
+  String teamOne;
+  String teamTwo;
+  String teamOneScore;
+  String teamTwoScore;
+  String date;
+
   // Constructor
   PlayerInfoModel({
     required this.team,
@@ -22,8 +33,18 @@ class PlayerInfoModel {
     this.agl = '',
     this.minusGl = '',
     this.minusAgl = '',
+    this.goals = 0.0,  // Initialize with 0.0
+    this.ownGoals = 0.0,  // Initialize with 0.0
+    this.selectedScore = 0,  // Initialize with 0
+    this.matchName = '',  // Initialize with an empty string
+    this.teamOne = '',  // Initialize with an empty string
+    this.teamTwo = '',  // Initialize with an empty string
+    this.teamOneScore = '',  // Initialize with an empty string
+    this.teamTwoScore = '',  // Initialize with an empty string
+    this.date = '',  // Initialize with an empty string
   });
 }
+
 
 List<PlayerInfoModel> playersInfo = [
   // AEK Athens Goalkeepers
