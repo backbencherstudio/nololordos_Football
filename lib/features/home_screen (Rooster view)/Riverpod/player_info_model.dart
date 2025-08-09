@@ -3,17 +3,17 @@ class PlayerInfoModel {
   String position;
   String name;
   String id;
-  String sr;
-  String gm;
-  String gl;
-  String agl;
-  String minusGl;
-  String minusAgl;
 
-  // New parameters
-  double goals;
-  double ownGoals;
-  int selectedScore;
+  double sr;            // Change to double for easier calculation
+  double gm;            // Change to double for easier calculation
+  double gl;            // Goals (already double)
+  double agl;           // Average Goals per Match (AGL)
+  double minusGl;       // minusGL (changed to double)
+  double minusAgl;      // minusAGL (changed to double)
+
+  double goals;         // Goals scored by the player
+  double ownGoals;      // Own goals scored by the player
+  int selectedScore;    // Selected score (probably integer)
   String matchName;
   String teamOne;
   String teamTwo;
@@ -21,29 +21,74 @@ class PlayerInfoModel {
   String teamTwoScore;
   String date;
 
-  // Constructor
   PlayerInfoModel({
     required this.team,
     required this.position,
     required this.name,
     required this.id,
-    this.sr = '',
-    this.gm = '',
-    this.gl = '',
-    this.agl = '',
-    this.minusGl = '',
-    this.minusAgl = '',
-    this.goals = 0.0,  // Initialize with 0.0
-    this.ownGoals = 0.0,  // Initialize with 0.0
-    this.selectedScore = 0,  // Initialize with 0
-    this.matchName = '',  // Initialize with an empty string
-    this.teamOne = '',  // Initialize with an empty string
-    this.teamTwo = '',  // Initialize with an empty string
-    this.teamOneScore = '',  // Initialize with an empty string
-    this.teamTwoScore = '',  // Initialize with an empty string
-    this.date = '',  // Initialize with an empty string
+    this.sr = 0.0,
+    this.gm = 0.0,
+    this.gl = 0.00,
+    this.agl = 0.00,
+    this.minusGl = 0.0,
+    this.minusAgl = 0.0,
+    this.goals = 0.0,
+    this.ownGoals = 0.0,
+    this.selectedScore = 0,
+    this.matchName = '',
+    this.teamOne = '',
+    this.teamTwo = '',
+    this.teamOneScore = '',
+    this.teamTwoScore = '',
+    this.date = '',
   });
+
+  // ✅ copyWith method to allow easier field updates
+  PlayerInfoModel copyWith({
+    String? team,
+    String? position,
+    String? name,
+    String? id,
+    double? sr,
+    double? gm,
+    double? gl,
+    double? agl,
+    double? minusGl,
+    double? minusAgl,
+    double? goals,
+    double? ownGoals,
+    int? selectedScore,
+    String? matchName,
+    String? teamOne,
+    String? teamTwo,
+    String? teamOneScore,
+    String? teamTwoScore,
+    String? date,
+  }) {
+    return PlayerInfoModel(
+      team: team ?? this.team,
+      position: position ?? this.position,
+      name: name ?? this.name,
+      id: id ?? this.id,
+      sr: sr ?? this.sr,
+      gm: gm ?? this.gm,
+      gl: gl ?? this.gl,
+      agl: agl ?? this.agl,
+      minusGl: minusGl ?? this.minusGl,
+      minusAgl: minusAgl ?? this.minusAgl,
+      goals: goals ?? this.goals,
+      ownGoals: ownGoals ?? this.ownGoals,
+      selectedScore: selectedScore ?? this.selectedScore,
+      matchName: matchName ?? this.matchName,
+      teamOne: teamOne ?? this.teamOne,
+      teamTwo: teamTwo ?? this.teamTwo,
+      teamOneScore: teamOneScore ?? this.teamOneScore,
+      teamTwoScore: teamTwoScore ?? this.teamTwoScore,
+      date: date ?? this.date,
+    );
+  }
 }
+
 
 
 List<PlayerInfoModel> playersInfo = [

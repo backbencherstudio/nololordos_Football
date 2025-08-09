@@ -85,12 +85,12 @@ class _MatchdayScreenState extends ConsumerState<MatchdayScreen> {
                       ownGoals: p.ownGoals,
                       selectedScore: p.selectedScore,
                       onNameChanged: (value) =>
-                          notifier.updatePlayerName(index, value),
-                      onIncrementGoals: () => notifier.incrementGoals(index),
+                          notifier.updatePlayer(players[index].id, "NAME", value),
+                      onIncrementGoals: () => notifier.incrementGoals(players[index].id),
                       onIncrementOwnGoals: () =>
-                          notifier.incrementOwnGoals(index),
+                          notifier.incrementOwnGoals(players[index].id),
                       onScoreSelected: (score) =>
-                          notifier.selectScore(index, score),
+                          notifier.selectScore(players[index].id, score),
                     ),
                   );
                 }),
@@ -116,6 +116,9 @@ class _MatchdayScreenState extends ConsumerState<MatchdayScreen> {
                 title: 'Submit',
                 icon: '',
                 onTap: () {
+
+
+                  ref.watch(matchCountProvider.notifier).state++;
                   final players = ref.read(
                     playerListProvider,
                   ); // get player data

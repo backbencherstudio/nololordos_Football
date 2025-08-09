@@ -151,85 +151,79 @@ class FwdGoalscoresheet extends ConsumerWidget {
           ),
 
           // ---------------- Stats Columns ------------------
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Titles(title: "SR"),
-                      Titles(title: "GM"),
-                      Titles(title: "GL"),
-                      Titles(title: "AGL"),
-                      Titles(title: "-GL"),
-                      Titles(title: "-AGL"),
-                    ],
-                  ),
-                  Column(
-                    children: List.generate(players.length, (index) {
-                      final player = players[index];
-                      final globalIndex = allPlayers.indexOf(player);
-                      return Row(
-                        children: [
-                          CustomboxTile(
-                            value: player.sr ,
-                            onChanged: (value) {
-                              ref
-                                  .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex,"SR" ,value);
-                            },
-                          ),
-                          CustomboxTile(
-                            value: player.gm,
-                            onChanged: (value) {
-                              ref
-                                  .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex,"GM" ,value);
-                            },
-                          ),
-                          CustomboxTile(
-                            value: player.gm,
-                            onChanged: (value) {
-                              ref
-                                  .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex, "GL", value);
-                            },
-                          ),
-                          CustomboxTile(
-                            value: player.agl,
-                            onChanged: (value) {
-                              ref
-                                  .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex,"AGL",  value);
-                            },
-                          ),
-                          CustomboxTile(
-                            value: player.minusGl,
-                            onChanged: (value) {
-                              ref
-                                  .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex,"-GL" , value);
-                            },
-                          ),
-                          CustomboxTile(
-                            value: player.minusAgl,
-                            onChanged: (value) {
-                              ref
-                                  .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex,"-AGL",  value);
-                            },
-                          ),
-                        ],
-                      );
-                    }),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+         Expanded(
+  child: SingleChildScrollView(
+    scrollDirection: Axis.horizontal,
+    child: Column(
+      children: [
+        Row(
+          children: [
+            Titles(title: "SR"),
+            Titles(title: "GM"),
+            Titles(title: "GL"),
+            Titles(title: "AGL"),
+            Titles(title: "-GL"),
+            Titles(title: "-AGL"),
+          ],
+        ),
+        Column(
+          children: List.generate(players.length, (index) {
+            final player = players[index];
+            return Row(
+              children: [
+                CustomboxTile(
+                  value: player.sr.toString(),
+                  onChanged: (value) {
+                    ref
+                        .read(playersProvider.notifier)
+                        .updatePlayer(player.id, "SR", value);
+                  },
+                ),
+                CustomboxTile(
+                  value: player.gm.toString(),
+                  onChanged: (value) {
+                    ref
+                        .read(playersProvider.notifier)
+                        .updatePlayer(player.id, "GM", value);
+                  },
+                ),
+                CustomboxTile(
+                  value: player.gl.toString(), // Assuming player.gl is the correct variable
+                  onChanged: (value) {
+                    ref
+                        .read(playersProvider.notifier)
+                        .updatePlayer(player.id, "GL", value);
+                  },
+                ),
+                CustomboxTile(
+                  value: player.agl.toString(),
+                  onChanged: (value) {
+                    ref
+                        .read(playersProvider.notifier)
+                        .updatePlayer(player.id, "AGL", value);
+                  },
+                ),
+                CustomboxTile(
+                  value: player.minusGl.toString(),
+                  onChanged: (value) {
+                    ref
+                        .read(playersProvider.notifier)
+                        .updatePlayer(player.id, "-GL", value);
+                  },
+                ),
+                CustomboxTile(
+                  value: player.minusAgl.toString(),
+                  onChanged: (value) {
+                    ref
+                        .read(playersProvider.notifier)
+                        .updatePlayer(player.id, "-AGL", value);
+                  },
+                ),
+              ],
+            );
+          }),
+        ),
+      ],
+    ),
+  ),
+)]));}}

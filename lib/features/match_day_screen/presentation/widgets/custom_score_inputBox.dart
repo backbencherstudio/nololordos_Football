@@ -88,6 +88,7 @@ class CustomScoreInputbox extends StatelessWidget {
                   count: (index + 1).toString(),
                   onTap: () => onScoreSelected(index + 1),
                   isSelected: selectedScore == index + 1,
+                  
                 );
               },
             ),

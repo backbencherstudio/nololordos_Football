@@ -23,7 +23,6 @@ class GoalScoreSheet extends ConsumerWidget {
     final selectedTeam = ref.watch(selectionProvider);
     final isDeleteOn = ref.watch(isDeleteProvider);
 
-
     // Filter goalkeepers by team
     final players = allPlayers
         .where(
@@ -33,7 +32,6 @@ class GoalScoreSheet extends ConsumerWidget {
               p.team == selectedTeam,
         )
         .toList();
-
 
     return Container(
       padding: EdgeInsets.only(left: 24.w, bottom: 20.h),
@@ -67,12 +65,12 @@ class GoalScoreSheet extends ConsumerWidget {
                         ),
                         value: ref.watch(
                           allPlayersTeamPositionSelectionProvider({
-                            'team': selectedTeam ,
+                            'team': selectedTeam,
                             'position': 'GK',
                           }),
                         ),
                         onChanged: (_) {
-                          toggleSelectAllPlayers(ref, selectedTeam , 'GK');
+                          toggleSelectAllPlayers(ref, selectedTeam, 'GK');
                           debugPrint(
                             "Delete player IDs: ${ref.read(deletePlayerIdListProvider)}",
                           );
@@ -93,7 +91,7 @@ class GoalScoreSheet extends ConsumerWidget {
 
               // Render individual goalkeepers
               ...players.map((player) {
-                final id = player.id ;
+                final id = player.id;
                 final isSelected = ref
                     .watch(deletePlayerIdListProvider)
                     .contains(id);
@@ -117,15 +115,16 @@ class GoalScoreSheet extends ConsumerWidget {
                                     : Colors.transparent,
                               ),
                               value: isSelected,
-                                onChanged: (bool? value) {
-                                  if (value == true) {
-                                    addPlayerId(ref, id);
-                                  } else {
-                                    removePlayerId(ref, id);
-                                  }
-                                  debugPrint("Delete player IDs: ${ref.read(deletePlayerIdListProvider)}");
+                              onChanged: (bool? value) {
+                                if (value == true) {
+                                  addPlayerId(ref, id);
+                                } else {
+                                  removePlayerId(ref, id);
                                 }
-
+                                debugPrint(
+                                  "Delete player IDs: ${ref.read(deletePlayerIdListProvider)}",
+                                );
+                              },
                             ),
                           ),
                         ],
@@ -142,12 +141,12 @@ class GoalScoreSheet extends ConsumerWidget {
                     ),
                   ],
                 );
-              }).toList(),
+              }),
             ],
           ),
 
           // ---------------- Stats Columns ------------------
-        Expanded(
+          Expanded(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Column(
@@ -165,55 +164,59 @@ class GoalScoreSheet extends ConsumerWidget {
                   Column(
                     children: List.generate(players.length, (index) {
                       final player = players[index];
-                      final globalIndex = allPlayers.indexOf(player);
+
+                      final gmCount = ref.watch(matchCountProvider);
                       return Row(
                         children: [
                           CustomboxTile(
-                            value: player.ownGoals.toString() ,
+                            value: player.sr.toStringAsFixed(2),
                             onChanged: (value) {
                               ref
                                   .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex,"SR" ,value);
+                                  .updatePlayer(player.id, "sr", value);
+                            },
+                          ),
+
+                          CustomboxTile(
+                            value: gmCount.toStringAsFixed(2),
+                            onChanged: (value) {
+                              ref
+                                  .read(playersProvider.notifier)
+                                  .updatePlayer(player.id, "GM", value);
                             },
                           ),
                           CustomboxTile(
-                            value: player.gm,
+                            value: player.goals.toStringAsFixed(2),
+
                             onChanged: (value) {
                               ref
                                   .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex,"GM" ,value);
+                                  .updatePlayer(player.id, "GOALS", value);
                             },
                           ),
                           CustomboxTile(
-                            value: player.gm,
+                            value: (player.goals / (gmCount == 0 ? 1 : gmCount))
+                                .toStringAsFixed(2), // Calculate AGL here
                             onChanged: (value) {
                               ref
                                   .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex, "GL", value);
+                                  .updatePlayer(player.id, "AGL", value);
                             },
                           ),
                           CustomboxTile(
-                            value: player.agl,
+                            value: player.ownGoals.toString(),
                             onChanged: (value) {
                               ref
                                   .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex,"AGL",  value);
+                                  .updatePlayer(player.id, "-GL", value);
                             },
                           ),
                           CustomboxTile(
-                            value: player.minusGl,
-                            onChanged: (value) {
+value: (player.ownGoals / (gmCount == 0 ? 1 : gmCount))
+                                .toStringAsFixed(2),                            onChanged: (value) {
                               ref
                                   .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex,"-GL" , value);
-                            },
-                          ),
-                          CustomboxTile(
-                            value: player.minusAgl,
-                            onChanged: (value) {
-                              ref
-                                  .read(playersProvider.notifier)
-                                  .updatePlayer(globalIndex,"-AGL",  value);
+                                  .updatePlayer(player.id, "-AGL", value);
                             },
                           ),
                         ],
