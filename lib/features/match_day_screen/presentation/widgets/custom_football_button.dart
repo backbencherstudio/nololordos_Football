@@ -45,6 +45,8 @@ class CustomFootballButton extends StatelessWidget {
                 Text(
                 count  ,
                   style: style.bodyMedium!.copyWith(
+                      fontSize: 10.sp,
+                    fontWeight: FontWeight.w600,
                     color: AppColors.subTextColor,
                   ),
                 ),

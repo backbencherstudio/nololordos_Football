@@ -82,7 +82,7 @@ flutter:
   #   - assets/
     - assets/icons/
     - assets/images/
-  #   - assets/images/profile/
+    - assets/icons/wistle.svg
   #   - assets/primary_button/
   #   - assets/images/voice_assistant/
   #   - images/a_dot_ham.jpeg

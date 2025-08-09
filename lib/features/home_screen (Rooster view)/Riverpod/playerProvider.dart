@@ -1,157 +1,171 @@
+// players_provider.dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart'; // Import UUID package
+import 'package:uuid/uuid.dart';
+import 'player_info_model.dart';
+import 'delete_provider_selection.dart';
 
-/// Players provider with both team rosters
 final playersProvider =
-    StateNotifierProvider<PlayersNotifier, List<Map<String, dynamic>>>(
-      (ref) => PlayersNotifier(),
-    );
+    StateNotifierProvider<PlayersNotifier, List<PlayerInfoModel>>(
+  (ref) => PlayersNotifier(),
+);
 
-class PlayersNotifier extends StateNotifier<List<Map<String, dynamic>>> {
-  PlayersNotifier()
-    : super([
-        // ✅ AEK Athens Goalkeepers with predefined IDs
-        _player('AEK Athens', 'GK', 'THOMAS STRAKOSHA', "012a"),
-        _player('AEK Athens', 'GK', 'ANGELOS ANGELOPOULOS', "011a"),
-        _player('AEK Athens', 'GK', 'ALBERTO BRIGNOLI', "105d"),
-        _player('AEK Athens', 'GK', 'MARIOS BALAMIOTIS', "846s"),
+class PlayersNotifier extends StateNotifier<List<PlayerInfoModel>> {
+  PlayersNotifier() : super(playersInfo);
 
-        // ✅ AEK Athens Defenders with predefined IDs
-        _player('AEK Athens', 'DEF', 'HAROLD MOUKOUTI', "87c8"),
-        _player('AEK Athens', 'DEF', 'STAVROS PILIOS', "484d"),
-        _player('AEK Athens', 'DEF', 'LAZAROS ROTA', "970c"),
-        _player('AEK Athens', 'DEF', 'ALEXANDER CALLENS', "54f5"),
-        _player('AEK Athens', 'DEF', 'DOMAGOJ VIDA', "046f"),
-        _player('AEK Athens', 'DEF', 'GERASIMOS MITOGLOU', "706g"),
-        _player('AEK Athens', 'DEF', 'JAMES PENRICE', "462f"),
-        _player('AEK Athens', 'DEF', 'MOSES ODUBAJO', "020k"),
-        _player('AEK Athens', 'DEF', 'FILIPE RELVAS', "101l"),
-
-        // ✅ AEK Athens Midfielders with predefined IDs
-        _player('AEK Athens', 'MID', 'ORBELÍN PINEDA', "846q"),
-        _player('AEK Athens', 'MID', 'PETROS MANTALOS', "793p"),
-        _player('AEK Athens', 'MID', 'ROBERTO PEREYRA', "964w"),
-        _player('AEK Athens', 'MID', 'NDONOLO ZAMBO', "030c"),
-        _player('AEK Athens', 'MID', 'RAZVAN MARIN', "099t"),
-        _player('AEK Athens', 'MID', 'DAMIAN SZYMAŃSKI', "020u"),
-        _player('AEK Athens', 'MID', 'NIKLAS ELIASSON', "302a"),
-        _player('AEK Athens', 'MID', 'ROBERT LJUBIČIĆ', "100r"),
-        _player('AEK Athens', 'MID', 'PAOLO FERNÁNDEZ', "812g"),
-        _player('AEK Athens', 'MID', 'ÉRIK LAMELA', "123e"),
-        _player('AEK Athens', 'MID', 'ABOUBAKARY KOITA', "782f"),
-        _player('AEK Athens', 'MID', 'JENS JONSSON', "362l"),
-        _player('AEK Athens', 'MID', 'MIJAT GAĆINOVIĆ', "256s"),
-
-        // ✅ AEK Athens Forwards with predefined IDs
-        _player('AEK Athens', 'FWD', 'ÉRIK LAMELA', "054m"),
-        _player('AEK Athens', 'FWD', 'DEREK KUTESA', "764x"),
-        _player('AEK Athens', 'FWD', 'FRANTZDY PIERROT', "134c"),
-        _player('AEK Athens', 'FWD', 'ANTHONY MARTIAL', "926b"),
-        _player('AEK Athens', 'FWD', 'ELIAN SOSA', "352h"),
-        _player('AEK Athens', 'FWD', 'DIMITRIS KALOSKAMIS', "568g"),
-        _player('AEK Athens', 'FWD', 'ANTONIO ZINI', "912f"),
-
-        // ✅ Panathinaikos Goalkeepers with predefined IDs
-        _player('Panathinaikos', 'GK', 'YURI LODYGIN', "156a"),
-        _player('Panathinaikos', 'GK', 'BARTŁOMIEJ DRĄGOWSKI', "652h"),
-        _player('Panathinaikos', 'GK', 'ALBAN LAFONT', "289d"),
-        _player('Panathinaikos', 'GK', 'KONSTANTINOS KOTSARIS', "873j"),
-
-        // ✅ Panathinaikos Defenders with predefined IDs
-        _player('Panathinaikos', 'DEF', 'GIORGOS VAGIANNIDIS', "492e"),
-        _player('Panathinaikos', 'DEF', 'GIORGOS KYRIAKOPOULOS', "930f"),
-        _player('Panathinaikos', 'DEF', 'AHMED TOUBA', "835m"),
-        _player('Panathinaikos', 'DEF', 'ERIK PALMER-BROWN', "621l"),
-        _player('Panathinaikos', 'DEF', 'INGI INGASON', "442c"),
-        _player('Panathinaikos', 'DEF', 'AZZEDINE OUNAHI', "184r"),
-        _player('Panathinaikos', 'DEF', 'TIN JEDVAJ', "018g"),
-        _player('Panathinaikos', 'DEF', 'FILIP MLADENOVIĆ', "673k"),
-        _player('Panathinaikos', 'DEF', 'ELTJON FIKAJ', "193x"),
-        _player('Panathinaikos', 'DEF', 'GIANNIS KOTSIIRAS', "557p"),
-
-        // ✅ Panathinaikos Midfielders with predefined IDs
-        _player('Panathinaikos', 'MID', 'PEDRO CHIRIVELLA', "333d"),
-        _player('Panathinaikos', 'MID', 'TETÊ', "572y"),
-        _player('Panathinaikos', 'MID', 'TASOS BAKASETAS', "234m"),
-        _player('Panathinaikos', 'MID', 'ADAM GNEZDA ČERIN', "924q"),
-        _player('Panathinaikos', 'MID', 'DANIEL MANCINI', "490a"),
-        _player('Panathinaikos', 'MID', 'NEMANJA MAKSIMOVIĆ', "109s"),
-        _player('Panathinaikos', 'MID', 'MANOLIS SIOPIS', "265t"),
-        _player('Panathinaikos', 'MID', 'FACUNDO PELLISTRI', "147j"),
-        _player('Panathinaikos', 'MID', 'IOANNIS GAVRIIL BOKOS', "736k"),
-        _player('Panathinaikos', 'MID', 'ADRIANO BREGU', "629f"),
-        _player('Panathinaikos', 'MID', 'FILIP ĐURIČIĆ', "288z"),
-        _player('Panathinaikos', 'MID', 'GIORGOS NIKAS', "501n"),
-
-        // ✅ Panathinaikos Forwards with predefined IDs
-        _player('Panathinaikos', 'FWD', 'FOTIS IOANNIDIS', "982c"),
-        _player('Panathinaikos', 'FWD', 'KAROL ŚWIDERSKI', "673m"),
-        _player('Panathinaikos', 'FWD', 'ALEXANDER JEREMEJEFF', "290s"),
-      ]);
-
-  /// Helper to create player map with unique ID
-  static Map<String, dynamic> _player(
-    String team,
-    String position,
-    String name,
-    String id,
-  ) {
-    return {
-      'team': team,
-      'position': position,
-      'name': name,
-      'id': id, 
-      'SR': '',
-      'GM': '',
-      'GL': '',
-      'AGL': '',
-      '-GL': '',
-      '-AGL': '',
-    };
-  }
-
-  /// Add new player with generated id
   void addPlayer(String team, String position, String name, [String? id]) {
-    // If no custom ID is provided, generate a new UUID
-    String generatedId = id ?? Uuid().v4();
-    state = [...state, _player(team, position, name, generatedId)];
+    final generatedId = id ?? const Uuid().v4();
+    state = [
+      ...state,
+      PlayerInfoModel(
+        team: team,
+        name: name,
+        position: position,
+        id: generatedId,
+      ),
+    ];
   }
 
-  /// Update player stat
-  void updatePlayer(int index, String key, String value) {
+  void updatePlayer(String id, String key, String value) {
+    final index = state.indexWhere((p) => p.id == id);
+    if (index == -1) return;
+
+    final player = state[index];
+
+    PlayerInfoModel updatedPlayer = switch (key) {
+      'GOALS' => player.copyWith(goals: double.tryParse(value) ?? 0),
+      'GM' => player.copyWith(gm: double.tryParse(value) ?? 0),
+      'GL' => player.copyWith(gl: double.tryParse(value) ?? 0),
+      'AGL' => player.copyWith(agl: double.tryParse(value) ?? 0),
+      '-GL' => player.copyWith(minusGl: double.tryParse(value) ?? 0),
+      '-AGL' => player.copyWith(minusAgl: double.tryParse(value) ?? 0),
+      _ => player,
+    };
+
+    final updatedList = [...state];
+    updatedList[index] = updatedPlayer;
+    state = updatedList;
+  }
+
+  void incrementGoals(String id) {
+  final index = state.indexWhere((p) => p.id == id);
+  if (index == -1) return;
+
+  final player = state[index];
+  final newGoals = (player.goals == 15.0) ? 0.0 : player.goals + 1;
+
+  final updatedPlayer = player.copyWith(goals: newGoals);
+
+  final updatedList = [...state];
+  updatedList[index] = updatedPlayer;
+  state = updatedList; 
+}
+
+
+  void incrementOwnGoals(String id) {
+    final index = state.indexWhere((p) => p.id == id);
+    if (index == -1) return;
+
+    final player = state[index];
+    final newOwnGoals = player.ownGoals == 15 ? -1 : player.ownGoals + 1;
+
+    state = [
+      for (int i = 0; i < state.length; i++)
+        if (i == index) player.copyWith(ownGoals: newOwnGoals.toDouble()) else state[i]
+    ];
+  }
+
+  void selectScore(String id, int score) =>
+      _updateById(id, (p) => p.copyWith(selectedScore: score));
+
+
+  void updateMatchName(String id, String matchName) =>
+      _updateById(id, (p) => p.copyWith(matchName: matchName));
+
+  void updateTeams(String id, String teamOne, String teamTwo) =>
+      _updateById(id, (p) => p.copyWith(teamOne: teamOne, teamTwo: teamTwo));
+
+  void updateTeamScores(String id, String teamOneScore, String teamTwoScore) =>
+      _updateById(id,
+          (p) => p.copyWith(teamOneScore: teamOneScore, teamTwoScore: teamTwoScore));
+
+  void updateDate(String id, String date) =>
+      _updateById(id, (p) => p.copyWith(date: date));
+
+  void _updateById(String id, PlayerInfoModel Function(PlayerInfoModel) updater) {
+    final index = state.indexWhere((p) => p.id == id);
+    if (index == -1) return;
+
     final updated = [...state];
-    updated[index][key] = value;
+    updated[index] = updater(updated[index]);
     state = updated;
   }
 
-  // Delete players based on position and id
   void deletePlayersByIds(List<String> ids) {
-    state = state.where((player) {
-      return !ids.contains(player['id']);
-    }).toList();
+    state = state.where((p) => !ids.contains(p.id)).toList();
+  }
+
+  List<String> selectedIds = [];
+
+  void togglePlayerSelection(String id) {
+    if (selectedIds.contains(id)) {
+      selectedIds.remove(id);
+    } else {
+      selectedIds.add(id);
+    }
   }
 }
 
-/// Provider to track selected players for deletion
+final allPlayersTeamPositionSelectionProvider =
+    Provider.family<bool, Map<String, String>>((ref, data) {
+  final players = ref.watch(playersProvider);
+  final selectedIds = ref.watch(deletePlayerIdListProvider);
 
-final deletePlayerIdListProvider = StateProvider<List<String>>((ref) => []);
+  final team = data['team']!;
+  final position = data['position']!;
 
-/// Create a provider to handle deletion of players by position and ID
-final playerDeletionProvider =
-    StateNotifierProvider<PlayerDeletionNotifier, List<Map<String, dynamic>>>(
-      (ref) => PlayerDeletionNotifier(ref.read(playersProvider.notifier)),
-    );
+  final ids = players
+      .where((p) => p.team == team && p.position == position)
+      .map((p) => p.id)
+      .toList();
 
-class PlayerDeletionNotifier extends StateNotifier<List<Map<String, dynamic>>> {
-  final PlayersNotifier playersNotifier;
+  if (ids.isEmpty) return false;
 
-  PlayerDeletionNotifier(this.playersNotifier) : super(playersNotifier.state);
+  return ids.every((id) => selectedIds.contains(id));
+});
 
-  // Delete players based on position and id
-  void deletePlayerByPositionAndId(String position, String id) {
-    state = state.where((player) {
-      // Remove players who match the provided position and id
-      return !(player['position'] == position && player['id'] == id);
-    }).toList();
+void toggleSelectAllPlayers(
+  WidgetRef ref,
+  String team,
+  String position,
+) {
+  final players = ref.read(playersProvider);
+  final selectedIdsNotifier = ref.read(deletePlayerIdListProvider.notifier);
+
+  final ids = players
+      .where((p) => p.team == team && p.position == position)
+      .map((p) => p.id)
+      .toList();
+
+  if (ids.isEmpty) return;
+
+  final currentList = [...ref.read(deletePlayerIdListProvider)];
+  final allSelected = ids.every((id) => currentList.contains(id));
+
+  if (allSelected) {
+    currentList.removeWhere((id) => ids.contains(id));
+  } else {
+    for (final id in ids) {
+      if (!currentList.contains(id)) currentList.add(id);
+    }
   }
+
+  selectedIdsNotifier.state = currentList;
 }
+
+//match count
+final matchCountProvider = StateProvider<double>((_) => 0.00);
+
+//ScoreCount
+
+final scoreCountPerMatch = StateProvider<int>((ref)=>0);
+

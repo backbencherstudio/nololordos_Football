@@ -13,8 +13,8 @@ final playerListProvider =
 
     // Filter players based on selected team
     final filteredPlayers = players
-        .where((p) => p['team'] == selectedTeam) // Filter by team
-        .map((p) => PlayerData(name: p['name'])) // Convert to PlayerData
+        .where((p) => p.team == selectedTeam) // Filter by team
+        .map((p) => PlayerData(name: p.name)) // Convert to PlayerData
         .toList();
 
     return PlayerListNotifier(filteredPlayers); 
@@ -37,7 +37,7 @@ class PlayerListNotifier extends StateNotifier<List<PlayerData>> {
 
   void incrementGoals(int index) {
     final updated = [...state];
-    if(updated[index].goals ==15){
+    if(updated[index].goals ==15.0){
       updated[index].goals =-1;
     }
     updated[index].goals++;

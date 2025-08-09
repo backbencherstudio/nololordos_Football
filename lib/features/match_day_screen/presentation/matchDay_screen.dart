@@ -3,8 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nololordos/core/constant/padding.dart';
+import 'package:nololordos/core/routes/route_name.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
+import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/playerProvider.dart';
 import 'package:nololordos/features/import_export_screen/presentation/widgets/custom_buttons.dart';
 import 'package:nololordos/features/match_day_screen/Riverpod/matchData_stateModel.dart';
 import 'package:nololordos/features/match_day_screen/Riverpod/matchProvider.dart';
@@ -49,8 +52,10 @@ class _MatchdayScreenState extends ConsumerState<MatchdayScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final players = ref.watch(playerListProvider);
-    final notifier = ref.read(playerListProvider.notifier);
+    final players = ref.watch(playersProvider);
+
+    //eihane filter kora lagboo
+    final notifier = ref.read(playersProvider.notifier);
 
     return Scaffold(
       body: Padding(
@@ -80,12 +85,12 @@ class _MatchdayScreenState extends ConsumerState<MatchdayScreen> {
                       ownGoals: p.ownGoals,
                       selectedScore: p.selectedScore,
                       onNameChanged: (value) =>
-                          notifier.updateName(index, value),
-                      onIncrementGoals: () => notifier.incrementGoals(index),
+                          notifier.updatePlayer(players[index].id, "NAME", value),
+                      onIncrementGoals: () => notifier.incrementGoals(players[index].id),
                       onIncrementOwnGoals: () =>
-                          notifier.incrementOwnGoals(index),
+                          notifier.incrementOwnGoals(players[index].id),
                       onScoreSelected: (score) =>
-                          notifier.selectScore(index, score),
+                          notifier.selectScore(players[index].id, score),
                     ),
                   );
                 }),
@@ -95,7 +100,13 @@ class _MatchdayScreenState extends ConsumerState<MatchdayScreen> {
                 hieght: 60.h,
                 title: '+ Add the list',
                 icon: '',
-                onTap: () => notifier.addPlayer(),
+                onTap:(){
+                  context.push(RouteName.addPlayerScreen);
+                }
+                
+                // () => 
+                
+                //notifier.addPlayer(),
               ),
               SizedBox(height: 20.h),
 
@@ -105,6 +116,9 @@ class _MatchdayScreenState extends ConsumerState<MatchdayScreen> {
                 title: 'Submit',
                 icon: '',
                 onTap: () {
+
+
+                  ref.watch(matchCountProvider.notifier).state++;
                   final players = ref.read(
                     playerListProvider,
                   ); // get player data

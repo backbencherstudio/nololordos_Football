@@ -18,7 +18,7 @@ import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/
 import 'package:nololordos/features/import_export_screen/presentation/widgets/custom_buttons.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/custom_icon_buttons.dart';
 
-import '../Riverpod/checkboxProvider.dart';
+import '../Riverpod/delete_provider_selection.dart';
 
 class RoosterViewScreen extends StatelessWidget {
   const RoosterViewScreen({super.key});
@@ -64,7 +64,6 @@ class RoosterViewScreen extends StatelessWidget {
 
                               ref.read(isDeleteProvider.notifier).state = false;
                               ref.read(deletePlayerIdListProvider.notifier).state = [];
-                              ref.read(selectedGKPlayersProvider.notifier).state = [];
 
                               debugPrint("Deleted");
                             },
@@ -149,7 +148,7 @@ class RoosterViewScreen extends StatelessWidget {
                     children: [
                       //gk container
                       SizedBox(height: 24.h),
-                      Goalscoresheet(),
+                      GoalScoreSheet(),
                       //def container
                       SizedBox(height: 24.h),
                       DefGoalscoresheet(),
