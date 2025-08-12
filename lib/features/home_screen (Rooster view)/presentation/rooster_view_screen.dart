@@ -16,7 +16,6 @@ import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/goalScoreSheet.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/mid_goalScoreSheet.dart';
 import 'package:nololordos/features/import_export_screen/presentation/widgets/custom_buttons.dart';
-import 'package:nololordos/features/match_day_screen/Riverpod/srProvider.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/custom_icon_buttons.dart';
 
 import '../Riverpod/delete_provider_selection.dart';
@@ -125,8 +124,6 @@ class RoosterViewScreen extends StatelessWidget {
                     ),
                     child: Consumer(
                       builder: (context, ref,_) {
-                        final finalAverage = ref.watch(finalAverageProvider);
-
                         return Padding(
                           padding: EdgeInsets.symmetric(
                             horizontal: 24.w,
@@ -139,7 +136,7 @@ class RoosterViewScreen extends StatelessWidget {
                             icon: teamName == "AEK Athens"
                                 ? AppImages.teamAek
                                 : AppImages.teamoenetik,
-                            score: "STR $finalAverage",
+                            score: "STR 2.36",
                           ),
                         );
                       }

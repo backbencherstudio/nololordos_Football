@@ -171,7 +171,7 @@ final allScoresMap = ref.watch(srProvider); // Map<String, List<int>>
 final playerScores = allScoresMap[player.id] ?? [];
 final totalScore = playerScores.fold(0, (sum, s) => sum + s);
 final averageScore = gmCount > 0 ? totalScore / gmCount : 0;
-    ref.read(totalAverageSumProvider.notifier).state += averageScore;
+   /// ref.read(totalAverageSumProvider.notifier).state += averageScore;
 
                       return Row(
                         children: [
