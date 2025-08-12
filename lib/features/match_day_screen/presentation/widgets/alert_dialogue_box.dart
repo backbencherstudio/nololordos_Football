@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nololordos/core/constant/icons.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
 import 'package:nololordos/features/import_export_screen/presentation/widgets/custom_buttons.dart';
+import 'package:nololordos/features/match_day_screen/Riverpod/srProvider.dart';
 
 void alertDialogueBox(BuildContext context) {
   showDialog(
@@ -35,11 +37,17 @@ void alertDialogueBox(BuildContext context) {
                 ],
               ),
               SizedBox(height: 30.h,),
-               Text("TR 7.25",
-                  style: style.bodyMedium!.copyWith(
-                    color: AppColors.onPrimary,
-                  ),
-                  ),
+               Consumer(
+                 builder: (context, ref, _) {
+                  final avg = ref.watch(averageScoreProvider);
+
+                   return Text(avg.toString(),
+                      style: style.bodyMedium!.copyWith(
+                        color: AppColors.onPrimary,
+                      ),
+                      );
+                 }
+               ),
                   Text("Team Ratings",
                   style: style.bodyMedium!.copyWith(
                     color: AppColors.onPrimary,

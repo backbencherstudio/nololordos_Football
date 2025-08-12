@@ -9,6 +9,7 @@ import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/isDe
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/playerProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/customBox_tile.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/title.dart';
+import 'package:nololordos/features/match_day_screen/Riverpod/srProvider.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/inputdecoration.dart';
 
 import '../../Riverpod/delete_provider_selection.dart';
@@ -166,15 +167,20 @@ class GoalScoreSheet extends ConsumerWidget {
                       final player = players[index];
 
                       final gmCount = ref.watch(matchCountProvider);
+final allScoresMap = ref.watch(srProvider); // Map<String, List<int>>
+final playerScores = allScoresMap[player.id] ?? [];
+final totalScore = playerScores.fold(0, (sum, s) => sum + s);
+final averageScore = gmCount > 0 ? totalScore / gmCount : 0;
+   /// ref.read(totalAverageSumProvider.notifier).state += averageScore;
+
                       return Row(
                         children: [
                           CustomboxTile(
-                            value: player.sr.toStringAsFixed(2),
-                            onChanged: (value) {
-                              ref
-                                  .read(playersProvider.notifier)
-                                  .updatePlayer(player.id, "sr", value);
-                            },
+                            // value: player.sr.toStringAsFixed(2),
+                   value: averageScore.toStringAsFixed(2),
+  onChanged: (value) {
+    ref.read(playersProvider.notifier).updatePlayer(player.id, "sr", value);
+  },
                           ),
 
                           CustomboxTile(
@@ -186,7 +192,7 @@ class GoalScoreSheet extends ConsumerWidget {
                             },
                           ),
                           CustomboxTile(
-                            value: player.goals.toStringAsFixed(2),
+                            value: player.goals.toString(),
 
                             onChanged: (value) {
                               ref
@@ -212,8 +218,10 @@ class GoalScoreSheet extends ConsumerWidget {
                             },
                           ),
                           CustomboxTile(
-value: (player.ownGoals / (gmCount == 0 ? 1 : gmCount))
-                                .toStringAsFixed(2),                            onChanged: (value) {
+                            value:
+                                (player.ownGoals / (gmCount == 0 ? 1 : gmCount))
+                                    .toStringAsFixed(2),
+                            onChanged: (value) {
                               ref
                                   .read(playersProvider.notifier)
                                   .updatePlayer(player.id, "-AGL", value);

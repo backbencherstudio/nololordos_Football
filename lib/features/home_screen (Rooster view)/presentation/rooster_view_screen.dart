@@ -122,20 +122,24 @@ class RoosterViewScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: AppColors.primaryContainer,
                     ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 24.w,
-                        vertical: 12.h,
-                      ),
-                      child: CustomRowInfo(
-                        title: teamName.toString(),
-                        height: 36.h,
-                        width: 36.w,
-                        icon: teamName == "AEK Athens"
-                            ? AppImages.teamAek
-                            : AppImages.teamoenetik,
-                        score: "STR 2.36",
-                      ),
+                    child: Consumer(
+                      builder: (context, ref,_) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 24.w,
+                            vertical: 12.h,
+                          ),
+                          child: CustomRowInfo(
+                            title: teamName.toString(),
+                            height: 36.h,
+                            width: 36.w,
+                            icon: teamName == "AEK Athens"
+                                ? AppImages.teamAek
+                                : AppImages.teamoenetik,
+                            score: "STR 2.36",
+                          ),
+                        );
+                      }
                     ),
                   );
                 },
