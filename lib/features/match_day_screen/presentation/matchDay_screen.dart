@@ -12,6 +12,7 @@ import 'package:nololordos/features/import_export_screen/presentation/widgets/cu
 import 'package:nololordos/features/match_day_screen/Riverpod/matchData_stateModel.dart';
 import 'package:nololordos/features/match_day_screen/Riverpod/matchProvider.dart';
 import 'package:nololordos/features/match_day_screen/Riverpod/player_notifier.dart';
+import 'package:nololordos/features/match_day_screen/Riverpod/srProvider.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/alert_dialogue_box.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/custom_inputfields.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/custom_score_inputBox.dart';
@@ -89,8 +90,41 @@ class _MatchdayScreenState extends ConsumerState<MatchdayScreen> {
                       onIncrementGoals: () => notifier.incrementGoals(players[index].id),
                       onIncrementOwnGoals: () =>
                           notifier.incrementOwnGoals(players[index].id),
-                      onScoreSelected: (score) =>
-                          notifier.selectScore(players[index].id, score),
+                    onScoreSelected: (score) {
+  notifier.selectScore(players[index].id, score);
+
+  toggleScore(ref, players[index].id, score);
+
+  debugPrint(ref.watch(srProvider).toString());
+
+final totals = getTotalScores(ref);
+debugPrint(totals.toString());
+
+
+
+ final scoresMap = ref.read(srProvider);
+
+  final selectedPlayerIds = scoresMap.keys.toList();
+
+   if (selectedPlayerIds.isNotEmpty) {
+    final totalScore = selectedPlayerIds.fold<double>(0, (sum, playerId) {
+      final scores = scoresMap[playerId] ?? [];
+      return sum + scores.fold<double>(0, (pSum, s) => pSum + s);
+    });
+
+    final average = totalScore / selectedPlayerIds.length;
+    ref.read(totalAverageSumProvider.notifier).state += average;
+
+    ref.read(averageScoreProvider.notifier).state = average;
+
+    debugPrint("Average score saved: $average");
+  } else {
+    ref.read(averageScoreProvider.notifier).state = 0.0;
+    debugPrint("No players selected yet. Average reset to 0");
+  }
+
+},
+
                     ),
                   );
                 }),
@@ -140,7 +174,6 @@ class _MatchdayScreenState extends ConsumerState<MatchdayScreen> {
                   );
 
                   ref.read(matchHistoryProvider.notifier).addMatch(match);
-
                   debugPrint("✅ Match Added: $matchName - $teamOne vs $teamTwo");
                   alertDialogueBox(context);
                 },
@@ -152,4 +185,25 @@ class _MatchdayScreenState extends ConsumerState<MatchdayScreen> {
       ),
     );
   }
+  void toggleScore(WidgetRef ref, String playerId, int score) {
+  final current = ref.read(srProvider);
+  final scores = current[playerId] ?? [];
+
+  ref.read(srProvider.notifier).state = {
+    ...current,
+    playerId: scores.contains(score)
+        ? scores.where((s) => s != score).toList() // remove score
+        : [...scores, score], // add score
+  };
+}
+
+// Function to get total scores for each player
+Map<String, int> getTotalScores(WidgetRef ref) {
+  final scoresMap = ref.read(srProvider);
+
+  return scoresMap.map((playerId, scores) {
+    final total = scores.fold(0, (sum, score) => sum + score);
+    return MapEntry(playerId, total);
+  });
+}
 }
