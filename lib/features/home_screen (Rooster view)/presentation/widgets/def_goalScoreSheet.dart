@@ -41,9 +41,10 @@ class DefGoalscoresheet extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           Column(
             children: [
-              SizedBox(height: 11.h),
+              SizedBox(height:isDeleteOn? 6.h: 11.h),
               Row(
                 children: [
                   if (isDeleteOn) ...[
@@ -133,6 +134,10 @@ class DefGoalscoresheet extends ConsumerWidget {
                           width: 144.w,
                           child: TextFormField(
                             readOnly: true,
+                                                        style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                                                          fontWeight: FontWeight.w700
+                                                        ),
+
                             initialValue: player.name,
                             decoration: customInputDecoration(),
                           ),
@@ -151,6 +156,8 @@ class DefGoalscoresheet extends ConsumerWidget {
     scrollDirection: Axis.horizontal,
     child: Column(
       children: [
+                          SizedBox(height: isDeleteOn? 1.h: null,),
+
         Row(
           children: [
             Titles(title: "SR"),

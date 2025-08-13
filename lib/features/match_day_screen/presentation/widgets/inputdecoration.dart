@@ -10,6 +10,7 @@ InputDecoration customInputDecoration({
   Widget? suffixIcon,
 }) {
   return InputDecoration(
+    
     hintText: hintText,
     labelText: labelText,
     prefixIcon: prefixIcon,

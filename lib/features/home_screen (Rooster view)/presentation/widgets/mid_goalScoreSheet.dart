@@ -48,7 +48,7 @@ class MidGoalscoresheet extends ConsumerWidget {
         children: [
           Column(
             children: [
-              SizedBox(height: 11.h),
+              SizedBox(height:isDeleteOn? 6.h: 11.h),
               Row(
                 children: [
                   if (isDeleteOn) ...[
@@ -105,6 +105,8 @@ class MidGoalscoresheet extends ConsumerWidget {
                 debugPrint('$id selected: $isSelected');
                 return Column(
                   children: [
+                                      SizedBox(height: isDeleteOn? 1.h: null,),
+
                     Row(
                       children: [
                         if (isDeleteOn) ...[
@@ -138,6 +140,11 @@ class MidGoalscoresheet extends ConsumerWidget {
                           width: 144.w,
                           child: TextFormField(
                             readOnly: true,
+
+                                                        style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                                                          fontSize: 13.sp,
+                                                          fontWeight: FontWeight.w700
+                                                        ),
                             initialValue: player.name,
                             decoration: customInputDecoration(),
                           ),

@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nololordos/core/constant/icons.dart';
 import 'package:nololordos/core/constant/padding.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';

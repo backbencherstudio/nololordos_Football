@@ -44,7 +44,7 @@ class _CustomboxTileState extends State<CustomboxTile> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(left: 4.w, right: 4.w, bottom: 4.h),
-      height: 50.h,
+      height: 49.8.h,
       width: 62.w,
       child: TextFormField(
         controller: _controller,

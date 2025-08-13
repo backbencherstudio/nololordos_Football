@@ -43,7 +43,7 @@ class GoalScoreSheet extends ConsumerWidget {
         children: [
           Column(
             children: [
-              SizedBox(height: 11.h),
+              SizedBox(height:isDeleteOn? 7.h: 11.h),
               Row(
                 children: [
                   if (isDeleteOn) ...[
@@ -82,13 +82,13 @@ class GoalScoreSheet extends ConsumerWidget {
                   Text("GK", style: style.bodyLarge),
                 ],
               ),
-              SizedBox(height: isDeleteOn ? 2.5.h : 15.h),
+              SizedBox(height: isDeleteOn ? 0.0.h : 15.h),
               Container(
-                width: isDeleteOn ? 180.w : 144.w,
+                width: isDeleteOn ? 190.w : 144.w,
                 height: 1.h,
                 color: Colors.white,
               ),
-              SizedBox(height: isDeleteOn ? 2.h : 4.h),
+              SizedBox(height: isDeleteOn ? 5.h : 4.h),
 
               // Render individual goalkeepers
               ...players.map((player) {
@@ -131,8 +131,13 @@ class GoalScoreSheet extends ConsumerWidget {
                         ],
                         SizedBox(
                           height: 50.h,
-                          width: 144.w,
+                          width: 150.w,
                           child: TextFormField(
+                            style: Theme.of(context).textTheme.labelLarge!
+                                .copyWith(
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.w700,
+                                ),
                             readOnly: true,
                             initialValue: player.name,
                             decoration: customInputDecoration(),
@@ -152,6 +157,7 @@ class GoalScoreSheet extends ConsumerWidget {
               scrollDirection: Axis.horizontal,
               child: Column(
                 children: [
+                  SizedBox(height: isDeleteOn? 1.h: null,),
                   Row(
                     children: [
                       Titles(title: "SR"),
@@ -164,23 +170,32 @@ class GoalScoreSheet extends ConsumerWidget {
                   ),
                   Column(
                     children: List.generate(players.length, (index) {
-                      final player = players[index];
+                    final player = players[index];
+                    final gmCount = ref.watch(matchCountProvider);
+                    final allScoresMap = ref.watch(
+                        srProvider,
+                      ); // Map<String, List<int>>
+                      final playerScores = allScoresMap[player.id] ?? [];
+                      final totalScore = playerScores.fold(
+                        0,
+                        (sum, s) => sum + s,
+                      );
+                      final averageScore = gmCount > 0
+                          ? totalScore / gmCount
+                          : 0;
 
-                      final gmCount = ref.watch(matchCountProvider);
-final allScoresMap = ref.watch(srProvider); // Map<String, List<int>>
-final playerScores = allScoresMap[player.id] ?? [];
-final totalScore = playerScores.fold(0, (sum, s) => sum + s);
-final averageScore = gmCount > 0 ? totalScore / gmCount : 0;
-   /// ref.read(totalAverageSumProvider.notifier).state += averageScore;
+                      /// ref.read(totalAverageSumProvider.notifier).state += averageScore;
 
                       return Row(
                         children: [
                           CustomboxTile(
                             // value: player.sr.toStringAsFixed(2),
-                   value: averageScore.toStringAsFixed(2),
-  onChanged: (value) {
-    ref.read(playersProvider.notifier).updatePlayer(player.id, "sr", value);
-  },
+                            value: averageScore.toStringAsFixed(2),
+                            onChanged: (value) {
+                              ref
+                                  .read(playersProvider.notifier)
+                                  .updatePlayer(player.id, "sr", value);
+                            },
                           ),
 
                           CustomboxTile(

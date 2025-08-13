@@ -9,6 +9,7 @@ import 'package:nololordos/core/routes/route_name.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
 import 'package:nololordos/features/Team_Selection_screen/Riverpod/selection_provider.dart';
 import 'package:nololordos/features/history_screen/presentation/widgets/custom_row_info.dart';
+import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/editProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/isDeleteProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/playerProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/def_goalScoreSheet.dart';
@@ -16,6 +17,7 @@ import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/goalScoreSheet.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/mid_goalScoreSheet.dart';
 import 'package:nololordos/features/import_export_screen/presentation/widgets/custom_buttons.dart';
+import 'package:nololordos/features/match_day_screen/Riverpod/srProvider.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/custom_icon_buttons.dart';
 
 import '../Riverpod/delete_provider_selection.dart';
@@ -39,14 +41,18 @@ class RoosterViewScreen extends StatelessWidget {
                     ? Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          CustomButtons(
-                            hieght: 60.h,
-                            title: 'Reset Stats',
-                            color: AppColors.resetbuttonColor,
-                            icon: "",
-                            onTap: () {
-                              // reset button logic goes here
-                            },
+                          Consumer(
+                            builder: (context, ref, _) {
+                              return CustomButtons(
+                                hieght: 60.h,
+                                title: 'Reset Stats',
+                                color: AppColors.resetbuttonColor,
+                                icon: "",
+                                onTap: () {
+                                 ref.read(isEditOnProvider.notifier).update((state)=> true);
+                                },
+                              );
+                            }
                           ),
                           SizedBox(height: 16.h),
                           CustomButtons(
@@ -88,6 +94,7 @@ class RoosterViewScreen extends StatelessWidget {
 
       body: Consumer(
         builder: (context, ref, _) {
+
           return Column(
             children: [
               SizedBox(height: 55.h),
@@ -124,6 +131,8 @@ class RoosterViewScreen extends StatelessWidget {
                     ),
                     child: Consumer(
                       builder: (context, ref,_) {
+final finalTR = ref.watch(finalTRAverageProvider);
+
                         return Padding(
                           padding: EdgeInsets.symmetric(
                             horizontal: 24.w,
@@ -136,7 +145,7 @@ class RoosterViewScreen extends StatelessWidget {
                             icon: teamName == "AEK Athens"
                                 ? AppImages.teamAek
                                 : AppImages.teamoenetik,
-                            score: "STR 2.36",
+                            score: "STR ${finalTR.toStringAsFixed(2)}",
                           ),
                         );
                       }
