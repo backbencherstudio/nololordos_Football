@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
 import 'package:nololordos/features/Team_Selection_screen/Riverpod/selection_provider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/delete_provider_selection.dart';
+import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/editProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/isDeleteProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/playerProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/customBox_tile.dart';
@@ -21,6 +22,7 @@ class FwdGoalscoresheet extends ConsumerWidget {
     final allPlayers = ref.watch(playersProvider);
     final selectedTeam = ref.watch(selectionProvider);
     final isDeleteOn = ref.watch(isDeleteProvider);
+    final isEditon = ref.watch(isEditOnProvider);
 
 
     // Filter goalkeepers by team
@@ -46,9 +48,10 @@ class FwdGoalscoresheet extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           Column(
             children: [
-              SizedBox(height: 11.h),
+              SizedBox(height:isDeleteOn? 6.h: 11.h),
               Row(
                 children: [
                   if (isDeleteOn) ...[
@@ -105,6 +108,8 @@ class FwdGoalscoresheet extends ConsumerWidget {
                 debugPrint('$id selected: $isSelected');
                 return Column(
                   children: [
+                                      SizedBox(height: isDeleteOn? 1.h: null,),
+
                     Row(
                       children: [
                         if (isDeleteOn) ...[
@@ -137,7 +142,11 @@ class FwdGoalscoresheet extends ConsumerWidget {
                           height: 50.h,
                           width: 144.w,
                           child: TextFormField(
-                            readOnly: true,
+                            readOnly: isEditon,
+  style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                                                          fontSize: 13.sp,
+                                                          fontWeight: FontWeight.w700
+                                                        ),
                             initialValue: player.name,
                             decoration: customInputDecoration(),
                           ),
@@ -172,6 +181,7 @@ class FwdGoalscoresheet extends ConsumerWidget {
             return Row(
               children: [
                 CustomboxTile(
+                  readOnlyValue: isEditon,
                   value: player.sr.toString(),
                   onChanged: (value) {
                     ref
@@ -180,6 +190,7 @@ class FwdGoalscoresheet extends ConsumerWidget {
                   },
                 ),
                 CustomboxTile(
+                  readOnlyValue: isEditon,
                   value: player.gm.toString(),
                   onChanged: (value) {
                     ref
@@ -188,6 +199,7 @@ class FwdGoalscoresheet extends ConsumerWidget {
                   },
                 ),
                 CustomboxTile(
+                  readOnlyValue: isEditon,
                   value: player.gl.toString(), // Assuming player.gl is the correct variable
                   onChanged: (value) {
                     ref
@@ -196,6 +208,7 @@ class FwdGoalscoresheet extends ConsumerWidget {
                   },
                 ),
                 CustomboxTile(
+                  readOnlyValue: isEditon,
                   value: player.agl.toString(),
                   onChanged: (value) {
                     ref
@@ -204,6 +217,7 @@ class FwdGoalscoresheet extends ConsumerWidget {
                   },
                 ),
                 CustomboxTile(
+                  readOnlyValue: isEditon,
                   value: player.minusGl.toString(),
                   onChanged: (value) {
                     ref
@@ -212,6 +226,7 @@ class FwdGoalscoresheet extends ConsumerWidget {
                   },
                 ),
                 CustomboxTile(
+                  readOnlyValue: isEditon,
                   value: player.minusAgl.toString(),
                   onChanged: (value) {
                     ref

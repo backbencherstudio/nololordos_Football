@@ -43,6 +43,10 @@ class CustomScoreInputbox extends StatelessWidget {
             child: Column(
               children: [
                 TextFormField(
+                  style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w800,
+                  ),
                   initialValue: name,
                   onChanged: onNameChanged,
                   decoration: customInputDecoration(hintText: "Player Name"),
@@ -88,7 +92,6 @@ class CustomScoreInputbox extends StatelessWidget {
                   count: (index + 1).toString(),
                   onTap: () => onScoreSelected(index + 1),
                   isSelected: selectedScore == index + 1,
-                  
                 );
               },
             ),
