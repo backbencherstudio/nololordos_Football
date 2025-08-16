@@ -45,7 +45,10 @@ class PlayersNotifier extends StateNotifier<List<PlayerInfoModel>> {
     updatedList[index] = updatedPlayer;
     state = updatedList;
   }
-
+void resetAllValues() {
+    state = playersInfo;  
+    selectedIds = [];      
+  }
   void incrementGoals(String id) {
   final index = state.indexWhere((p) => p.id == id);
   if (index == -1) return;
@@ -114,6 +117,7 @@ class PlayersNotifier extends StateNotifier<List<PlayerInfoModel>> {
     }
   }
 }
+
 
 final allPlayersTeamPositionSelectionProvider =
     Provider.family<bool, Map<String, String>>((ref, data) {

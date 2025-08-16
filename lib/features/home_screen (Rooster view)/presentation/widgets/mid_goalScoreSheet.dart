@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
 import 'package:nololordos/features/Team_Selection_screen/Riverpod/selection_provider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/delete_provider_selection.dart';
+import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/editProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/isDeleteProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/playerProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/customBox_tile.dart';
@@ -21,6 +22,7 @@ class MidGoalscoresheet extends ConsumerWidget {
     final allPlayers = ref.watch(playersProvider);
     final selectedTeam = ref.watch(selectionProvider);
     final isDeleteOn = ref.watch(isDeleteProvider);
+    final isEditon = ref.watch(isEditOnProvider);
 
 
     // Filter goalkeepers by team
@@ -139,7 +141,7 @@ class MidGoalscoresheet extends ConsumerWidget {
                           height: 50.h,
                           width: 144.w,
                           child: TextFormField(
-                            readOnly: true,
+                            readOnly: isEditon,
 
                                                         style: Theme.of(context).textTheme.labelLarge!.copyWith(
                                                           fontSize: 13.sp,
@@ -179,6 +181,7 @@ class MidGoalscoresheet extends ConsumerWidget {
             return Row(
               children: [
                 CustomboxTile(
+                  readOnlyValue: isEditon,
                   value: player.sr.toStringAsFixed(2),
                   onChanged: (value) {
                     ref
@@ -187,6 +190,7 @@ class MidGoalscoresheet extends ConsumerWidget {
                   },
                 ),
                 CustomboxTile(
+                  readOnlyValue: isEditon,
                   value: player.gm.toStringAsFixed(2),
                   onChanged: (value) {
                     ref
@@ -195,6 +199,7 @@ class MidGoalscoresheet extends ConsumerWidget {
                   },
                 ),
                 CustomboxTile(
+                  readOnlyValue: isEditon,
                   value: player.gl.toString(), // Assuming player.gl is the correct variable
                   onChanged: (value) {
                     ref
@@ -203,6 +208,7 @@ class MidGoalscoresheet extends ConsumerWidget {
                   },
                 ),
                 CustomboxTile(
+                  readOnlyValue: isEditon,
                   value: player.agl.toStringAsFixed(2),
                   onChanged: (value) {
                     ref
@@ -211,6 +217,7 @@ class MidGoalscoresheet extends ConsumerWidget {
                   },
                 ),
                 CustomboxTile(
+                  readOnlyValue: isEditon,
                   value: player.minusGl.toStringAsFixed(2),
                   onChanged: (value) {
                     ref
@@ -219,6 +226,7 @@ class MidGoalscoresheet extends ConsumerWidget {
                   },
                 ),
                 CustomboxTile(
+                  readOnlyValue: isEditon,
                   value: player.minusAgl.toStringAsFixed(2),
                   onChanged: (value) {
                     ref

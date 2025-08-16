@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nololordos/core/constant/icons.dart';
 import 'package:nololordos/core/constant/images.dart';
@@ -13,14 +14,13 @@ import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/edit
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/isDeleteProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/Riverpod/playerProvider.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/def_goalScoreSheet.dart';
+import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/deletealart_box.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/fwd_goalScoreSheet.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/goalScoreSheet.dart';
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/mid_goalScoreSheet.dart';
 import 'package:nololordos/features/import_export_screen/presentation/widgets/custom_buttons.dart';
 import 'package:nololordos/features/match_day_screen/Riverpod/srProvider.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/custom_icon_buttons.dart';
-
-import '../Riverpod/delete_provider_selection.dart';
 
 class RoosterViewScreen extends StatelessWidget {
   const RoosterViewScreen({super.key});
@@ -49,10 +49,12 @@ class RoosterViewScreen extends StatelessWidget {
                                 color: AppColors.resetbuttonColor,
                                 icon: "",
                                 onTap: () {
-                                 ref.read(isEditOnProvider.notifier).update((state)=> true);
+                                  ref.read(playersProvider.notifier).resetAllValues();
+                                  ref.read(matchCountProvider.notifier).state = 0.00; 
+                                  ref.read(scoreCountPerMatch.notifier).state = 0; 
                                 },
                               );
-                            }
+                            },
                           ),
                           SizedBox(height: 16.h),
                           CustomButtons(
@@ -64,14 +66,7 @@ class RoosterViewScreen extends StatelessWidget {
                             icon: "",
 
                             onTap: () {
-                              // Handle delete logic
-                              final deleteIds = ref.read(deletePlayerIdListProvider);
-                              ref.read(playersProvider.notifier).deletePlayersByIds(deleteIds);
-
-                              ref.read(isDeleteProvider.notifier).state = false;
-                              ref.read(deletePlayerIdListProvider.notifier).state = [];
-
-                              debugPrint("Deleted");
+                              deleteAlertDialogueBox(context);
                             },
                           ),
                         ],
@@ -94,6 +89,7 @@ class RoosterViewScreen extends StatelessWidget {
 
       body: Consumer(
         builder: (context, ref, _) {
+          final isEditOn = ref.watch(isEditOnProvider);
 
           return Column(
             children: [
@@ -108,8 +104,34 @@ class RoosterViewScreen extends StatelessWidget {
                       width: 200.w,
                       height: 38.h,
                     ),
-
-                    CustomIconButtons(onTap: () {}, icon: AppIcons.pencilIcon),
+                    if (isEditOn == false) ...[
+                      CustomIconButtons(
+                        onTap: () {
+                          ref.watch(isEditOnProvider.notifier).state = true;
+                        },
+                        icon: AppIcons.remove,
+                      ),
+                    ],
+                   if(isEditOn == true)...[
+                     CustomIconButtons(
+                      onTap: () {
+                        ref
+                            .read(isEditOnProvider.notifier)
+                            .update((state) => false);
+                        Fluttertoast.showToast(
+                          msg: "Edit mode is ON",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
+                        debugPrint(
+                          "\n\n edit provider -> ${ref.read(isEditOnProvider)}\n\n",
+                        );
+                      },
+                      icon: AppIcons.pencilIcon,
+                    ),
                     CustomIconButtons(
                       onTap: () {
                         ref
@@ -118,6 +140,7 @@ class RoosterViewScreen extends StatelessWidget {
                       },
                       icon: AppIcons.trashIcon,
                     ),
+                   ]
                   ],
                 ),
               ),
@@ -130,8 +153,8 @@ class RoosterViewScreen extends StatelessWidget {
                       color: AppColors.primaryContainer,
                     ),
                     child: Consumer(
-                      builder: (context, ref,_) {
-final finalTR = ref.watch(finalTRAverageProvider);
+                      builder: (context, ref, _) {
+                        final finalTR = ref.watch(finalTRAverageProvider);
 
                         return Padding(
                           padding: EdgeInsets.symmetric(
@@ -148,7 +171,7 @@ final finalTR = ref.watch(finalTRAverageProvider);
                             score: "STR ${finalTR.toStringAsFixed(2)}",
                           ),
                         );
-                      }
+                      },
                     ),
                   );
                 },

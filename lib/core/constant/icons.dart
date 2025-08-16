@@ -29,5 +29,6 @@ class AppIcons {
   static const String mobileDataIconBlu = '$iconPath/mobile_data_blu.svg';
   static const String iso = '$iconPath/iso.svg';
   static const String back = '$iconPath/Arrow - Left.svg';
+  static const String remove = '$iconPath/remove.svg';
 
 }

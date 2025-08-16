@@ -5,11 +5,13 @@ import 'package:nololordos/features/match_day_screen/presentation/widgets/inputd
 class CustomboxTile extends StatefulWidget {
   final String value;
   final Function(String) onChanged;
+  final bool readOnlyValue;
 
   const CustomboxTile({
     super.key,
     required this.value,
     required this.onChanged,
+     required this.readOnlyValue
   });
 
   @override
@@ -47,6 +49,7 @@ class _CustomboxTileState extends State<CustomboxTile> {
       height: 49.8.h,
       width: 62.w,
       child: TextFormField(
+        readOnly: widget.readOnlyValue,
         controller: _controller,
         decoration: customInputDecoration(),
         keyboardType: TextInputType.number,
