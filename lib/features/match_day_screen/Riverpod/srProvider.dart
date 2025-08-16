@@ -43,7 +43,7 @@ final totalTRSumProvider = StateProvider<double>((_) => 0.0);
 final totalTRCountProvider = StateProvider<int>((_) => 0);
 
 // Computed final TR average
-final finalTRAverageProvider = Provider<double>((ref) {
+final finalTRAverageProvider = StateProvider<double>((ref) {
   final sum = ref.watch(totalTRSumProvider);
   final count = ref.watch(totalTRCountProvider);
   return count > 0 ? sum / count : 0.0;
