@@ -32,8 +32,8 @@ class PlayersNotifier extends StateNotifier<List<PlayerInfoModel>> {
     final player = state[index];
 
     PlayerInfoModel updatedPlayer = switch (key) {
-      'GOALS' => player.copyWith(goals: double.tryParse(value) ?? 0),
-      'GM' => player.copyWith(gm: double.tryParse(value) ?? 0),
+      'GOALS' => player.copyWith(goals: int.tryParse(value) ?? 0),
+      'GM' => player.copyWith(gm: int.tryParse(value) ?? 0),
       'GL' => player.copyWith(gl: double.tryParse(value) ?? 0),
       'AGL' => player.copyWith(agl: double.tryParse(value) ?? 0),
       '-GL' => player.copyWith(minusGl: double.tryParse(value) ?? 0),
@@ -45,6 +45,22 @@ class PlayersNotifier extends StateNotifier<List<PlayerInfoModel>> {
     updatedList[index] = updatedPlayer;
     state = updatedList;
   }
+  
+  void updatePlayerName(String id, String newName) {
+  final index = state.indexWhere((p) => p.id == id);
+  if (index == -1) return;
+
+  final player = state[index];
+
+  // Create a new player model with the updated name
+  final updatedPlayer = player.copyWith(name: newName);
+
+  final updatedList = [...state];
+  updatedList[index] = updatedPlayer;
+  state = updatedList;
+}
+
+
 void resetAllValues() {
     state = playersInfo;  
     selectedIds = [];      
@@ -54,7 +70,7 @@ void resetAllValues() {
   if (index == -1) return;
 
   final player = state[index];
-  final newGoals = (player.goals == 15.0) ? 0.0 : player.goals + 1;
+  final newGoals = (player.goals == 15) ? 0 : player.goals + 1;
 
   final updatedPlayer = player.copyWith(goals: newGoals);
 
@@ -73,7 +89,7 @@ void resetAllValues() {
 
     state = [
       for (int i = 0; i < state.length; i++)
-        if (i == index) player.copyWith(ownGoals: newOwnGoals.toDouble()) else state[i]
+        if (i == index) player.copyWith(ownGoals: newOwnGoals) else state[i]
     ];
   }
 
@@ -167,7 +183,7 @@ void toggleSelectAllPlayers(
 }
 
 //match count
-final matchCountProvider = StateProvider<double>((_) => 0.00);
+final matchCountProvider = StateProvider<int>((_) => 0);
 
 //ScoreCount
 

@@ -97,60 +97,55 @@ final filteredPlayers = players.where((p) {
             notifier.incrementGoals(filteredPlayers[index].id),
         onIncrementOwnGoals: () =>
             notifier.incrementOwnGoals(filteredPlayers[index].id),
-        onScoreSelected: (score) {
-          notifier.selectScore(filteredPlayers[index].id, score);
+       onScoreSelected: (score) {
+  final currentSelectedScore = filteredPlayers[index].selectedScore;
 
-          toggleScore(ref, filteredPlayers[index].id, score);
+  // Toggle logic: if tapped score is already selected, unselect it
+  final newScore = (currentSelectedScore == score) ? 0 : score;
 
-          debugPrint(ref.watch(srProvider).toString());
+  notifier.selectScore(filteredPlayers[index].id, newScore);
 
-          final totals = getTotalScores(ref);
-          debugPrint(totals.toString());
+  toggleScore(ref, filteredPlayers[index].id, newScore);
 
-          final scoresMap = ref.read(srProvider);
+  debugPrint(ref.watch(srProvider).toString());
 
-          final selectedPlayerIds = scoresMap.keys.toList();
+  final totals = getTotalScores(ref);
+  debugPrint(totals.toString());
 
-          if (selectedPlayerIds.isNotEmpty) {
-            final totalScore = selectedPlayerIds.fold<double>(0, (sum, playerId) {
-              final scores = scoresMap[playerId] ?? [];
-              return sum + scores.fold<double>(0, (pSum, s) => pSum + s);
-            });
+  final scoresMap = ref.read(srProvider);
 
-            final average = totalScore / selectedPlayerIds.length;
+  final selectedPlayerIds = scoresMap.keys.toList();
 
-            // ✅ Update running total of all averages
-            ref.read(totalAverageSumProvider.notifier).state += average;
-            ref.read(totalTRSumProvider.notifier).state += average;
-            ref.read(totalTRCountProvider.notifier).state++;
+  if (selectedPlayerIds.isNotEmpty) {
+    final totalScore = selectedPlayerIds.fold<double>(0, (sum, playerId) {
+      final scores = scoresMap[playerId] ?? [];
+      return sum + scores.fold<double>(0, (pSum, s) => pSum + s);
+    });
 
-            debugPrint("Match average added: $average");
-            debugPrint("Overall average now: ${ref.read(finalAverageProvider)}");
-            ref.read(averageScoreProvider.notifier).state = average;
+    final average = totalScore / selectedPlayerIds.length;
 
-            debugPrint("Average score saved: $average");
-          } else {
-            ref.read(averageScoreProvider.notifier).state = 0.0;
-            debugPrint("No players selected yet. Average reset to 0");
-          }
+    // Update running totals and averages
+    ref.read(totalAverageSumProvider.notifier).state += average;
+    ref.read(totalTRSumProvider.notifier).state += average;
+    ref.read(totalTRCountProvider.notifier).state++;
+
+    debugPrint("Match average added: $average");
+    debugPrint("Overall average now: ${ref.read(finalAverageProvider)}");
+    ref.read(averageScoreProvider.notifier).state = average;
+
+    debugPrint("Average score saved: $average");
+  } else {
+    ref.read(averageScoreProvider.notifier).state = 0.0;
+    debugPrint("No players selected yet. Average reset to 0");
+  }
+
         },
       ),
     );
   }),
 ),
 
-              CustomButtons(
-                hieght: 60.h,
-                title: '+ Add the list',
-                icon: '',
-                onTap: () {
-                  context.push(RouteName.addPlayerScreen);
-                },
-
-                // () =>
-
-                //notifier.addPlayer(),
-              ),
+         
               SizedBox(height: 20.h),
 
               CustomButtons(
@@ -182,7 +177,7 @@ final filteredPlayers = players.where((p) {
 
                   ref.read(matchHistoryProvider.notifier).addMatch(match);
                   debugPrint(
-                    "✅ Match Added: $matchName - $teamOne vs $teamTwo",
+                    " Match Added: $matchName - $teamOne vs $teamTwo",
                   );
                   alertDialogueBox(context);
                 },

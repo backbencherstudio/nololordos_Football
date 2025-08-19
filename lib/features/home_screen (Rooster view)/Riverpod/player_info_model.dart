@@ -5,14 +5,14 @@ class PlayerInfoModel {
   String id;
 
   double sr;            // Change to double for easier calculation
-  double gm;            // Change to double for easier calculation
+  int gm;            // Change to double for easier calculation
   double gl;            // Goals (already double)
   double agl;           // Average Goals per Match (AGL)
   double minusGl;       // minusGL (changed to double)
   double minusAgl;      // minusAGL (changed to double)
 
-  double goals;         // Goals scored by the player
-  double ownGoals;      // Own goals scored by the player
+  int goals;         // Goals scored by the player
+  int ownGoals;      // Own goals scored by the player
   int selectedScore;    // Selected score (probably integer)
   String matchName;
   String teamOne;
@@ -27,13 +27,13 @@ class PlayerInfoModel {
     required this.name,
     required this.id,
     this.sr = 0.0,
-    this.gm = 0.0,
+    this.gm = 0,
     this.gl = 0.00,
     this.agl = 0.00,
     this.minusGl = 0.0,
     this.minusAgl = 0.0,
-    this.goals = 0.0,
-    this.ownGoals = 0.0,
+    this.goals = 0,
+    this.ownGoals = 0,
     this.selectedScore = 0,
     this.matchName = '',
     this.teamOne = '',
@@ -50,13 +50,13 @@ class PlayerInfoModel {
     String? name,
     String? id,
     double? sr,
-    double? gm,
+    int? gm,
     double? gl,
     double? agl,
     double? minusGl,
     double? minusAgl,
-    double? goals,
-    double? ownGoals,
+    int? goals,
+    int? ownGoals,
     int? selectedScore,
     String? matchName,
     String? teamOne,

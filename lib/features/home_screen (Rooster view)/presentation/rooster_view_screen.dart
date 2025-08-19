@@ -50,7 +50,7 @@ class RoosterViewScreen extends StatelessWidget {
                                 icon: "",
                                 onTap: () {
                                   ref.read(playersProvider.notifier).resetAllValues();
-                                  ref.read(matchCountProvider.notifier).state = 0.00; 
+                                  ref.read(matchCountProvider.notifier).state = 0; 
                                   ref.read(scoreCountPerMatch.notifier).state = 0; 
                                   
                                     ref.read(finalTRAverageProvider.notifier).state= 0.00;

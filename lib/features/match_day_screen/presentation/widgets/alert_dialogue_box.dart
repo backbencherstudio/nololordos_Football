@@ -41,7 +41,7 @@ void alertDialogueBox(BuildContext context) {
                  builder: (context, ref, _) {
                   final avg = ref.watch(averageScoreProvider);
 
-                   return Text(avg.toString(),
+                   return Text(avg.toStringAsFixed(2),
                       style: style.bodyMedium!.copyWith(
                         color: AppColors.onPrimary,
                       ),

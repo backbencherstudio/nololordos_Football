@@ -13,33 +13,48 @@ import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/title.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/inputdecoration.dart';
 
-class FwdGoalscoresheet extends ConsumerWidget {
+class FwdGoalscoresheet extends ConsumerStatefulWidget {
   const FwdGoalscoresheet({super.key});
 
- @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  @override
+  _FwdGoalscoresheetState createState() => _FwdGoalscoresheetState();
+}
+
+class _FwdGoalscoresheetState extends ConsumerState<FwdGoalscoresheet> {
+  // Map to hold TextEditingController for each player
+  late Map<String, TextEditingController> controllers;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the controllers map
+    controllers = {};
+  }
+
+  @override
+  void dispose() {
+    // Dispose all controllers to avoid memory leaks
+    controllers.values.forEach((controller) => controller.dispose());
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final style = Theme.of(context).textTheme;
     final allPlayers = ref.watch(playersProvider);
     final selectedTeam = ref.watch(selectionProvider);
     final isDeleteOn = ref.watch(isDeleteProvider);
     final isEditon = ref.watch(isEditOnProvider);
 
-
-    // Filter goalkeepers by team
+    // Filter forwards by team
     final players = allPlayers
         .where(
           (p) =>
-              (
-                
-                p.position == "FWD" || p.position == "Forward (FWD)"
-                
-                
-                ) &&
+              (p.position == "FWD" || p.position == "Forward (FWD)") &&
               selectedTeam != null &&
               p.team == selectedTeam,
         )
         .toList();
-
 
     return Container(
       padding: EdgeInsets.only(left: 24.w, bottom: 20.h),
@@ -48,10 +63,9 @@ class FwdGoalscoresheet extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           Column(
             children: [
-              SizedBox(height:isDeleteOn? 6.h: 11.h),
+              SizedBox(height: isDeleteOn ? 6.h : 11.h),
               Row(
                 children: [
                   if (isDeleteOn) ...[
@@ -62,7 +76,7 @@ class FwdGoalscoresheet extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(100),
                         ),
                         checkColor: Colors.white,
-                        fillColor: WidgetStateProperty.all(
+                        fillColor: MaterialStateProperty.all(
                           ref.watch(
                                 allPlayersTeamPositionSelectionProvider({
                                   'team': selectedTeam,
@@ -74,12 +88,12 @@ class FwdGoalscoresheet extends ConsumerWidget {
                         ),
                         value: ref.watch(
                           allPlayersTeamPositionSelectionProvider({
-                            'team': selectedTeam ,
+                            'team': selectedTeam,
                             'position': 'FWD',
                           }),
                         ),
                         onChanged: (_) {
-                          toggleSelectAllPlayers(ref, selectedTeam , 'FWD');
+                          toggleSelectAllPlayers(ref, selectedTeam, 'FWD');
                           debugPrint(
                             "Delete player IDs: ${ref.read(deletePlayerIdListProvider)}",
                           );
@@ -98,18 +112,23 @@ class FwdGoalscoresheet extends ConsumerWidget {
               ),
               SizedBox(height: isDeleteOn ? 2.h : 4.h),
 
-              // Render individual goalkeepers
+              // Render individual forwards
               ...players.map((player) {
-                final id = player.id ;
+                final id = player.id;
                 final isSelected = ref
                     .watch(deletePlayerIdListProvider)
                     .contains(id);
 
                 debugPrint('$id selected: $isSelected');
+
+                // Initialize controller for each player only once
+                if (!controllers.containsKey(id)) {
+                  controllers[id] = TextEditingController(text: player.name);
+                }
+
                 return Column(
                   children: [
-                                      SizedBox(height: isDeleteOn? 1.h: null,),
-
+                    SizedBox(height: isDeleteOn ? 1.h : null),
                     Row(
                       children: [
                         if (isDeleteOn) ...[
@@ -120,21 +139,22 @@ class FwdGoalscoresheet extends ConsumerWidget {
                                 borderRadius: BorderRadius.circular(100),
                               ),
                               checkColor: Colors.white,
-                              fillColor: WidgetStateProperty.all(
+                              fillColor: MaterialStateProperty.all(
                                 isSelected
                                     ? AppColors.redColor
                                     : Colors.transparent,
                               ),
                               value: isSelected,
-                                onChanged: (bool? value) {
-                                  if (value == true) {
-                                    addPlayerId(ref, id);
-                                  } else {
-                                    removePlayerId(ref, id);
-                                  }
-                                  debugPrint("Delete player IDs: ${ref.read(deletePlayerIdListProvider)}");
+                              onChanged: (bool? value) {
+                                if (value == true) {
+                                  addPlayerId(ref, id);
+                                } else {
+                                  removePlayerId(ref, id);
                                 }
-
+                                debugPrint(
+                                  "Delete player IDs: ${ref.read(deletePlayerIdListProvider)}",
+                                );
+                              },
                             ),
                           ),
                         ],
@@ -142,12 +162,16 @@ class FwdGoalscoresheet extends ConsumerWidget {
                           height: 50.h,
                           width: 144.w,
                           child: TextFormField(
-                            readOnly: isEditon,
-  style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                                                          fontSize: 13.sp,
-                                                          fontWeight: FontWeight.w700
-                                                        ),
-                            initialValue: player.name,
+                            controller: controllers[id],  // Use the player-specific controller
+                            onChanged: (value) {
+                              // Update the player's name when it changes
+                              ref.read(playersProvider.notifier).updatePlayerName(player.id, value);
+                            },
+                            style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                            readOnly: isEditon,  // Make it readonly if editing is off
                             decoration: customInputDecoration(),
                           ),
                         ),

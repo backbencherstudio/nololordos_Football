@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -31,7 +33,6 @@ class CustomGoaltakenButton extends StatelessWidget {
         ),
         child: Padding(
           padding: EdgeInsets.all(8.r),
-          // ignore: deprecated_member_use
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

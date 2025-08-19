@@ -8,8 +8,8 @@ import 'package:nololordos/features/match_day_screen/presentation/widgets/inputd
 
 class CustomScoreInputbox extends StatelessWidget {
   final String name;
-  final double goals;
-  final double ownGoals;
+  final int goals;
+  final int ownGoals;
   final int? selectedScore;
 
   final ValueChanged<String> onNameChanged;
@@ -43,6 +43,7 @@ class CustomScoreInputbox extends StatelessWidget {
             child: Column(
               children: [
                 TextFormField(
+                  key: key,
                   style: Theme.of(context).textTheme.labelLarge!.copyWith(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w800,
@@ -88,10 +89,26 @@ class CustomScoreInputbox extends StatelessWidget {
               ),
               itemCount: 10,
               itemBuilder: (context, index) {
+                final newScore = index + 1;
+
                 return CustomScroebox(
                   count: (index + 1).toString(),
-                  onTap: () => onScoreSelected(index + 1),
-                  isSelected: selectedScore == index + 1,
+                  onTap: () {
+                    final newScore = index + 1;
+                    if (selectedScore == newScore) {
+                      onScoreSelected(selectedScore!);
+                    } else {
+                      onScoreSelected(newScore);
+                    }
+                    debugPrint('gigi hadid ->>>>>${selectedScore == newScore}');
+                    debugPrint('gigi hadidssssssss ->>>>>${selectedScore != newScore}');
+
+                  },
+
+                  isSelected: 
+                selectedScore == newScore,
+
+
                 );
               },
             ),
