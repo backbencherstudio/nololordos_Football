@@ -13,33 +13,48 @@ import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/
 import 'package:nololordos/features/home_screen%20(Rooster%20view)/presentation/widgets/title.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/inputdecoration.dart';
 
-class MidGoalscoresheet extends ConsumerWidget {
+class MidGoalscoresheet extends ConsumerStatefulWidget {
   const MidGoalscoresheet({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _MidGoalscoresheetState createState() => _MidGoalscoresheetState();
+}
+
+class _MidGoalscoresheetState extends ConsumerState<MidGoalscoresheet> {
+  // Map to hold TextEditingController for each player
+  late Map<String, TextEditingController> controllers;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the controllers map
+    controllers = {};
+  }
+
+  @override
+  void dispose() {
+    // Dispose all controllers to avoid memory leaks
+    controllers.values.forEach((controller) => controller.dispose());
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final style = Theme.of(context).textTheme;
     final allPlayers = ref.watch(playersProvider);
     final selectedTeam = ref.watch(selectionProvider);
     final isDeleteOn = ref.watch(isDeleteProvider);
     final isEditon = ref.watch(isEditOnProvider);
 
-
-    // Filter goalkeepers by team
+    // Filter midfielders by team
     final players = allPlayers
         .where(
           (p) =>
-              (
-                
-                p.position == "MID" || p.position == "Midfielder (MID)"
-                
-                
-                ) &&
+              (p.position == "MID" || p.position == "Midfielder (MID)") &&
               selectedTeam != null &&
               p.team == selectedTeam,
         )
         .toList();
-
 
     return Container(
       padding: EdgeInsets.only(left: 24.w, bottom: 20.h),
@@ -50,7 +65,7 @@ class MidGoalscoresheet extends ConsumerWidget {
         children: [
           Column(
             children: [
-              SizedBox(height:isDeleteOn? 6.h: 11.h),
+              SizedBox(height: isDeleteOn ? 6.h : 11.h),
               Row(
                 children: [
                   if (isDeleteOn) ...[
@@ -73,12 +88,12 @@ class MidGoalscoresheet extends ConsumerWidget {
                         ),
                         value: ref.watch(
                           allPlayersTeamPositionSelectionProvider({
-                            'team': selectedTeam ,
+                            'team': selectedTeam,
                             'position': 'MID',
                           }),
                         ),
                         onChanged: (_) {
-                          toggleSelectAllPlayers(ref, selectedTeam , 'MID');
+                          toggleSelectAllPlayers(ref, selectedTeam, 'MID');
                           debugPrint(
                             "Delete player IDs: ${ref.read(deletePlayerIdListProvider)}",
                           );
@@ -97,18 +112,23 @@ class MidGoalscoresheet extends ConsumerWidget {
               ),
               SizedBox(height: isDeleteOn ? 2.h : 4.h),
 
-              // Render individual goalkeepers
+              // Render individual midfielders
               ...players.map((player) {
-                final id = player.id ;
+                final id = player.id;
                 final isSelected = ref
                     .watch(deletePlayerIdListProvider)
                     .contains(id);
 
                 debugPrint('$id selected: $isSelected');
+
+                // Initialize controller for each player only once
+                if (!controllers.containsKey(id)) {
+                  controllers[id] = TextEditingController(text: player.name);
+                }
+
                 return Column(
                   children: [
-                                      SizedBox(height: isDeleteOn? 1.h: null,),
-
+                    SizedBox(height: isDeleteOn ? 1.h : null),
                     Row(
                       children: [
                         if (isDeleteOn) ...[
@@ -119,21 +139,22 @@ class MidGoalscoresheet extends ConsumerWidget {
                                 borderRadius: BorderRadius.circular(100),
                               ),
                               checkColor: Colors.white,
-                              fillColor: WidgetStateProperty.all(
+                              fillColor: MaterialStateProperty.all(
                                 isSelected
                                     ? AppColors.redColor
                                     : Colors.transparent,
                               ),
                               value: isSelected,
-                                onChanged: (bool? value) {
-                                  if (value == true) {
-                                    addPlayerId(ref, id);
-                                  } else {
-                                    removePlayerId(ref, id);
-                                  }
-                                  debugPrint("Delete player IDs: ${ref.read(deletePlayerIdListProvider)}");
+                              onChanged: (bool? value) {
+                                if (value == true) {
+                                  addPlayerId(ref, id);
+                                } else {
+                                  removePlayerId(ref, id);
                                 }
-
+                                debugPrint(
+                                  "Delete player IDs: ${ref.read(deletePlayerIdListProvider)}",
+                                );
+                              },
                             ),
                           ),
                         ],
@@ -141,13 +162,15 @@ class MidGoalscoresheet extends ConsumerWidget {
                           height: 50.h,
                           width: 144.w,
                           child: TextFormField(
-                            readOnly: isEditon,
-
-                                                        style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                                                          fontSize: 13.sp,
-                                                          fontWeight: FontWeight.w700
-                                                        ),
-                            initialValue: player.name,
+                            controller: controllers[id],  // Use the player-specific controller
+                            onChanged: (value) {
+                              // Update the player's name when it changes
+                              ref.read(playersProvider.notifier).updatePlayerName(player.id, value);
+                            },
+                            style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                            readOnly: isEditon,  // Make it readonly if editing is off
                             decoration: customInputDecoration(),
                           ),
                         ),
@@ -158,7 +181,6 @@ class MidGoalscoresheet extends ConsumerWidget {
               }),
             ],
           ),
-
           // ---------------- Stats Columns ------------------
            Expanded(
   child: SingleChildScrollView(
