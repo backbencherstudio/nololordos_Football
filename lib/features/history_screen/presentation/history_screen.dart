@@ -64,18 +64,18 @@ class HistoryScreen extends ConsumerWidget {
                                 textTheme: ButtonTextTheme.primary,
                               ),
                               colorScheme:
-                                  ColorScheme.dark(
-                                        primary: AppColors.buttonAvtiveColor,
-                                        onPrimary: AppColors.onPrimary,
-                                        surface: AppColors.primaryContainer,
-                                        onSurface: AppColors.onPrimary,
-                                      )
-                                      .copyWith(
-                                        secondary: AppColors.buttonAvtiveColor,
-                                      )
-                                      .copyWith(
-                                        background: AppColors.primaryContainer,
-                                      ),
+                              ColorScheme.dark(
+                                primary: AppColors.buttonAvtiveColor,
+                                onPrimary: AppColors.onPrimary,
+                                surface: AppColors.primaryContainer,
+                                onSurface: AppColors.onPrimary,
+                              )
+                                  .copyWith(
+                                secondary: AppColors.buttonAvtiveColor,
+                              )
+                                  .copyWith(
+                                background: AppColors.primaryContainer,
+                              ),
                             ),
                             child: child!,
                           );
@@ -92,30 +92,30 @@ class HistoryScreen extends ConsumerWidget {
                 ],
               ),
 
-              
-              Consumer(
-                builder: (context, ref , _) {
-final data = ref.watch(matchHistoryProvider);
 
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: data.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: 20.h),
-                        child: CustomBoxInfo(
-                          matchName: data[index].matchName,
-                          scoreOne: data[index].teamOneScore,
-                          scoreTwo: data[index].teamTwoScore,
-                          teamOne:data[index].teamOne,
-                          teamTwo: data[index].teamTwo,
-                          date: data[index].date,
-                        ),
-                      );
-                    },
-                  );
-                }
+              Consumer(
+                  builder: (context, ref , _) {
+                    final data = ref.watch(matchHistoryProvider);
+
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: data.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.only(bottom: 20.h),
+                          child: CustomBoxInfo(
+                            matchName: data[index].matchName,
+                            scoreOne: data[index].teamOneScore,
+                            scoreTwo: data[index].teamTwoScore,
+                            teamOne:data[index].teamOne,
+                            teamTwo: data[index].teamTwo,
+                            date: data[index].date,
+                          ),
+                        );
+                      },
+                    );
+                  }
               ),
             ],
           ),

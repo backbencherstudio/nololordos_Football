@@ -24,22 +24,15 @@ class MidGoalscoresheet extends ConsumerWidget {
     final isDeleteOn = ref.watch(isDeleteProvider);
     final isEditon = ref.watch(isEditOnProvider);
 
-
     // Filter goalkeepers by team
     final players = allPlayers
         .where(
           (p) =>
-              (
-                
-                p.position == "MID" || p.position == "Midfielder (MID)"
-                
-                
-                ) &&
+              (p.position == "MID" || p.position == "Midfielder (MID)") &&
               selectedTeam != null &&
               p.team == selectedTeam,
         )
         .toList();
-
 
     return Container(
       padding: EdgeInsets.only(left: 24.w, bottom: 20.h),
@@ -50,7 +43,7 @@ class MidGoalscoresheet extends ConsumerWidget {
         children: [
           Column(
             children: [
-              SizedBox(height:isDeleteOn? 6.h: 11.h),
+              SizedBox(height: isDeleteOn ? 6.h : 11.h),
               Row(
                 children: [
                   if (isDeleteOn) ...[
@@ -73,12 +66,12 @@ class MidGoalscoresheet extends ConsumerWidget {
                         ),
                         value: ref.watch(
                           allPlayersTeamPositionSelectionProvider({
-                            'team': selectedTeam ,
+                            'team': selectedTeam,
                             'position': 'MID',
                           }),
                         ),
                         onChanged: (_) {
-                          toggleSelectAllPlayers(ref, selectedTeam , 'MID');
+                          toggleSelectAllPlayers(ref, selectedTeam, 'MID');
                           debugPrint(
                             "Delete player IDs: ${ref.read(deletePlayerIdListProvider)}",
                           );
@@ -99,7 +92,7 @@ class MidGoalscoresheet extends ConsumerWidget {
 
               // Render individual goalkeepers
               ...players.map((player) {
-                final id = player.id ;
+                final id = player.id;
                 final isSelected = ref
                     .watch(deletePlayerIdListProvider)
                     .contains(id);
@@ -107,7 +100,7 @@ class MidGoalscoresheet extends ConsumerWidget {
                 debugPrint('$id selected: $isSelected');
                 return Column(
                   children: [
-                                      SizedBox(height: isDeleteOn? 1.h: null,),
+                    SizedBox(height: isDeleteOn ? 1.h : null),
 
                     Row(
                       children: [
@@ -125,15 +118,16 @@ class MidGoalscoresheet extends ConsumerWidget {
                                     : Colors.transparent,
                               ),
                               value: isSelected,
-                                onChanged: (bool? value) {
-                                  if (value == true) {
-                                    addPlayerId(ref, id);
-                                  } else {
-                                    removePlayerId(ref, id);
-                                  }
-                                  debugPrint("Delete player IDs: ${ref.read(deletePlayerIdListProvider)}");
+                              onChanged: (bool? value) {
+                                if (value == true) {
+                                  addPlayerId(ref, id);
+                                } else {
+                                  removePlayerId(ref, id);
                                 }
-
+                                debugPrint(
+                                  "Delete player IDs: ${ref.read(deletePlayerIdListProvider)}",
+                                );
+                              },
                             ),
                           ),
                         ],
@@ -143,10 +137,11 @@ class MidGoalscoresheet extends ConsumerWidget {
                           child: TextFormField(
                             readOnly: isEditon,
 
-                                                        style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                                                          fontSize: 13.sp,
-                                                          fontWeight: FontWeight.w700
-                                                        ),
+                            style: Theme.of(context).textTheme.labelLarge!
+                                .copyWith(
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.w700,
+                                ),
                             initialValue: player.name,
                             decoration: customInputDecoration(),
                           ),
@@ -160,85 +155,91 @@ class MidGoalscoresheet extends ConsumerWidget {
           ),
 
           // ---------------- Stats Columns ------------------
-           Expanded(
-  child: SingleChildScrollView(
-    scrollDirection: Axis.horizontal,
-    child: Column(
-      children: [
-        Row(
-          children: [
-            Titles(title: "SR"),
-            Titles(title: "GM"),
-            Titles(title: "GL"),
-            Titles(title: "AGL"),
-            Titles(title: "-GL"),
-            Titles(title: "-AGL"),
-          ],
-        ),
-        Column(
-          children: List.generate(players.length, (index) {
-            final player = players[index];
-            return Row(
-              children: [
-                CustomboxTile(
-                  readOnlyValue: isEditon,
-                  value: player.sr.toStringAsFixed(2),
-                  onChanged: (value) {
-                    ref
-                        .read(playersProvider.notifier)
-                        .updatePlayer(player.id, "SR", value);
-                  },
-                ),
-                CustomboxTile(
-                  readOnlyValue: isEditon,
-                  value: player.gm.toStringAsFixed(2),
-                  onChanged: (value) {
-                    ref
-                        .read(playersProvider.notifier)
-                        .updatePlayer(player.id, "GM", value);
-                  },
-                ),
-                CustomboxTile(
-                  readOnlyValue: isEditon,
-                  value: player.gl.toString(), // Assuming player.gl is the correct variable
-                  onChanged: (value) {
-                    ref
-                        .read(playersProvider.notifier)
-                        .updatePlayer(player.id, "GL", value);
-                  },
-                ),
-                CustomboxTile(
-                  readOnlyValue: isEditon,
-                  value: player.agl.toStringAsFixed(2),
-                  onChanged: (value) {
-                    ref
-                        .read(playersProvider.notifier)
-                        .updatePlayer(player.id, "AGL", value);
-                  },
-                ),
-                CustomboxTile(
-                  readOnlyValue: isEditon,
-                  value: player.minusGl.toStringAsFixed(2),
-                  onChanged: (value) {
-                    ref
-                        .read(playersProvider.notifier)
-                        .updatePlayer(player.id, "-GL", value);
-                  },
-                ),
-                CustomboxTile(
-                  readOnlyValue: isEditon,
-                  value: player.minusAgl.toStringAsFixed(2),
-                  onChanged: (value) {
-                    ref
-                        .read(playersProvider.notifier)
-                        .updatePlayer(player.id, "-AGL", value);
-                  },
-                ),
-              ],
-            );
-          }),
-        ),
-      ],
-    ),
-  ),
-)]));}}
+          Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Titles(title: "SR"),
+                      Titles(title: "GM"),
+                      Titles(title: "GL"),
+                      Titles(title: "AGL"),
+                      Titles(title: "-GL"),
+                      Titles(title: "-AGL"),
+                    ],
+                  ),
+                  Column(
+                    children: List.generate(players.length, (index) {
+                      final player = players[index];
+                      return Row(
+                        children: [
+                          CustomboxTile(
+                            readOnlyValue: isEditon,
+                            value: player.sr.toStringAsFixed(2),
+                            onChanged: (value) {
+                              ref
+                                  .read(playersProvider.notifier)
+                                  .updatePlayer(player.id, "SR", value);
+                            },
+                          ),
+                          CustomboxTile(
+                            readOnlyValue: isEditon,
+                            value: player.gm.toStringAsFixed(2),
+                            onChanged: (value) {
+                              ref
+                                  .read(playersProvider.notifier)
+                                  .updatePlayer(player.id, "GM", value);
+                            },
+                          ),
+                          CustomboxTile(
+                            readOnlyValue: isEditon,
+                            value: player.gl
+                                .toString(), // Assuming player.gl is the correct variable
+                            onChanged: (value) {
+                              ref
+                                  .read(playersProvider.notifier)
+                                  .updatePlayer(player.id, "GL", value);
+                            },
+                          ),
+                          CustomboxTile(
+                            readOnlyValue: isEditon,
+                            value: player.agl.toStringAsFixed(2),
+                            onChanged: (value) {
+                              ref
+                                  .read(playersProvider.notifier)
+                                  .updatePlayer(player.id, "AGL", value);
+                            },
+                          ),
+                          CustomboxTile(
+                            readOnlyValue: isEditon,
+                            value: player.minusGl.toStringAsFixed(2),
+                            onChanged: (value) {
+                              ref
+                                  .read(playersProvider.notifier)
+                                  .updatePlayer(player.id, "-GL", value);
+                            },
+                          ),
+                          CustomboxTile(
+                            readOnlyValue: isEditon,
+                            value: player.minusAgl.toStringAsFixed(2),
+                            onChanged: (value) {
+                              ref
+                                  .read(playersProvider.notifier)
+                                  .updatePlayer(player.id, "-AGL", value);
+                            },
+                          ),
+                        ],
+                      );
+                    }),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -1,5 +1,3 @@
-// ignore_for_file: unused_local_variable, unnecessary_null_comparison
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,10 +11,11 @@ import 'package:nololordos/features/import_export_screen/presentation/widgets/cu
 import 'package:nololordos/features/match_day_screen/Riverpod/matchData_stateModel.dart';
 import 'package:nololordos/features/match_day_screen/Riverpod/matchProvider.dart';
 import 'package:nololordos/features/match_day_screen/Riverpod/player_notifier.dart';
-import 'package:nololordos/features/match_day_screen/Riverpod/srProvider.dart';
+import 'package:nololordos/features/match_day_screen/Riverpod/selection_score_provider.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/alert_dialogue_box.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/custom_inputfields.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/custom_score_inputBox.dart';
+import '../Riverpod/srProvider.dart';
 
 class MatchdayScreen extends ConsumerStatefulWidget {
   const MatchdayScreen({super.key});
@@ -31,6 +30,8 @@ class _MatchdayScreenState extends ConsumerState<MatchdayScreen> {
   late TextEditingController teamTwoController;
   late TextEditingController teamOneScoreController;
   late TextEditingController teamTwoScoreController;
+
+  final _formKey = GlobalKey<FormState>(); // Form key for validation
 
   @override
   void initState() {
@@ -52,170 +53,215 @@ class _MatchdayScreenState extends ConsumerState<MatchdayScreen> {
     super.dispose();
   }
 
+  void _clearAllFields() {
+    matchNameController.clear();
+    teamOneController.clear();
+    teamTwoController.clear();
+    teamOneScoreController.clear();
+    teamTwoScoreController.clear();
+    // Reset the date in provider
+    ref.read(selectedMatchDateProvider.notifier).state = null;
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final players = ref.watch(playersProvider);
-final selectedTeam = ref.watch(selectionProvider);
-
-    //eihane filter kora lagboo
+    final selectedTeam = ref.watch(selectionProvider);
     final notifier = ref.read(playersProvider.notifier);
-final filteredPlayers = players.where((p) {
-  return selectedTeam != null && p.team == selectedTeam;
-}).toList();
+
+    final filteredPlayers = players.where((p) {
+      return p.team == selectedTeam;
+    }).toList();
+
+    final selectedScoresUI = ref.watch(selectedScoreProvider);
+
     return Scaffold(
       body: Padding(
         padding: AppPadding.screenHorizontal,
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 55.h),
-              CustomInputfields(
-                matchName: matchNameController,
-                teamOne: teamOneController,
-                teamTwo: teamTwoController,
-                scoreOne: teamOneScoreController,
-                scoreTwo: teamTwoScoreController,
-              ),
-              SizedBox(height: 24.h),
+          child: Form(
+            key: _formKey, // Attach the form key here
+            child: Column(
+              children: [
+                SizedBox(height: 55.h),
+                CustomInputfields(
+                  matchName: matchNameController,
+                  teamOne: teamOneController,
+                  teamTwo: teamTwoController,
+                  scoreOne: teamOneScoreController,
+                  scoreTwo: teamTwoScoreController,
+                ),
+                SizedBox(height: 24.h),
 
-             Column(
-  children: List.generate(filteredPlayers.length, (index) {
-    final p = filteredPlayers[index];
-    return Padding(
-      padding: EdgeInsets.only(bottom: 16.h),
-      child: CustomScoreInputbox(
-        name: p.name,
-        goals: p.goals,
-        ownGoals: p.ownGoals,
-        selectedScore: p.selectedScore,
-        onNameChanged: (value) => notifier.updatePlayer(
-          filteredPlayers[index].id,
-          "NAME",
-          value,
-        ),
-        onIncrementGoals: () =>
-            notifier.incrementGoals(filteredPlayers[index].id),
-        onIncrementOwnGoals: () =>
-            notifier.incrementOwnGoals(filteredPlayers[index].id),
-        onScoreSelected: (score) {
-          notifier.selectScore(filteredPlayers[index].id, score);
+                // Player selection and score input fields
+                Column(
+                  children: List.generate(filteredPlayers.length, (index) {
+                    final p = filteredPlayers[index];
+                    final selectedForThisPlayer =
+                    selectedScoresUI[p.id]; // int? or null
 
-          toggleScore(ref, filteredPlayers[index].id, score);
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 16.h),
+                      child: CustomScoreInputbox(
+                        name: p.name,
+                        goals: p.goals,
+                        ownGoals: p.ownGoals,
+                        selectedScore: selectedForThisPlayer,
+                        onNameChanged: (value) =>
+                            notifier.updatePlayer(p.id, "NAME", value),
+                        onIncrementGoals: () => notifier.incrementGoals(p.id),
+                        onIncrementOwnGoals: () =>
+                            notifier.incrementOwnGoals(p.id),
+                        onScoreSelected: (score) {
+                          ref
+                              .read(selectedScoreProvider.notifier)
+                              .toggle(p.id, score);
 
-          debugPrint(ref.watch(srProvider).toString());
+                          final map = ref.read(srProvider);
+                          final list = List<int>.from(map[p.id] ?? const <int>[]);
 
-          final totals = getTotalScores(ref);
-          debugPrint(totals.toString());
+                          final lastAddedMap = ref.read(lastAddedProvider);
+                          final lastAdded = lastAddedMap[p.id];
 
-          final scoresMap = ref.read(srProvider);
+                          debugPrint(
+                            "👉 Tap on player: ${p.id}, score tapped: $score",
+                          );
+                          debugPrint("   Current list before: $list");
+                          debugPrint("   Last added was: $lastAdded");
 
-          final selectedPlayerIds = scoresMap.keys.toList();
+                          if (lastAdded == score &&
+                              list.isNotEmpty &&
+                              list.last == score) {
+                            // undo ONLY the most recent addition
+                            list.removeLast();
+                            ref.read(lastAddedProvider.notifier).state = {
+                              ...lastAddedMap,
+                              p.id: null,
+                            };
 
-          if (selectedPlayerIds.isNotEmpty) {
-            final totalScore = selectedPlayerIds.fold<double>(0, (sum, playerId) {
-              final scores = scoresMap[playerId] ?? [];
-              return sum + scores.fold<double>(0, (pSum, s) => pSum + s);
-            });
+                            debugPrint("❌ Undo last score ($score) for ${p.id}");
+                          } else {
+                            // new add
+                            list.add(score);
+                            ref.read(lastAddedProvider.notifier).state = {
+                              ...lastAddedMap,
+                              p.id: score,
+                            };
 
-            final average = totalScore / selectedPlayerIds.length;
+                            debugPrint("✅ Added score ($score) for ${p.id}");
+                          }
 
-            // ✅ Update running total of all averages
-            ref.read(totalAverageSumProvider.notifier).state += average;
-            ref.read(totalTRSumProvider.notifier).state += average;
-            ref.read(totalTRCountProvider.notifier).state++;
+                          // write back updated list
+                          ref.read(srProvider.notifier).state = {
+                            ...map,
+                            p.id: list,
+                          };
 
-            debugPrint("Match average added: $average");
-            debugPrint("Overall average now: ${ref.read(finalAverageProvider)}");
-            ref.read(averageScoreProvider.notifier).state = average;
+                          debugPrint("   Updated list after: $list");
 
-            debugPrint("Average score saved: $average");
-          } else {
-            ref.read(averageScoreProvider.notifier).state = 0.0;
-            debugPrint("No players selected yet. Average reset to 0");
-          }
-        },
-      ),
-    );
-  }),
-),
+                          // recompute averages
+                          final scoresMap = ref.read(srProvider);
+                          final selectedPlayerIds = scoresMap.keys.toList();
 
-              CustomButtons(
-                hieght: 60.h,
-                title: '+ Add the list',
-                icon: '',
-                onTap: () {
-                  context.push(RouteName.addPlayerScreen);
-                },
+                          if (selectedPlayerIds.isNotEmpty) {
+                            final totalScore = selectedPlayerIds.fold<double>(0, (
+                                sum,
+                                playerId,
+                                ) {
+                              final scores = scoresMap[playerId] ?? [];
+                              return sum +
+                                  scores.fold<double>(0, (pSum, s) => pSum + s);
+                            });
 
-                // () =>
+                            final average = totalScore / selectedPlayerIds.length;
 
-                //notifier.addPlayer(),
-              ),
-              SizedBox(height: 20.h),
+                            ref.read(totalAverageSumProvider.notifier).state +=
+                                average;
+                            ref.read(totalTRSumProvider.notifier).state +=
+                                average;
+                            ref.read(totalTRCountProvider.notifier).state++;
+                            ref.read(averageScoreProvider.notifier).state =
+                                average;
 
-              CustomButtons(
-                hieght: 60.h,
-                color: AppColors.buttonAvtiveColor,
-                title: 'Submit',
-                icon: '',
-                onTap: () {
-                  ref.watch(matchCountProvider.notifier).state++;
-                  final players = ref.read(
-                    playerListProvider,
-                  ); // get player data
-                  final matchName = matchNameController.text;
-                  final teamOne = teamOneController.text;
-                  final teamTwo = teamTwoController.text;
-                  final teamOneScore = teamOneScoreController.text;
-                  final teamTwoScore = teamTwoScoreController.text;
-                  final date = DateTime.now().toString().split(' ')[0];
+                            debugPrint("📊 Average for this tap: $average");
+                            debugPrint(
+                              "📊 Overall average now: ${ref.read(finalAverageProvider)}",
+                            );
+                          } else {
+                            ref.read(averageScoreProvider.notifier).state = 0.0;
+                            debugPrint(
+                              "⚠️ No players selected → average reset to 0",
+                            );
+                          }
+                        },
+                      ),
+                    );
+                  }),
+                ),
 
-                  final match = MatchData(
-                    matchName: matchName,
-                    teamOne: teamOne,
-                    teamTwo: teamTwo,
-                    teamOneScore: teamOneScore,
-                    teamTwoScore: teamTwoScore,
-                    date: date,
-                    players: List.from(players),
-                  );
+                CustomButtons(
+                  hieght: 60.h,
+                  title: '+ Add the list',
+                  icon: '',
+                  onTap: () {
+                    context.push(RouteName.addPlayerScreen);
+                  },
+                ),
+                SizedBox(height: 20.h),
 
-                  ref.read(matchHistoryProvider.notifier).addMatch(match);
-                  debugPrint(
-                    "✅ Match Added: $matchName - $teamOne vs $teamTwo",
-                  );
-                  alertDialogueBox(context);
-                },
-              ),
-              SizedBox(height: 140.h),
-            ],
+                // Submit button with validation
+                CustomButtons(
+                  hieght: 60.h,
+                  color: AppColors.buttonAvtiveColor,
+                  title: 'Submit',
+                  icon: '',
+                  onTap: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      ref.watch(matchCountProvider.notifier).state++;
+
+                      final players = ref.read(playerListProvider);
+                      final matchName = matchNameController.text;
+                      final teamOne = teamOneController.text;
+                      final teamTwo = teamTwoController.text;
+                      final teamOneScore = teamOneScoreController.text;
+                      final teamTwoScore = teamTwoScoreController.text;
+                      final date = DateTime.now().toString().split(' ')[0];
+
+                      final match = MatchData(
+                        matchName: matchName,
+                        teamOne: teamOne,
+                        teamTwo: teamTwo,
+                        teamOneScore: teamOneScore,
+                        teamTwoScore: teamTwoScore,
+                        date: date,
+                        players: List.from(players),
+                      );
+
+                      // Add match to matchHistoryProvider
+                      ref.read(matchHistoryProvider.notifier).addMatch(match);
+
+                      // Clear transient UI highlights
+                      ref.read(selectedScoreProvider.notifier).clearAll();
+
+                      // Optionally clear srProvider
+                      ref.read(srProvider.notifier).state = {};
+
+                      debugPrint(
+                        "✅ Match Added: $matchName - $teamOne vs $teamTwo",
+                      );
+                      alertDialogueBox(context);
+                      _clearAllFields();
+                    }
+                  },
+                ),
+
+                SizedBox(height: 140.h),
+              ],
+            ),
           ),
         ),
       ),
     );
-  }
-
-  void toggleScore(WidgetRef ref, String playerId, int score) {
-    final current = ref.read(srProvider);
-    final scores = current[playerId] ?? [];
-
-    ref.read(srProvider.notifier).state = {
-      ...current,
-      playerId: scores.contains(score)
-          ? scores
-                .where((s) => s != score)
-                .toList() // remove score
-          : [...scores, score], // add score
-    };
-  }
-
-  // Function to get total scores for each player
-  Map<String, int> getTotalScores(WidgetRef ref) {
-    final scoresMap = ref.read(srProvider);
-
-    return scoresMap.map((playerId, scores) {
-      final total = scores.fold(0, (sum, score) => sum + score);
-      return MapEntry(playerId, total);
-    });
   }
 }

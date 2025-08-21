@@ -3,11 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
 
 class CustomScroebox extends StatelessWidget {
- 
-
   final void Function()? onTap;
   final String count;
   final bool isSelected;
+
   const CustomScroebox({
     super.key,
     required this.count,
@@ -21,22 +20,18 @@ class CustomScroebox extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTap,
-      child:
-      
-       Container(
+      child: Container(
         alignment: Alignment.center,
         height: 43.h,
         decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-    
+          borderRadius: BorderRadius.circular(4),
           border: Border.all(color: AppColors.onPrimary, width: 1.w),
           color: isSelected ? AppColors.onPrimary : AppColors.primaryContainer,
         ),
         child: Text(
           count,
           style: style.labelSmall!.copyWith(
-           color: isSelected? AppColors.surface: AppColors.containerTextColor,
-           
+            color: isSelected ? AppColors.surface : AppColors.containerTextColor,
           ),
         ),
       ),

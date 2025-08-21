@@ -10,7 +10,6 @@ InputDecoration customInputDecoration({
   Widget? suffixIcon,
 }) {
   return InputDecoration(
-    
     hintText: hintText,
     labelText: labelText,
     prefixIcon: prefixIcon,
@@ -37,29 +36,23 @@ InputDecoration customInputDecoration({
     ),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(4.r),
-      borderSide: BorderSide(
-        color: AppColors.onPrimary
-      )
+      borderSide: BorderSide(color: AppColors.onPrimary),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(4.r),
-  borderSide: BorderSide(
-        color: AppColors.onPrimary
-      )    ),
+      borderSide: BorderSide(color: AppColors.onPrimary),
+    ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(4.r),
-  borderSide: BorderSide(
-        color: AppColors.onPrimary
-      )    ),
+      borderSide: BorderSide(color: AppColors.onPrimary),
+    ),
     disabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(4.r),
-  borderSide: BorderSide(
-        color: AppColors.onPrimary
-      )    ),
+      borderSide: BorderSide(color: AppColors.onPrimary),
+    ),
     errorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(4.r),
-  borderSide: BorderSide(
-        color: AppColors.onPrimary
-      )    ),
+      borderSide: BorderSide(color: AppColors.onPrimary),
+    ),
   );
 }

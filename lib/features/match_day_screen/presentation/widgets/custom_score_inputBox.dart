@@ -78,7 +78,7 @@ class CustomScoreInputbox extends StatelessWidget {
           Expanded(
             child: GridView.builder(
               padding: EdgeInsets.zero,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 5,
@@ -88,10 +88,11 @@ class CustomScoreInputbox extends StatelessWidget {
               ),
               itemCount: 10,
               itemBuilder: (context, index) {
+                final value = index + 1;
                 return CustomScroebox(
-                  count: (index + 1).toString(),
-                  onTap: () => onScoreSelected(index + 1),
-                  isSelected: selectedScore == index + 1,
+                  count: value.toString(),
+                  onTap: () => onScoreSelected(value),
+                  isSelected: selectedScore == value,
                 );
               },
             ),

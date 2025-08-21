@@ -6,8 +6,8 @@ import 'delete_provider_selection.dart';
 
 final playersProvider =
     StateNotifierProvider<PlayersNotifier, List<PlayerInfoModel>>(
-  (ref) => PlayersNotifier(),
-);
+      (ref) => PlayersNotifier(),
+    );
 
 class PlayersNotifier extends StateNotifier<List<PlayerInfoModel>> {
   PlayersNotifier() : super(playersInfo);
@@ -45,24 +45,25 @@ class PlayersNotifier extends StateNotifier<List<PlayerInfoModel>> {
     updatedList[index] = updatedPlayer;
     state = updatedList;
   }
-void resetAllValues() {
-    state = playersInfo;  
-    selectedIds = [];      
+
+  void resetAllValues() {
+    state = playersInfo;
+    selectedIds = [];
   }
+
   void incrementGoals(String id) {
-  final index = state.indexWhere((p) => p.id == id);
-  if (index == -1) return;
+    final index = state.indexWhere((p) => p.id == id);
+    if (index == -1) return;
 
-  final player = state[index];
-  final newGoals = (player.goals == 15.0) ? 0.0 : player.goals + 1;
+    final player = state[index];
+    final newGoals = (player.goals == 15.0) ? 0.0 : player.goals + 1;
 
-  final updatedPlayer = player.copyWith(goals: newGoals);
+    final updatedPlayer = player.copyWith(goals: newGoals);
 
-  final updatedList = [...state];
-  updatedList[index] = updatedPlayer;
-  state = updatedList; 
-}
-
+    final updatedList = [...state];
+    updatedList[index] = updatedPlayer;
+    state = updatedList;
+  }
 
   void incrementOwnGoals(String id) {
     final index = state.indexWhere((p) => p.id == id);
@@ -73,13 +74,15 @@ void resetAllValues() {
 
     state = [
       for (int i = 0; i < state.length; i++)
-        if (i == index) player.copyWith(ownGoals: newOwnGoals.toDouble()) else state[i]
+        if (i == index)
+          player.copyWith(ownGoals: newOwnGoals.toDouble())
+        else
+          state[i],
     ];
   }
 
   void selectScore(String id, int score) =>
       _updateById(id, (p) => p.copyWith(selectedScore: score));
-
 
   void updateMatchName(String id, String matchName) =>
       _updateById(id, (p) => p.copyWith(matchName: matchName));
@@ -88,13 +91,19 @@ void resetAllValues() {
       _updateById(id, (p) => p.copyWith(teamOne: teamOne, teamTwo: teamTwo));
 
   void updateTeamScores(String id, String teamOneScore, String teamTwoScore) =>
-      _updateById(id,
-          (p) => p.copyWith(teamOneScore: teamOneScore, teamTwoScore: teamTwoScore));
+      _updateById(
+        id,
+        (p) =>
+            p.copyWith(teamOneScore: teamOneScore, teamTwoScore: teamTwoScore),
+      );
 
   void updateDate(String id, String date) =>
       _updateById(id, (p) => p.copyWith(date: date));
 
-  void _updateById(String id, PlayerInfoModel Function(PlayerInfoModel) updater) {
+  void _updateById(
+    String id,
+    PlayerInfoModel Function(PlayerInfoModel) updater,
+  ) {
     final index = state.indexWhere((p) => p.id == id);
     if (index == -1) return;
 
@@ -118,30 +127,25 @@ void resetAllValues() {
   }
 }
 
-
 final allPlayersTeamPositionSelectionProvider =
     Provider.family<bool, Map<String, String>>((ref, data) {
-  final players = ref.watch(playersProvider);
-  final selectedIds = ref.watch(deletePlayerIdListProvider);
+      final players = ref.watch(playersProvider);
+      final selectedIds = ref.watch(deletePlayerIdListProvider);
 
-  final team = data['team']!;
-  final position = data['position']!;
+      final team = data['team']!;
+      final position = data['position']!;
 
-  final ids = players
-      .where((p) => p.team == team && p.position == position)
-      .map((p) => p.id)
-      .toList();
+      final ids = players
+          .where((p) => p.team == team && p.position == position)
+          .map((p) => p.id)
+          .toList();
 
-  if (ids.isEmpty) return false;
+      if (ids.isEmpty) return false;
 
-  return ids.every((id) => selectedIds.contains(id));
-});
+      return ids.every((id) => selectedIds.contains(id));
+    });
 
-void toggleSelectAllPlayers(
-  WidgetRef ref,
-  String team,
-  String position,
-) {
+void toggleSelectAllPlayers(WidgetRef ref, String team, String position) {
   final players = ref.read(playersProvider);
   final selectedIdsNotifier = ref.read(deletePlayerIdListProvider.notifier);
 
@@ -171,5 +175,4 @@ final matchCountProvider = StateProvider<double>((_) => 0.00);
 
 //ScoreCount
 
-final scoreCountPerMatch = StateProvider<int>((ref)=>0);
-
+final scoreCountPerMatch = StateProvider<int>((ref) => 0);
