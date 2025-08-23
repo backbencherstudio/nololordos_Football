@@ -14,6 +14,7 @@ import 'package:nololordos/features/match_day_screen/Riverpod/srProvider.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/inputdecoration.dart';
 
 import '../../Riverpod/delete_provider_selection.dart';
+
 class GoalScoreSheet extends ConsumerStatefulWidget {
   const GoalScoreSheet({super.key});
 
@@ -80,11 +81,11 @@ class _GoalScoreSheetState extends ConsumerState<GoalScoreSheet> {
                         checkColor: Colors.white,
                         fillColor: MaterialStateProperty.all(
                           ref.watch(
-                            allPlayersTeamPositionSelectionProvider({
-                              'team': selectedTeam,
-                              'position': 'GK',
-                            }),
-                          )
+                                allPlayersTeamPositionSelectionProvider({
+                                  'team': selectedTeam,
+                                  'position': 'GK',
+                                }),
+                              )
                               ? AppColors.redColor
                               : Colors.transparent,
                         ),
@@ -161,16 +162,21 @@ class _GoalScoreSheetState extends ConsumerState<GoalScoreSheet> {
                           height: 50.h,
                           width: 150.w,
                           child: TextFormField(
-                            controller: controllers[id],  // Use the player-specific controller
+                            controller:
+                                controllers[id], // Use the player-specific controller
                             onChanged: (value) {
                               // Update the player's name when it changes
-                              ref.read(playersProvider.notifier).updatePlayerName(player.id, value);
+                              ref
+                                  .read(playersProvider.notifier)
+                                  .updatePlayerName(player.id, value);
                             },
-                            style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                            style: Theme.of(context).textTheme.labelLarge!
+                                .copyWith(
                                   fontSize: 13.sp,
                                   fontWeight: FontWeight.w700,
                                 ),
-                            readOnly: isEditon,  // Make it readonly if editing is off
+                            readOnly:
+                                isEditon, // Make it readonly if editing is off
                             decoration: customInputDecoration(),
                           ),
                         ),
@@ -205,8 +211,13 @@ class _GoalScoreSheetState extends ConsumerState<GoalScoreSheet> {
                       final gmCount = ref.watch(matchCountProvider);
                       final allScoresMap = ref.watch(srProvider);
                       final playerScores = allScoresMap[player.id] ?? [];
-                      final totalScore = playerScores.fold(0, (sum, s) => sum + s);
-                      final averageScore = gmCount > 0 ? totalScore / gmCount : 0;
+                      final totalScore = playerScores.fold(
+                        0,
+                        (sum, s) => sum + s,
+                      );
+                      final averageScore = gmCount > 0
+                          ? totalScore / gmCount
+                          : 0;
 
                       return Row(
                         children: [
@@ -214,42 +225,57 @@ class _GoalScoreSheetState extends ConsumerState<GoalScoreSheet> {
                             readOnlyValue: isEditon,
                             value: averageScore.toStringAsFixed(2),
                             onChanged: (value) {
-                              ref.read(playersProvider.notifier).updatePlayer(player.id, "sr", value);
+                              ref
+                                  .read(playersProvider.notifier)
+                                  .updatePlayer(player.id, "sr", value);
                             },
                           ),
                           CustomboxTile(
                             readOnlyValue: isEditon,
                             value: gmCount.toString(),
                             onChanged: (value) {
-                              ref.read(playersProvider.notifier).updatePlayer(player.id, "GM", value);
+                              ref
+                                  .read(playersProvider.notifier)
+                                  .updatePlayer(player.id, "GM", value);
                             },
                           ),
                           CustomboxTile(
                             readOnlyValue: isEditon,
                             value: player.goals.toString(),
                             onChanged: (value) {
-                              ref.read(playersProvider.notifier).updatePlayer(player.id, "GOALS", value);
+                              ref
+                                  .read(playersProvider.notifier)
+                                  .updatePlayer(player.id, "GOALS", value);
                             },
                           ),
                           CustomboxTile(
                             readOnlyValue: isEditon,
-                            value: (player.goals / (gmCount == 0 ? 1 : gmCount)).toStringAsFixed(2),
+                            value: (player.goals / (gmCount == 0 ? 1 : gmCount))
+                                .toStringAsFixed(2),
                             onChanged: (value) {
-                              ref.read(playersProvider.notifier).updatePlayer(player.id, "AGL", value);
+                              ref
+                                  .read(playersProvider.notifier)
+                                  .updatePlayer(player.id, "AGL", value);
                             },
                           ),
                           CustomboxTile(
                             readOnlyValue: isEditon,
                             value: player.ownGoals.toString(),
                             onChanged: (value) {
-                              ref.read(playersProvider.notifier).updatePlayer(player.id, "-GL", value);
+                              ref
+                                  .read(playersProvider.notifier)
+                                  .updatePlayer(player.id, "-GL", value);
                             },
                           ),
                           CustomboxTile(
                             readOnlyValue: isEditon,
-                            value: (player.ownGoals / (gmCount == 0 ? 1 : gmCount)).toStringAsFixed(2),
+                            value:
+                                (player.ownGoals / (gmCount == 0 ? 1 : gmCount))
+                                    .toStringAsFixed(2),
                             onChanged: (value) {
-                              ref.read(playersProvider.notifier).updatePlayer(player.id, "-AGL", value);
+                              ref
+                                  .read(playersProvider.notifier)
+                                  .updatePlayer(player.id, "-AGL", value);
                             },
                           ),
                         ],
