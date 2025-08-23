@@ -294,22 +294,34 @@ class _MatchdayScreenState extends ConsumerState<MatchdayScreen> {
           matchCount: numGames,
         );
       }
+      int highestMatchCount = 0;
+
+      debugPrint("\n\n\nPlayer Stats: $highestMatchCount");
+
+      for (final stats in playerStats.state.values) {
+        if (stats.matchCount > highestMatchCount) {
+          highestMatchCount = stats.matchCount;
+        }
+      }
+
+      // After this loop, highestMatchCount holds the max 'matchCount' value among all players
 
       // Calculate SR for the player
-      final sr = playerStats.state[playerId]!.totalScore / playerStats.state[playerId]!.matchCount;
+      final sr = playerStats.state[playerId]!.totalScore / highestMatchCount;
 
       // Update the SR value for the current player in realSrProvider
       ref.read(realSrProvider.notifier).state = {
-        ...ref.read(realSrProvider), // Retain existing SR values for other players
+        ...ref.read(
+          realSrProvider,
+        ), // Retain existing SR values for other players
         playerId: sr, // Update SR for the current player
       };
 
       // Debug output for each player's total score and total match count
       debugPrint(
-          "Player $playerId - Total Score: ${playerStats.state[playerId]!.totalScore}, Matches Played: ${playerStats.state[playerId]!.matchCount}, SR: $sr"
+        "Player $playerId - Total Score: ${playerStats.state[playerId]!.totalScore}, Matches Played: ${playerStats.state[playerId]!.matchCount}, SR: $sr",
       );
     });
-
 
     // **RESET SELECTIONS AFTER SUBMISSION**
 
