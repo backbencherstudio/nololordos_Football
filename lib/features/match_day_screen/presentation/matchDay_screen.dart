@@ -15,11 +15,7 @@ import 'package:nololordos/features/match_day_screen/presentation/widgets/custom
 import 'package:nololordos/features/match_day_screen/presentation/widgets/custom_score_inputBox.dart';
 
 import '../../home_screen (Rooster view)/Riverpod/real_sr_provider.dart';
-
-// Provider to store the total score and match count per player
-final playerTotalStatsProvider = StateProvider<Map<String, PlayerStats>>(
-  (ref) => {},
-);
+import '../Riverpod/additional_provider.dart';
 
 class PlayerStats {
   double totalScore;
@@ -31,16 +27,14 @@ class PlayerStats {
   double get averageRating => matchCount > 0 ? totalScore / matchCount : 0.0;
 }
 
-final strProvider = StateProvider<List<double>>((ref) => []);
-
-class MatchdayScreen extends ConsumerStatefulWidget {
-  const MatchdayScreen({super.key});
+class MatchDayScreen extends ConsumerStatefulWidget {
+  const MatchDayScreen({super.key});
 
   @override
-  ConsumerState<MatchdayScreen> createState() => _MatchdayScreenState();
+  ConsumerState<MatchDayScreen> createState() => _MatchDayScreenState();
 }
 
-class _MatchdayScreenState extends ConsumerState<MatchdayScreen> {
+class _MatchDayScreenState extends ConsumerState<MatchDayScreen> {
   late TextEditingController matchNameController;
   late TextEditingController teamOneController;
   late TextEditingController teamTwoController;
@@ -71,12 +65,10 @@ class _MatchdayScreenState extends ConsumerState<MatchdayScreen> {
   Widget build(BuildContext context) {
     final players = ref.watch(playersProvider);
     final selectedTeam = ref.watch(selectionProvider);
-
     final notifier = ref.read(playersProvider.notifier);
     final filteredPlayers = players.where((p) {
-      return selectedTeam != null && p.team == selectedTeam;
+      return p.team == selectedTeam;
     }).toList();
-
     return Scaffold(
       body: Padding(
         padding: AppPadding.screenHorizontal,
@@ -294,20 +286,9 @@ class _MatchdayScreenState extends ConsumerState<MatchdayScreen> {
           matchCount: numGames,
         );
       }
-      int highestMatchCount = 0;
 
-      debugPrint("\n\n\nPlayer Stats: $highestMatchCount");
-
-      for (final stats in playerStats.state.values) {
-        if (stats.matchCount > highestMatchCount) {
-          highestMatchCount = stats.matchCount;
-        }
-      }
-
-      // After this loop, highestMatchCount holds the max 'matchCount' value among all players
-
-      // Calculate SR for the player
-      final sr = playerStats.state[playerId]!.totalScore / highestMatchCount;
+      final srs = ref.watch(matchCountProvider);
+      final sr = playerStats.state[playerId]!.totalScore / srs;
 
       // Update the SR value for the current player in realSrProvider
       ref.read(realSrProvider.notifier).state = {

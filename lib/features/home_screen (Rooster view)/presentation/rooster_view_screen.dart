@@ -58,7 +58,6 @@ class RoosterViewScreen extends StatelessWidget {
                                   
                                     ref.read(finalTRAverageProvider.notifier).state= 0.00;
 
-
                                 },
                               );
                             },

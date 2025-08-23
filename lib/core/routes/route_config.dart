@@ -32,7 +32,7 @@ class RouteConfig {
             routes: [
               GoRoute(
                 path: RouteName.matchdayScreen,
-                builder: (context, state) => const MatchdayScreen(),
+                builder: (context, state) => const MatchDayScreen(),
               ),
             ],
           ),

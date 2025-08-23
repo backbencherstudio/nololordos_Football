@@ -5,9 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nololordos/core/constant/icons.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
 import 'package:nololordos/features/import_export_screen/presentation/widgets/custom_buttons.dart';
-import 'package:nololordos/features/match_day_screen/Riverpod/srProvider.dart';
-
-import '../matchDay_screen.dart';
+import '../../Riverpod/additional_provider.dart';
 
 void alertDialogueBox(BuildContext context) {
   showDialog(
@@ -67,9 +65,7 @@ void alertDialogueBox(BuildContext context) {
 
               Text(
                 "Team Ratings",
-                style: style.bodyMedium!.copyWith(
-                  color: AppColors.onPrimary,
-                ),
+                style: style.bodyMedium!.copyWith(color: AppColors.onPrimary),
               ),
               SizedBox(height: 24.h),
 
@@ -89,4 +85,3 @@ void alertDialogueBox(BuildContext context) {
     },
   );
 }
-
