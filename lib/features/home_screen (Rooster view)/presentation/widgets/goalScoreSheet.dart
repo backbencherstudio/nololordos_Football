@@ -14,6 +14,7 @@ import 'package:nololordos/features/match_day_screen/Riverpod/srProvider.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/inputdecoration.dart';
 
 import '../../Riverpod/delete_provider_selection.dart';
+import '../../Riverpod/real_sr_provider.dart';
 
 class GoalScoreSheet extends ConsumerStatefulWidget {
   const GoalScoreSheet({super.key});
@@ -211,9 +212,13 @@ class _GoalScoreSheetState extends ConsumerState<GoalScoreSheet> {
                       final gmCount = ref.watch(matchCountProvider);
                       final allScoresMap = ref.watch(srProvider);
                       final playerScores = allScoresMap[player.id] ?? [];
+
+                      // Fetch the SR value for the current player
+                      final sr = ref.watch(realSrProvider)[player.id] ?? 0.0;  // Default to 0 if no SR value is set
+
                       final totalScore = playerScores.fold(
                         0,
-                        (sum, s) => sum + s,
+                            (sum, s) => sum + s,
                       );
                       final averageScore = gmCount > 0
                           ? totalScore / gmCount
@@ -223,7 +228,7 @@ class _GoalScoreSheetState extends ConsumerState<GoalScoreSheet> {
                         children: [
                           CustomboxTile(
                             readOnlyValue: isEditon,
-                            value: averageScore.toStringAsFixed(2),
+                            value: sr.toStringAsFixed(2), // Display the SR value
                             onChanged: (value) {
                               ref
                                   .read(playersProvider.notifier)
@@ -270,8 +275,7 @@ class _GoalScoreSheetState extends ConsumerState<GoalScoreSheet> {
                           CustomboxTile(
                             readOnlyValue: isEditon,
                             value:
-                                (player.ownGoals / (gmCount == 0 ? 1 : gmCount))
-                                    .toStringAsFixed(2),
+                            (player.ownGoals / (gmCount == 0 ? 1 : gmCount)).toStringAsFixed(2),
                             onChanged: (value) {
                               ref
                                   .read(playersProvider.notifier)
@@ -282,6 +286,7 @@ class _GoalScoreSheetState extends ConsumerState<GoalScoreSheet> {
                       );
                     }),
                   ),
+
                 ],
               ),
             ),

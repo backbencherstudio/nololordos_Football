@@ -14,7 +14,23 @@ import 'package:nololordos/features/match_day_screen/presentation/widgets/alert_
 import 'package:nololordos/features/match_day_screen/presentation/widgets/custom_inputfields.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/custom_score_inputBox.dart';
 
-// Add this provider to your srProvider.dart file or wherever you keep your providers
+import '../../home_screen (Rooster view)/Riverpod/real_sr_provider.dart';
+
+// Provider to store the total score and match count per player
+final playerTotalStatsProvider = StateProvider<Map<String, PlayerStats>>(
+  (ref) => {},
+);
+
+class PlayerStats {
+  double totalScore;
+  int matchCount;
+
+  PlayerStats({this.totalScore = 0.0, this.matchCount = 0});
+
+  // Calculate the average rating per player
+  double get averageRating => matchCount > 0 ? totalScore / matchCount : 0.0;
+}
+
 final strProvider = StateProvider<List<double>>((ref) => []);
 
 class MatchdayScreen extends ConsumerStatefulWidget {
@@ -260,16 +276,54 @@ class _MatchdayScreenState extends ConsumerState<MatchdayScreen> {
       "Match Added: $matchName - $teamOne vs $teamTwo, TR: $currentTR",
     );
 
-    // Reset all players' selectedScore to 0 to clear UI selection highlighting
+    // Update player stats (total score and match count)
+    final currentScoresMap = ref.read(srProvider);
+    final playerStats = ref.read(playerTotalStatsProvider.notifier);
+
+    currentScoresMap.forEach((playerId, scores) {
+      final totalScore = scores.fold<double>(0, (sum, score) => sum + score);
+      final numGames = scores.length;
+
+      // Update player stats
+      if (playerStats.state.containsKey(playerId)) {
+        playerStats.state[playerId]!.totalScore += totalScore;
+        playerStats.state[playerId]!.matchCount += numGames;
+      } else {
+        playerStats.state[playerId] = PlayerStats(
+          totalScore: totalScore,
+          matchCount: numGames,
+        );
+      }
+
+      // Calculate SR for the player
+      final sr = playerStats.state[playerId]!.totalScore / playerStats.state[playerId]!.matchCount;
+
+      // Update the SR value for the current player in realSrProvider
+      ref.read(realSrProvider.notifier).state = {
+        ...ref.read(realSrProvider), // Retain existing SR values for other players
+        playerId: sr, // Update SR for the current player
+      };
+
+      // Debug output for each player's total score and total match count
+      debugPrint(
+          "Player $playerId - Total Score: ${playerStats.state[playerId]!.totalScore}, Matches Played: ${playerStats.state[playerId]!.matchCount}, SR: $sr"
+      );
+    });
+
+
+    // **RESET SELECTIONS AFTER SUBMISSION**
+
+    // Clear current match selections (e.g., reset scores, selected players, etc.)
+    ref.read(srProvider.notifier).state = {}; // Clear player scores
+    ref.read(averageScoreProvider.notifier).state = 0.0; // Reset average score
     final notifier = ref.read(playersProvider.notifier);
     final allPlayers = ref.read(playersProvider);
     for (final player in allPlayers) {
-      notifier.selectScore(player.id, 0);
+      notifier.selectScore(
+        player.id,
+        0,
+      ); // Reset selected score for all players
     }
-
-    // Clear current match scores
-    ref.read(srProvider.notifier).state = {};
-    ref.read(averageScoreProvider.notifier).state = 0.0;
 
     // Show alert dialog with STR data using your existing dialog
     alertDialogueBox(context);
@@ -282,24 +336,5 @@ class _MatchdayScreenState extends ConsumerState<MatchdayScreen> {
       final total = scores.fold(0, (sum, score) => sum + score);
       return MapEntry(playerId, total);
     });
-  }
-
-  /// Utility: Get current match statistics
-  Map<String, dynamic> getCurrentMatchStats(WidgetRef ref) {
-    final scoresMap = ref.read(srProvider);
-    final playersWithScores = scoresMap.keys.where((playerId) {
-      final scores = scoresMap[playerId] ?? [];
-      return scores.isNotEmpty;
-    }).length;
-
-    final totalScore = scoresMap.values.fold<double>(0, (sum, scores) {
-      return sum + scores.fold<double>(0, (pSum, score) => pSum + score);
-    });
-
-    return {
-      'playersWithScores': playersWithScores,
-      'totalScore': totalScore,
-      'currentTR': playersWithScores > 0 ? totalScore / playersWithScores : 0.0,
-    };
   }
 }
