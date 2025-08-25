@@ -5,13 +5,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nololordos/core/constant/icons.dart';
 import 'package:nololordos/core/theme/theme_extension/app_colors.dart';
 import 'package:nololordos/features/import_export_screen/presentation/widgets/custom_buttons.dart';
-import 'package:nololordos/features/match_day_screen/Riverpod/srProvider.dart';
+import '../../Riverpod/additional_provider.dart';
 
 void alertDialogueBox(BuildContext context) {
   showDialog(
     context: context,
     builder: (context) {
-          final style = Theme.of(context).textTheme;
+      final style = Theme.of(context).textTheme;
 
       return Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
@@ -25,50 +25,63 @@ void alertDialogueBox(BuildContext context) {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(width: 20.w,),
-
+                  SizedBox(width: 20.w),
                   SvgPicture.asset(AppIcons.ratingsIcon),
                   GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: SvgPicture.asset(AppIcons.xIcon)),
-                 
+                    child: SvgPicture.asset(AppIcons.xIcon),
+                  ),
                 ],
               ),
-              SizedBox(height: 30.h,),
-               Consumer(
-                 builder: (context, ref, _) {
-                  final avg = ref.watch(averageScoreProvider);
+              SizedBox(height: 30.h),
 
-                   return Text(avg.toStringAsFixed(2),
+              // Show only the TR value
+              Consumer(
+                builder: (context, ref, _) {
+                  final strList = ref.watch(strProvider);
+
+                  if (strList.isEmpty) {
+                    return Text(
+                      "No matches recorded yet",
                       style: style.bodyMedium!.copyWith(
                         color: AppColors.onPrimary,
                       ),
-                      );
-                 }
-               ),
-                  Text("Team Ratings",
-                  style: style.bodyMedium!.copyWith(
-                    color: AppColors.onPrimary,
-                  ),
-                  ),
-                                SizedBox(height: 24.h,),
+                    );
+                  }
 
-                  CustomButtons(
-                    hieght: 60.h,
-                    color: AppColors.buttonAvtiveColor,
-                    title: 'Submit',
-                    icon: '',
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
+                  // Only show the latest TR value after submission
+                  final lastMatchTR = strList.isNotEmpty ? strList.last : 0.0;
+
+                  return Text(
+                    lastMatchTR.toStringAsFixed(2),
+                    style: style.bodyMedium!.copyWith(
+                      color: AppColors.onPrimary,
+                    ),
+                  );
+                },
+              ),
+
+              Text(
+                "Team Ratings",
+                style: style.bodyMedium!.copyWith(color: AppColors.onPrimary),
+              ),
+              SizedBox(height: 24.h),
+
+              CustomButtons(
+                hieght: 60.h,
+                color: AppColors.buttonAvtiveColor,
+                title: 'Submit',
+                icon: '',
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
             ],
           ),
         ),
       );
     },
   );
-  
 }

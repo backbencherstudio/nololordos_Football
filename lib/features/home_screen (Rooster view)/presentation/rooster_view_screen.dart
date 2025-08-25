@@ -22,6 +22,8 @@ import 'package:nololordos/features/import_export_screen/presentation/widgets/cu
 import 'package:nololordos/features/match_day_screen/Riverpod/srProvider.dart';
 import 'package:nololordos/features/match_day_screen/presentation/widgets/custom_icon_buttons.dart';
 
+import '../Riverpod/real_sr_provider.dart';
+
 class RoosterViewScreen extends StatelessWidget {
   const RoosterViewScreen({super.key});
 
@@ -51,10 +53,10 @@ class RoosterViewScreen extends StatelessWidget {
                                 onTap: () {
                                   ref.read(playersProvider.notifier).resetAllValues();
                                   ref.read(matchCountProvider.notifier).state = 0; 
-                                  ref.read(scoreCountPerMatch.notifier).state = 0; 
+                                  ref.read(scoreCountPerMatch.notifier).state = 0;
+                                  ref.read(realSrProvider.notifier).state = {};
                                   
                                     ref.read(finalTRAverageProvider.notifier).state= 0.00;
-
 
                                 },
                               );
